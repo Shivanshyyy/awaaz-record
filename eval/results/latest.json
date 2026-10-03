@@ -1,0 +1,2431 @@
+{
+  "generatedAt": "2026-10-03T22:51:49.787Z",
+  "visitDate": "2026-10-04",
+  "machine": {
+    "cpu": "Apple M5 Pro",
+    "cores": 15,
+    "memoryGB": 24,
+    "platform": "darwin 27.0.0",
+    "node": "v22.16.0"
+  },
+  "model": {
+    "repo": "Xenova/whisper-tiny.en",
+    "dtype": "q8",
+    "runtime": "onnxruntime-node (Transformers.js), single run per clip, Node on a laptop, not a phone"
+  },
+  "ttsVoice": {
+    "kind": "TTS-synthetic",
+    "note": "Speech from the operating system voice, plus synthetic noise for the _noisy files. A pipeline check only, not real speech.",
+    "platform": "darwin",
+    "voice": "Tara",
+    "noiseSnrDb": 10,
+    "generatedAt": "2026-10-03T22:18:08.592Z",
+    "files": [
+      {
+        "id": "S01",
+        "seconds": 11.4,
+        "noise": false
+      },
+      {
+        "id": "S01_noisy",
+        "seconds": 11.4,
+        "noise": true
+      },
+      {
+        "id": "S02",
+        "seconds": 12.9,
+        "noise": false
+      },
+      {
+        "id": "S02_noisy",
+        "seconds": 12.9,
+        "noise": true
+      },
+      {
+        "id": "S03",
+        "seconds": 11.9,
+        "noise": false
+      },
+      {
+        "id": "S04",
+        "seconds": 14.7,
+        "noise": false
+      },
+      {
+        "id": "S05",
+        "seconds": 14.7,
+        "noise": false
+      },
+      {
+        "id": "S06",
+        "seconds": 12.9,
+        "noise": false
+      },
+      {
+        "id": "S06_noisy",
+        "seconds": 12.9,
+        "noise": true
+      },
+      {
+        "id": "S07",
+        "seconds": 11.6,
+        "noise": false
+      },
+      {
+        "id": "S08",
+        "seconds": 14.2,
+        "noise": false
+      },
+      {
+        "id": "S09",
+        "seconds": 10.1,
+        "noise": false
+      },
+      {
+        "id": "S10",
+        "seconds": 14.5,
+        "noise": false
+      }
+    ]
+  },
+  "reference": {
+    "label": "Reference text (the script itself): tests the extractor only",
+    "rows": [
+      {
+        "id": "S01",
+        "script": "S01",
+        "score": {
+          "id": "S01",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Noor\", want \"Noor\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 38, want 38"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"fever\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": true,
+              "detail": "got {\"value\":101,\"unit\":\"F\"}, want {\"value\":101,\"unit\":\"F\"}"
+            },
+            {
+              "area": "medications[paracetamol]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[paracetamol].dose",
+              "ok": true,
+              "detail": "got 500, want 500"
+            },
+            {
+              "area": "medications[paracetamol].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[paracetamol].perDay",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "medications[paracetamol].durationDays",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":3}, want {\"kind\":\"days\",\"days\":3}"
+            }
+          ],
+          "flagChecks": [],
+          "extraFlags": []
+        },
+        "failed": [],
+        "missedFlags": [],
+        "extraFlags": []
+      },
+      {
+        "id": "S02",
+        "script": "S02",
+        "score": {
+          "id": "S02",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Ramesh\", want \"Ramesh\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 52, want 52"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"sneezing\",\"runny nose\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 7, want 7"
+            },
+            {
+              "area": "vitals.bp",
+              "ok": true,
+              "detail": "got {\"sys\":140,\"dia\":90}, want {\"sys\":140,\"dia\":90}"
+            },
+            {
+              "area": "vitals.pulse",
+              "ok": true,
+              "detail": "got 88, want 88"
+            },
+            {
+              "area": "medications[cetirizine]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[cetirizine].dose",
+              "ok": true,
+              "detail": "got 10, want 10"
+            },
+            {
+              "area": "medications[cetirizine].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[cetirizine].perDay",
+              "ok": true,
+              "detail": "got 1, want 1"
+            },
+            {
+              "area": "medications[cetirizine].timing",
+              "ok": true,
+              "detail": "got [\"night\"], want [\"night\"]"
+            },
+            {
+              "area": "medications[cetirizine].durationDays",
+              "ok": true,
+              "detail": "got 5, want 5"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":7}, want {\"kind\":\"days\",\"days\":7}"
+            }
+          ],
+          "flagChecks": [],
+          "extraFlags": []
+        },
+        "failed": [],
+        "missedFlags": [],
+        "extraFlags": []
+      },
+      {
+        "id": "S03",
+        "script": "S03",
+        "score": {
+          "id": "S03",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Sunita\", want \"Sunita\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 26, want 26"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"swelling of feet\",\"headache\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 1, want 1"
+            },
+            {
+              "area": "vitals.bp",
+              "ok": true,
+              "detail": "got {\"sys\":160,\"dia\":110}, want {\"sys\":160,\"dia\":110}"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got {\"to\":\"district hospital\",\"urgent\":true}, want {\"to\":\"district hospital\",\"urgent\":true}"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got null, want none"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag UNCLEAR @ followUp",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": []
+        },
+        "failed": [],
+        "missedFlags": [],
+        "extraFlags": []
+      },
+      {
+        "id": "S04",
+        "script": "S04",
+        "score": {
+          "id": "S04",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Aarav\", want \"Aarav\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"loose motions\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "medications[ors]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[ors].prn",
+              "ok": true,
+              "detail": "got true, want true"
+            },
+            {
+              "area": "medications[zinc]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[zinc].dose",
+              "ok": true,
+              "detail": "got 20, want 20"
+            },
+            {
+              "area": "medications[zinc].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[zinc].perDay",
+              "ok": true,
+              "detail": "got 1, want 1"
+            },
+            {
+              "area": "medications[zinc].durationDays",
+              "ok": true,
+              "detail": "got 14, want 14"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got [\"breastfeeding\",\"fluids\"], want [\"breastfeeding\",\"fluids\"]"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":5}, want {\"kind\":\"days\",\"days\":5}"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag MISSING_DETAIL @ ors",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": []
+        },
+        "failed": [],
+        "missedFlags": [],
+        "extraFlags": []
+      },
+      {
+        "id": "S05",
+        "script": "S05",
+        "score": {
+          "id": "S05",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Lakshmi\", want \"Lakshmi\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 60, want 60"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"knee pain\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 60, want 60"
+            },
+            {
+              "area": "medications[ibuprofen]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[ibuprofen].dose",
+              "ok": true,
+              "detail": "got 400, want 400"
+            },
+            {
+              "area": "medications[ibuprofen].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[ibuprofen].perDay",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "medications[ibuprofen].durationDays",
+              "ok": true,
+              "detail": "got 5, want 5"
+            },
+            {
+              "area": "medications[ibuprofen].withFood",
+              "ok": true,
+              "detail": "got \"after\", want \"after\""
+            },
+            {
+              "area": "medications[diclofenac] extra",
+              "ok": true,
+              "detail": "allowed only with a CORRECTION_CUE flag"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":14}, want {\"kind\":\"days\",\"days\":14}"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag CORRECTION_CUE @ medications",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": []
+        },
+        "failed": [],
+        "missedFlags": [],
+        "extraFlags": []
+      },
+      {
+        "id": "S06",
+        "script": "S06",
+        "score": {
+          "id": "S06",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Kavita\", want \"Kavita\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 33, want 33"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"burning while passing urine\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": true,
+              "detail": "got {\"value\":99.8,\"unit\":\"F\"}, want {\"value\":99.8,\"unit\":\"F\"}"
+            },
+            {
+              "area": "medications[nitrofurantoin]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[nitrofurantoin].dose",
+              "ok": true,
+              "detail": "got 100, want 100"
+            },
+            {
+              "area": "medications[nitrofurantoin].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[nitrofurantoin].perDay",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "medications[nitrofurantoin].durationDays",
+              "ok": true,
+              "detail": "got 5, want 5"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got [\"fluids\"], want [\"fluids\"]"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got null, want none"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag MISSING @ followUp",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": []
+        },
+        "failed": [],
+        "missedFlags": [],
+        "extraFlags": []
+      },
+      {
+        "id": "S07",
+        "script": "S07",
+        "score": {
+          "id": "S07",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Mohan\", want \"Mohan\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 70, want 70"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"blood pressure check\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got null, want null"
+            },
+            {
+              "area": "vitals.bp",
+              "ok": true,
+              "detail": "got {\"sys\":150,\"dia\":95}, want {\"sys\":150,\"dia\":95}"
+            },
+            {
+              "area": "vitals.weightKg",
+              "ok": true,
+              "detail": "got 62, want 62"
+            },
+            {
+              "area": "medications[amlodipine]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[amlodipine].dose",
+              "ok": true,
+              "detail": "got 5, want 5"
+            },
+            {
+              "area": "medications[amlodipine].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[amlodipine].perDay",
+              "ok": true,
+              "detail": "got 1, want 1"
+            },
+            {
+              "area": "medications[amlodipine].ongoing",
+              "ok": true,
+              "detail": "got true, want true"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":30}, want {\"kind\":\"days\",\"days\":30}"
+            }
+          ],
+          "flagChecks": [],
+          "extraFlags": []
+        },
+        "failed": [],
+        "missedFlags": [],
+        "extraFlags": []
+      },
+      {
+        "id": "S08",
+        "script": "S08",
+        "score": {
+          "id": "S08",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Imran\", want \"Imran\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 29, want 29"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"headache\",\"body ache\"], missing []"
+            },
+            {
+              "area": "complaint.mustNotContain",
+              "ok": true,
+              "detail": "forbidden words found: []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 0, want 0"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": true,
+              "detail": "got {\"value\":null,\"unit\":null,\"qualitative\":\"normal\"}, want {\"qualitative\":\"normal\"}"
+            },
+            {
+              "area": "medications[paracetamol]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[paracetamol].dose",
+              "ok": true,
+              "detail": "got 650, want 650"
+            },
+            {
+              "area": "medications[paracetamol].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[paracetamol].perDay",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "medications[paracetamol].durationDays",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"if_worse\"}, want {\"kind\":\"if_worse\"}"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag UNIT_INFERRED @ paracetamol",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": []
+        },
+        "failed": [],
+        "missedFlags": [],
+        "extraFlags": []
+      },
+      {
+        "id": "S09",
+        "script": "S09",
+        "score": {
+          "id": "S09",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Geeta\", want \"Geeta\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 41, want 41"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"blurred vision\"], missing []"
+            },
+            {
+              "area": "complaint.mustNotContain",
+              "ok": true,
+              "detail": "forbidden words found: []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 180, want 180"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got {\"to\":\"eye hospital\",\"urgent\":false}, want {\"to\":\"eye hospital\",\"urgent\":false}"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"date\",\"date\":\"2026-10-05\"}, want {\"kind\":\"date\",\"date\":\"2026-10-05\"}"
+            }
+          ],
+          "flagChecks": [],
+          "extraFlags": []
+        },
+        "failed": [],
+        "missedFlags": [],
+        "extraFlags": []
+      },
+      {
+        "id": "S10",
+        "script": "S10",
+        "score": {
+          "id": "S10",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Raju\", want \"Raju\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 8, want 8"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"ear pain\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": true,
+              "detail": "got {\"value\":38.2,\"unit\":\"C\"}, want {\"value\":38.2,\"unit\":\"C\"}"
+            },
+            {
+              "area": "medications[amoxicillin]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[amoxicillin].dose",
+              "ok": true,
+              "detail": "got 250, want 250"
+            },
+            {
+              "area": "medications[amoxicillin].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[amoxicillin].perDay",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "medications[amoxicillin].durationDays",
+              "ok": true,
+              "detail": "got 5, want 5"
+            },
+            {
+              "area": "medications[paracetamol]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[paracetamol].prn",
+              "ok": true,
+              "detail": "got true, want true"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":5}, want {\"kind\":\"days\",\"days\":5}"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag MISSING_DETAIL @ paracetamol",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": []
+        },
+        "failed": [],
+        "missedFlags": [],
+        "extraFlags": []
+      }
+    ],
+    "summary": {
+      "label": "reference",
+      "clips": 10,
+      "fieldChecksPassed": 128,
+      "fieldChecksTotal": 128,
+      "fieldAccuracy": 1,
+      "expectedFlagsRaised": 6,
+      "expectedFlagsTotal": 6,
+      "extraFlags": 0
+    }
+  },
+  "tts": {
+    "label": "TTS-synthetic speech (operating-system voice), pipeline check only",
+    "rows": [
+      {
+        "id": "S01",
+        "script": "S01",
+        "score": {
+          "id": "S01",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"Neuroplenty\", want \"Noor\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": false,
+              "detail": "got 8, want 38"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"fever\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": true,
+              "detail": "got {\"value\":101,\"unit\":\"F\"}, want {\"value\":101,\"unit\":\"F\"}"
+            },
+            {
+              "area": "medications[paracetamol]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[paracetamol].dose",
+              "ok": true,
+              "detail": "got 500, want 500"
+            },
+            {
+              "area": "medications[paracetamol].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[paracetamol].perDay",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "medications[paracetamol].durationDays",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":3}, want {\"kind\":\"days\",\"days\":3}"
+            }
+          ],
+          "flagChecks": [],
+          "extraFlags": [
+            {
+              "code": "NAME_SNAPPED",
+              "target": "medications[paracetamol].name",
+              "message": "\"ferrocyte mild\" was heard — taken as Paracetamol. Is that the medicine?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"Neuroplenty\", want \"Noor\""
+          },
+          {
+            "area": "patient.ageYears",
+            "ok": false,
+            "detail": "got 8, want 38"
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "NAME_SNAPPED@medications[paracetamol].name"
+        ],
+        "clip": "S01",
+        "noisy": false,
+        "transcript": "patient neuroplenty eight years, complaints of fever for three days, temperature 101, gave ferrocyte mild 500 mg three times a day for three days, review after three days.",
+        "audioSeconds": 11.428125,
+        "transcribeMs": 350.889375,
+        "wer": 0.18518518518518517,
+        "wordErrors": 5,
+        "refWords": 27
+      },
+      {
+        "id": "S01_noisy",
+        "script": "S01",
+        "score": {
+          "id": "S01",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"Knew\", want \"Noor\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 38, want 38"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"fever\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": true,
+              "detail": "got {\"value\":101,\"unit\":\"F\"}, want {\"value\":101,\"unit\":\"F\"}"
+            },
+            {
+              "area": "medications[paracetamol]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[paracetamol].dose",
+              "ok": true,
+              "detail": "got 500, want 500"
+            },
+            {
+              "area": "medications[paracetamol].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[paracetamol].perDay",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "medications[paracetamol].durationDays",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":3}, want {\"kind\":\"days\",\"days\":3}"
+            }
+          ],
+          "flagChecks": [],
+          "extraFlags": [
+            {
+              "code": "NAME_SNAPPED",
+              "target": "medications[paracetamol].name",
+              "message": "\"pherosate mild\" was heard — taken as Paracetamol. Is that the medicine?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"Knew\", want \"Noor\""
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "NAME_SNAPPED@medications[paracetamol].name"
+        ],
+        "clip": "S01_noisy",
+        "noisy": true,
+        "transcript": "The patient knew 38 years, complaints of fever for 3 days, temperature 101, gave pherosate mild 500mg 3 times a day for 3 days, review after 3 days.",
+        "audioSeconds": 11.428125,
+        "transcribeMs": 336.3885839999999,
+        "wer": 0.18518518518518517,
+        "wordErrors": 5,
+        "refWords": 27
+      },
+      {
+        "id": "S02",
+        "script": "S02",
+        "score": {
+          "id": "S02",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"Drum\", want \"Ramesh\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": false,
+              "detail": "got null, want 52"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"sneezing\",\"runny nose\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 7, want 7"
+            },
+            {
+              "area": "vitals.bp",
+              "ok": true,
+              "detail": "got {\"sys\":140,\"dia\":90}, want {\"sys\":140,\"dia\":90}"
+            },
+            {
+              "area": "vitals.pulse",
+              "ok": false,
+              "detail": "got null, want 88"
+            },
+            {
+              "area": "medications[cetirizine]",
+              "ok": false,
+              "detail": "not found; got [null]"
+            },
+            {
+              "area": "medications[?] extra",
+              "ok": false,
+              "detail": "unexpected medicine (false positive)"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":7}, want {\"kind\":\"days\",\"days\":7}"
+            }
+          ],
+          "flagChecks": [],
+          "extraFlags": [
+            {
+              "code": "UNCLEAR",
+              "target": "medications[zine].name",
+              "message": "Medicine name not recognised — heard \"zine\". Which medicine was it?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"Drum\", want \"Ramesh\""
+          },
+          {
+            "area": "patient.ageYears",
+            "ok": false,
+            "detail": "got null, want 52"
+          },
+          {
+            "area": "vitals.pulse",
+            "ok": false,
+            "detail": "got null, want 88"
+          },
+          {
+            "area": "medications[cetirizine]",
+            "ok": false,
+            "detail": "not found; got [null]"
+          },
+          {
+            "area": "medications[?] extra",
+            "ok": false,
+            "detail": "unexpected medicine (false positive)"
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "UNCLEAR@medications[zine].name"
+        ],
+        "clip": "S02",
+        "noisy": false,
+        "transcript": "Patient - drum -ish 52, sneezing and running nose for one week was in the mornings (B.P. 140 /90). Paul's 88, gives it a \"zine 10 mg once at night\" for five days. Follow up in one week.",
+        "audioSeconds": 12.932,
+        "transcribeMs": 394.90483300000005,
+        "wer": 0.3333333333333333,
+        "wordErrors": 12,
+        "refWords": 36
+      },
+      {
+        "id": "S02_noisy",
+        "script": "S02",
+        "score": {
+          "id": "S02",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"\", want \"Ramesh\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 52, want 52"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": false,
+              "detail": "terms [], missing [\"sneezing\",\"runny nose\"]"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 7, want 7"
+            },
+            {
+              "area": "vitals.bp",
+              "ok": true,
+              "detail": "got {\"sys\":140,\"dia\":90}, want {\"sys\":140,\"dia\":90}"
+            },
+            {
+              "area": "vitals.pulse",
+              "ok": false,
+              "detail": "got null, want 88"
+            },
+            {
+              "area": "medications[cetirizine]",
+              "ok": false,
+              "detail": "not found; got [null]"
+            },
+            {
+              "area": "medications[?] extra",
+              "ok": false,
+              "detail": "unexpected medicine (false positive)"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":7}, want {\"kind\":\"days\",\"days\":7}"
+            }
+          ],
+          "flagChecks": [],
+          "extraFlags": [
+            {
+              "code": "MISSING",
+              "target": "patient.name",
+              "message": "Patient name not heard — who is the patient?"
+            },
+            {
+              "code": "MISSING",
+              "target": "complaint.terms",
+              "message": "Complaint not heard — what did the patient come for?"
+            },
+            {
+              "code": "UNCLEAR",
+              "target": "medications[tuesday and].name",
+              "message": "Medicine name not recognised — heard \"Tuesday and\". Which medicine was it?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"\", want \"Ramesh\""
+          },
+          {
+            "area": "complaint.keywords",
+            "ok": false,
+            "detail": "terms [], missing [\"sneezing\",\"runny nose\"]"
+          },
+          {
+            "area": "vitals.pulse",
+            "ok": false,
+            "detail": "got null, want 88"
+          },
+          {
+            "area": "medications[cetirizine]",
+            "ok": false,
+            "detail": "not found; got [null]"
+          },
+          {
+            "area": "medications[?] extra",
+            "ok": false,
+            "detail": "unexpected medicine (false positive)"
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "MISSING@patient.name",
+          "MISSING@complaint.terms",
+          "UNCLEAR@medications[tuesday and].name"
+        ],
+        "clip": "S02_noisy",
+        "noisy": true,
+        "transcript": "Station from age 52, seizing and running news for one week was in the morning, Bp140 over 90. False 88, gives the Tuesday and 10 milligrams once at night for five days. Follow up in one week.",
+        "audioSeconds": 12.932,
+        "transcribeMs": 344.72670800000014,
+        "wer": 0.4166666666666667,
+        "wordErrors": 15,
+        "refWords": 36
+      },
+      {
+        "id": "S03",
+        "script": "S03",
+        "score": {
+          "id": "S03",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"\", want \"Sunita\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": false,
+              "detail": "got null, want 26"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"swelling of feet\",\"headache\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 1, want 1"
+            },
+            {
+              "area": "vitals.bp",
+              "ok": true,
+              "detail": "got {\"sys\":160,\"dia\":110}, want {\"sys\":160,\"dia\":110}"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got {\"to\":\"district hospital\",\"urgent\":true}, want {\"to\":\"district hospital\",\"urgent\":true}"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got null, want none"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag UNCLEAR @ followUp",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": [
+            {
+              "code": "MISSING",
+              "target": "patient.name",
+              "message": "Patient name not heard — who is the patient?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"\", want \"Sunita\""
+          },
+          {
+            "area": "patient.ageYears",
+            "ok": false,
+            "detail": "got null, want 26"
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "MISSING@patient.name"
+        ],
+        "clip": "S03",
+        "noisy": false,
+        "transcript": "Fish and Sunita 26 /7 months pregnant, swelling of feet and headaches since yesterday, BP 160 /110, referred to the district hospital today, follow up after delivery.",
+        "audioSeconds": 11.9276875,
+        "transcribeMs": 298.31379100000004,
+        "wer": 0.21428571428571427,
+        "wordErrors": 6,
+        "refWords": 28
+      },
+      {
+        "id": "S04",
+        "script": "S04",
+        "score": {
+          "id": "S04",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"\", want \"Aarav\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"loose motions\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "medications[ors]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[ors].prn",
+              "ok": false,
+              "detail": "got undefined, want true"
+            },
+            {
+              "area": "medications[zinc]",
+              "ok": false,
+              "detail": "not found; got [\"ors\",null]"
+            },
+            {
+              "area": "medications[?] extra",
+              "ok": false,
+              "detail": "unexpected medicine (false positive)"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got [\"breastfeeding\",\"fluids\"], want [\"breastfeeding\",\"fluids\"]"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":5}, want {\"kind\":\"days\",\"days\":5}"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag MISSING_DETAIL @ ors",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": [
+            {
+              "code": "MISSING",
+              "target": "patient.name",
+              "message": "Patient name not heard — who is the patient?"
+            },
+            {
+              "code": "UNCLEAR",
+              "target": "medications[in].name",
+              "message": "Medicine name not recognised — heard \"in\". Which medicine was it?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"\", want \"Aarav\""
+          },
+          {
+            "area": "medications[ors].prn",
+            "ok": false,
+            "detail": "got undefined, want true"
+          },
+          {
+            "area": "medications[zinc]",
+            "ok": false,
+            "detail": "not found; got [\"ors\",null]"
+          },
+          {
+            "area": "medications[?] extra",
+            "ok": false,
+            "detail": "unexpected medicine (false positive)"
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "MISSING@patient.name",
+          "UNCLEAR@medications[in].name"
+        ],
+        "clip": "S04",
+        "noisy": false,
+        "transcript": "patient baby are of two years brought by mother, loose motions since two days, give ORS after every loose tool and in 20mg once daily for 14 days, advise mother to continue breastfeeding and give plenty of fluids. Review in five days.",
+        "audioSeconds": 14.65075,
+        "transcribeMs": 359.5562920000002,
+        "wer": 0.14285714285714285,
+        "wordErrors": 6,
+        "refWords": 42
+      },
+      {
+        "id": "S05",
+        "script": "S05",
+        "score": {
+          "id": "S05",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"\", want \"Lakshmi\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 60, want 60"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": false,
+              "detail": "terms [], missing [\"knee\"]"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 60, want 60"
+            },
+            {
+              "area": "medications[ibuprofen]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[ibuprofen].dose",
+              "ok": true,
+              "detail": "got 400, want 400"
+            },
+            {
+              "area": "medications[ibuprofen].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[ibuprofen].perDay",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "medications[ibuprofen].durationDays",
+              "ok": true,
+              "detail": "got 5, want 5"
+            },
+            {
+              "area": "medications[ibuprofen].withFood",
+              "ok": true,
+              "detail": "got \"after\", want \"after\""
+            },
+            {
+              "area": "medications[?] extra",
+              "ok": false,
+              "detail": "unexpected medicine (false positive)"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":14}, want {\"kind\":\"days\",\"days\":14}"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag CORRECTION_CUE @ medications",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": [
+            {
+              "code": "MISSING",
+              "target": "patient.name",
+              "message": "Patient name not heard — who is the patient?"
+            },
+            {
+              "code": "MISSING",
+              "target": "complaint.terms",
+              "message": "Complaint not heard — what did the patient come for?"
+            },
+            {
+              "code": "UNCLEAR",
+              "target": "medications[clothing a].name",
+              "message": "Medicine name not recognised — heard \"clothing a\". Which medicine was it?"
+            },
+            {
+              "code": "NAME_SNAPPED",
+              "target": "medications[ibuprofen].name",
+              "message": "\"abu -profend\" was heard — taken as Ibuprofen. Is that the medicine?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"\", want \"Lakshmi\""
+          },
+          {
+            "area": "complaint.keywords",
+            "ok": false,
+            "detail": "terms [], missing [\"knee\"]"
+          },
+          {
+            "area": "medications[?] extra",
+            "ok": false,
+            "detail": "unexpected medicine (false positive)"
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "MISSING@patient.name",
+          "MISSING@complaint.terms",
+          "UNCLEAR@medications[clothing a].name",
+          "NAME_SNAPPED@medications[ibuprofen].name"
+        ],
+        "clip": "S05",
+        "noisy": false,
+        "transcript": "Fish and Locks Me, 60 Years, Fain in both knees for two months, gave that clothing a 50 mg twice a day after food for five days, sorry make that abu -profend 400 mg twice a day after food for five days, review in two weeks.",
+        "audioSeconds": 14.6620625,
+        "transcribeMs": 397.27991599999996,
+        "wer": 0.24390243902439024,
+        "wordErrors": 10,
+        "refWords": 41
+      },
+      {
+        "id": "S06",
+        "script": "S06",
+        "score": {
+          "id": "S06",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Kavita\", want \"Kavita\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 33, want 33"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": false,
+              "detail": "terms [], missing [\"burning\"]"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": true,
+              "detail": "got {\"value\":99.8,\"unit\":\"F\"}, want {\"value\":99.8,\"unit\":\"F\"}"
+            },
+            {
+              "area": "medications[nitrofurantoin]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[nitrofurantoin].dose",
+              "ok": true,
+              "detail": "got 100, want 100"
+            },
+            {
+              "area": "medications[nitrofurantoin].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[nitrofurantoin].perDay",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "medications[nitrofurantoin].durationDays",
+              "ok": true,
+              "detail": "got 5, want 5"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got [\"fluids\"], want [\"fluids\"]"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got null, want none"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag MISSING @ followUp",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": [
+            {
+              "code": "MISSING",
+              "target": "complaint.terms",
+              "message": "Complaint not heard — what did the patient come for?"
+            },
+            {
+              "code": "NAME_SNAPPED",
+              "target": "medications[nitrofurantoin].name",
+              "message": "\"Nitrofuranto in\" was heard — taken as Nitrofurantoin. Is that the medicine?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "complaint.keywords",
+            "ok": false,
+            "detail": "terms [], missing [\"burning\"]"
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "MISSING@complaint.terms",
+          "NAME_SNAPPED@medications[nitrofurantoin].name"
+        ],
+        "clip": "S06",
+        "noisy": false,
+        "transcript": "patient Kavita, 33. Running while passing urine for two days. Temperature 99.8. Gave Nitrofuranto in 100 mg twice a day for five days. Advice to drink plenty of water.",
+        "audioSeconds": 12.907875,
+        "transcribeMs": 328.5183750000001,
+        "wer": 0.14285714285714285,
+        "wordErrors": 4,
+        "refWords": 28
+      },
+      {
+        "id": "S06_noisy",
+        "script": "S06",
+        "score": {
+          "id": "S06",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"\", want \"Kavita\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": false,
+              "detail": "got null, want 33"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": false,
+              "detail": "terms [], missing [\"burning\"]"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": false,
+              "detail": "got null, want 2"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": false,
+              "detail": "got null, want {\"value\":99.8,\"unit\":\"F\"}"
+            },
+            {
+              "area": "medications[nitrofurantoin]",
+              "ok": false,
+              "detail": "not found; got []"
+            },
+            {
+              "area": "advice.tags",
+              "ok": false,
+              "detail": "got null, want [\"fluids\"]"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got null, want none"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag MISSING @ followUp",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": [
+            {
+              "code": "MISSING",
+              "target": "patient.name",
+              "message": "Patient name not heard — who is the patient?"
+            },
+            {
+              "code": "MISSING",
+              "target": "complaint.terms",
+              "message": "Complaint not heard — what did the patient come for?"
+            },
+            {
+              "code": "MISSING",
+              "target": "treatment",
+              "message": "Nothing was heard about medicines, advice or a referral — add at least one."
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"\", want \"Kavita\""
+          },
+          {
+            "area": "patient.ageYears",
+            "ok": false,
+            "detail": "got null, want 33"
+          },
+          {
+            "area": "complaint.keywords",
+            "ok": false,
+            "detail": "terms [], missing [\"burning\"]"
+          },
+          {
+            "area": "complaint.durationDays",
+            "ok": false,
+            "detail": "got null, want 2"
+          },
+          {
+            "area": "vitals.temp",
+            "ok": false,
+            "detail": "got null, want {\"value\":99.8,\"unit\":\"F\"}"
+          },
+          {
+            "area": "medications[nitrofurantoin]",
+            "ok": false,
+            "detail": "not found; got []"
+          },
+          {
+            "area": "advice.tags",
+            "ok": false,
+            "detail": "got null, want [\"fluids\"]"
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "MISSING@patient.name",
+          "MISSING@complaint.terms",
+          "MISSING@treatment"
+        ],
+        "clip": "S06_noisy",
+        "noisy": true,
+        "transcript": "The first was the first to be",
+        "audioSeconds": 12.907875,
+        "transcribeMs": 2154.165958,
+        "wer": 0.9642857142857143,
+        "wordErrors": 27,
+        "refWords": 28
+      },
+      {
+        "id": "S07",
+        "script": "S07",
+        "score": {
+          "id": "S07",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Mohan\", want \"Mohan\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 70, want 70"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"blood pressure check\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got null, want null"
+            },
+            {
+              "area": "vitals.bp",
+              "ok": true,
+              "detail": "got {\"sys\":150,\"dia\":95}, want {\"sys\":150,\"dia\":95}"
+            },
+            {
+              "area": "vitals.weightKg",
+              "ok": false,
+              "detail": "got null, want 62"
+            },
+            {
+              "area": "medications[amlodipine]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[amlodipine].dose",
+              "ok": true,
+              "detail": "got 5, want 5"
+            },
+            {
+              "area": "medications[amlodipine].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[amlodipine].perDay",
+              "ok": false,
+              "detail": "got null, want 1"
+            },
+            {
+              "area": "medications[amlodipine].ongoing",
+              "ok": true,
+              "detail": "got true, want true"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":30}, want {\"kind\":\"days\",\"days\":30}"
+            }
+          ],
+          "flagChecks": [],
+          "extraFlags": [
+            {
+              "code": "NAME_SNAPPED",
+              "target": "medications[amlodipine].name",
+              "message": "\"mooda -pine\" was heard — taken as Amlodipine. Is that the medicine?"
+            },
+            {
+              "code": "MISSING_DETAIL",
+              "target": "medications[amlodipine].perDay",
+              "message": "How often should Amlodipine be taken?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "vitals.weightKg",
+            "ok": false,
+            "detail": "got null, want 62"
+          },
+          {
+            "area": "medications[amlodipine].perDay",
+            "ok": false,
+            "detail": "got null, want 1"
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "NAME_SNAPPED@medications[amlodipine].name",
+          "MISSING_DETAIL@medications[amlodipine].perDay"
+        ],
+        "clip": "S07",
+        "noisy": false,
+        "transcript": "patient Mohan's 70, came for a blood pressure check (Bp -150 over 95, with 62 kilos, continue a mooda -pine 5 mg one -staley) review in one month.",
+        "audioSeconds": 11.5774375,
+        "transcribeMs": 344.69537500000024,
+        "wer": 0.3333333333333333,
+        "wordErrors": 9,
+        "refWords": 27
+      },
+      {
+        "id": "S08",
+        "script": "S08",
+        "score": {
+          "id": "S08",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"Him\", want \"Imran\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": false,
+              "detail": "got null, want 29"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"headache\",\"body ache\"], missing []"
+            },
+            {
+              "area": "complaint.mustNotContain",
+              "ok": true,
+              "detail": "forbidden words found: []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": false,
+              "detail": "got null, want 0"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": true,
+              "detail": "got {\"value\":null,\"unit\":null,\"qualitative\":\"normal\"}, want {\"qualitative\":\"normal\"}"
+            },
+            {
+              "area": "medications[paracetamol]",
+              "ok": false,
+              "detail": "not found; got [null]"
+            },
+            {
+              "area": "medications[?] extra",
+              "ok": false,
+              "detail": "unexpected medicine (false positive)"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"if_worse\"}, want {\"kind\":\"if_worse\"}"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag UNIT_INFERRED @ paracetamol",
+              "ok": false,
+              "detail": "not raised; flags were [\"UNCLEAR@medications[ferris].name\",\"MISSING_DETAIL@medications[m1].unit\"]"
+            }
+          ],
+          "extraFlags": [
+            {
+              "code": "UNCLEAR",
+              "target": "medications[ferris].name",
+              "message": "Medicine name not recognised — heard \"Ferris\". Which medicine was it?"
+            },
+            {
+              "code": "MISSING_DETAIL",
+              "target": "medications[m1].unit",
+              "message": "Unit not heard for this medicine — mg, ml or something else?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"Him\", want \"Imran\""
+          },
+          {
+            "area": "patient.ageYears",
+            "ok": false,
+            "detail": "got null, want 29"
+          },
+          {
+            "area": "complaint.durationDays",
+            "ok": false,
+            "detail": "got null, want 0"
+          },
+          {
+            "area": "medications[paracetamol]",
+            "ok": false,
+            "detail": "not found; got [null]"
+          },
+          {
+            "area": "medications[?] extra",
+            "ok": false,
+            "detail": "unexpected medicine (false positive)"
+          }
+        ],
+        "missedFlags": [
+          {
+            "area": "flag UNIT_INFERRED @ paracetamol",
+            "ok": false,
+            "detail": "not raised; flags were [\"UNCLEAR@medications[ferris].name\",\"MISSING_DETAIL@medications[m1].unit\"]"
+          }
+        ],
+        "extraFlags": [
+          "UNCLEAR@medications[ferris].name",
+          "MISSING_DETAIL@medications[m1].unit"
+        ],
+        "clip": "S08",
+        "noisy": false,
+        "transcript": "Ok so, patient him ran 29, he was saying it is very hot these days, anyway headache and body aches in this morning. Temperature normal, gave Ferris 8 mile 651 tablet 3 times a day for 2 days, if not better come back.",
+        "audioSeconds": 14.186375,
+        "transcribeMs": 395.6721669999997,
+        "wer": 0.24390243902439024,
+        "wordErrors": 10,
+        "refWords": 41
+      },
+      {
+        "id": "S09",
+        "script": "S09",
+        "score": {
+          "id": "S09",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"Guitar\", want \"Geeta\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 41, want 41"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": false,
+              "detail": "terms [], missing [\"blurred vision\"]"
+            },
+            {
+              "area": "complaint.mustNotContain",
+              "ok": true,
+              "detail": "forbidden words found: []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 180, want 180"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": false,
+              "detail": "got {\"to\":\"hospital\",\"urgent\":false}, want {\"to\":\"eye hospital\",\"urgent\":false}"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"date\",\"date\":\"2026-10-05\"}, want {\"kind\":\"date\",\"date\":\"2026-10-05\"}"
+            }
+          ],
+          "flagChecks": [],
+          "extraFlags": [
+            {
+              "code": "MISSING",
+              "target": "complaint.terms",
+              "message": "Complaint not heard — what did the patient come for?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"Guitar\", want \"Geeta\""
+          },
+          {
+            "area": "complaint.keywords",
+            "ok": false,
+            "detail": "terms [], missing [\"blurred vision\"]"
+          },
+          {
+            "area": "referral",
+            "ok": false,
+            "detail": "got {\"to\":\"hospital\",\"urgent\":false}, want {\"to\":\"eye hospital\",\"urgent\":false}"
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "MISSING@complaint.terms"
+        ],
+        "clip": "S09",
+        "noisy": false,
+        "transcript": "Patient guitar, 41, blood vision fold distance slowly over six months, no pain, referred to the i -hospital in the district for a check -up, follow up on Monday.",
+        "audioSeconds": 10.0899375,
+        "transcribeMs": 305.1062919999995,
+        "wer": 0.13793103448275862,
+        "wordErrors": 4,
+        "refWords": 29
+      },
+      {
+        "id": "S10",
+        "script": "S10",
+        "score": {
+          "id": "S10",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": true,
+              "detail": "got \"Raju\", want \"Raju\""
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 8, want 8"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": false,
+              "detail": "terms [\"pain\"], missing [\"ear pain\"]"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": true,
+              "detail": "got {\"value\":38.2,\"unit\":\"C\"}, want {\"value\":38.2,\"unit\":\"C\"}"
+            },
+            {
+              "area": "medications[amoxicillin]",
+              "ok": false,
+              "detail": "not found; got [null,\"paracetamol\"]"
+            },
+            {
+              "area": "medications[paracetamol]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[paracetamol].prn",
+              "ok": true,
+              "detail": "got true, want true"
+            },
+            {
+              "area": "medications[?] extra",
+              "ok": false,
+              "detail": "unexpected medicine (false positive)"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":5}, want {\"kind\":\"days\",\"days\":5}"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag MISSING_DETAIL @ paracetamol",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": [
+            {
+              "code": "UNCLEAR",
+              "target": "complaint.terms",
+              "message": "Only \"pain\" was heard — what kind of pain or where?"
+            },
+            {
+              "code": "NAME_SNAPPED",
+              "target": "medications[oxisol in].name",
+              "message": "\"oxisol in\" was heard — it could be Amoxicillin or Doxycycline. Which medicine was it?"
+            },
+            {
+              "code": "NAME_SNAPPED",
+              "target": "medications[paracetamol].name",
+              "message": "\"Farasetamal\" was heard — taken as Paracetamol. Is that the medicine?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "complaint.keywords",
+            "ok": false,
+            "detail": "terms [\"pain\"], missing [\"ear pain\"]"
+          },
+          {
+            "area": "medications[amoxicillin]",
+            "ok": false,
+            "detail": "not found; got [null,\"paracetamol\"]"
+          },
+          {
+            "area": "medications[?] extra",
+            "ok": false,
+            "detail": "unexpected medicine (false positive)"
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "UNCLEAR@complaint.terms",
+          "NAME_SNAPPED@medications[oxisol in].name",
+          "NAME_SNAPPED@medications[paracetamol].name"
+        ],
+        "clip": "S10",
+        "noisy": false,
+        "transcript": "Patient Raju 8 years brought by father, Air Pain for 2 days. Temperature 38.2, gave him oxisol in 250 mg 3 times a day for 5 days, and Farasetamal syrup when needed for pain. Review after 5 days.",
+        "audioSeconds": 14.49625,
+        "transcribeMs": 388.82616600000074,
+        "wer": 0.1388888888888889,
+        "wordErrors": 5,
+        "refWords": 36
+      }
+    ],
+    "summary": {
+      "label": "TTS-synthetic speech (operating-system voice), pipeline check only",
+      "clips": 13,
+      "fieldChecksPassed": 105,
+      "fieldChecksTotal": 148,
+      "fieldAccuracy": 0.7094594594594594,
+      "expectedFlagsRaised": 6,
+      "expectedFlagsTotal": 7,
+      "extraFlags": 26,
+      "wer": 0.27699530516431925,
+      "meanClipWer": 0.28327801687768045,
+      "audioSeconds": 166.12650000000002,
+      "transcribeSeconds": 6.399043832,
+      "realTimeFactor": 0.038519103406139295
+    }
+  },
+  "recordings": {
+    "label": "The builder's own voice",
+    "rows": [],
+    "summary": null
+  }
+}
