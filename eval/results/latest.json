@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03T22:51:49.787Z",
+  "generatedAt": "2026-10-03T23:10:57.745Z",
   "visitDate": "2026-10-04",
   "machine": {
     "cpu": "Apple M5 Pro",
@@ -914,6 +914,8 @@
       "fieldChecksPassed": 128,
       "fieldChecksTotal": 128,
       "fieldAccuracy": 1,
+      "wrongValues": 0,
+      "silentWrongValues": 0,
       "expectedFlagsRaised": 6,
       "expectedFlagsTotal": 6,
       "extraFlags": 0
@@ -931,12 +933,14 @@
             {
               "area": "patient.name",
               "ok": false,
-              "detail": "got \"Neuroplenty\", want \"Noor\""
+              "detail": "got \"Neuroplenty\", want \"Noor\"",
+              "silent": true
             },
             {
               "area": "patient.ageYears",
               "ok": false,
-              "detail": "got 8, want 38"
+              "detail": "got 8, want 38",
+              "silent": true
             },
             {
               "area": "complaint.keywords",
@@ -1007,12 +1011,14 @@
           {
             "area": "patient.name",
             "ok": false,
-            "detail": "got \"Neuroplenty\", want \"Noor\""
+            "detail": "got \"Neuroplenty\", want \"Noor\"",
+            "silent": true
           },
           {
             "area": "patient.ageYears",
             "ok": false,
-            "detail": "got 8, want 38"
+            "detail": "got 8, want 38",
+            "silent": true
           }
         ],
         "missedFlags": [],
@@ -1022,8 +1028,9 @@
         "clip": "S01",
         "noisy": false,
         "transcript": "patient neuroplenty eight years, complaints of fever for three days, temperature 101, gave ferrocyte mild 500 mg three times a day for three days, review after three days.",
+        "warnings": [],
         "audioSeconds": 11.428125,
-        "transcribeMs": 350.889375,
+        "transcribeMs": 353.72245799999996,
         "wer": 0.18518518518518517,
         "wordErrors": 5,
         "refWords": 27
@@ -1037,7 +1044,8 @@
             {
               "area": "patient.name",
               "ok": false,
-              "detail": "got \"Knew\", want \"Noor\""
+              "detail": "got \"Knew\", want \"Noor\"",
+              "silent": true
             },
             {
               "area": "patient.ageYears",
@@ -1113,7 +1121,8 @@
           {
             "area": "patient.name",
             "ok": false,
-            "detail": "got \"Knew\", want \"Noor\""
+            "detail": "got \"Knew\", want \"Noor\"",
+            "silent": true
           }
         ],
         "missedFlags": [],
@@ -1123,8 +1132,9 @@
         "clip": "S01_noisy",
         "noisy": true,
         "transcript": "The patient knew 38 years, complaints of fever for 3 days, temperature 101, gave pherosate mild 500mg 3 times a day for 3 days, review after 3 days.",
+        "warnings": [],
         "audioSeconds": 11.428125,
-        "transcribeMs": 336.3885839999999,
+        "transcribeMs": 337.86708299999987,
         "wer": 0.18518518518518517,
         "wordErrors": 5,
         "refWords": 27
@@ -1138,12 +1148,14 @@
             {
               "area": "patient.name",
               "ok": false,
-              "detail": "got \"Drum\", want \"Ramesh\""
+              "detail": "got \"Drum\", want \"Ramesh\"",
+              "silent": true
             },
             {
               "area": "patient.ageYears",
               "ok": false,
-              "detail": "got null, want 52"
+              "detail": "got null, want 52",
+              "silent": true
             },
             {
               "area": "complaint.keywords",
@@ -1163,17 +1175,20 @@
             {
               "area": "vitals.pulse",
               "ok": false,
-              "detail": "got null, want 88"
+              "detail": "got null, want 88",
+              "silent": true
             },
             {
               "area": "medications[cetirizine]",
               "ok": false,
-              "detail": "not found; got [null]"
+              "detail": "not found; got [null]",
+              "silent": false
             },
             {
               "area": "medications[?] extra",
               "ok": false,
-              "detail": "unexpected medicine (false positive)"
+              "detail": "unexpected medicine (false positive)",
+              "silent": false
             },
             {
               "area": "advice.tags",
@@ -1204,27 +1219,32 @@
           {
             "area": "patient.name",
             "ok": false,
-            "detail": "got \"Drum\", want \"Ramesh\""
+            "detail": "got \"Drum\", want \"Ramesh\"",
+            "silent": true
           },
           {
             "area": "patient.ageYears",
             "ok": false,
-            "detail": "got null, want 52"
+            "detail": "got null, want 52",
+            "silent": true
           },
           {
             "area": "vitals.pulse",
             "ok": false,
-            "detail": "got null, want 88"
+            "detail": "got null, want 88",
+            "silent": true
           },
           {
             "area": "medications[cetirizine]",
             "ok": false,
-            "detail": "not found; got [null]"
+            "detail": "not found; got [null]",
+            "silent": false
           },
           {
             "area": "medications[?] extra",
             "ok": false,
-            "detail": "unexpected medicine (false positive)"
+            "detail": "unexpected medicine (false positive)",
+            "silent": false
           }
         ],
         "missedFlags": [],
@@ -1234,8 +1254,9 @@
         "clip": "S02",
         "noisy": false,
         "transcript": "Patient - drum -ish 52, sneezing and running nose for one week was in the mornings (B.P. 140 /90). Paul's 88, gives it a \"zine 10 mg once at night\" for five days. Follow up in one week.",
+        "warnings": [],
         "audioSeconds": 12.932,
-        "transcribeMs": 394.90483300000005,
+        "transcribeMs": 401.8437920000001,
         "wer": 0.3333333333333333,
         "wordErrors": 12,
         "refWords": 36
@@ -1249,7 +1270,8 @@
             {
               "area": "patient.name",
               "ok": false,
-              "detail": "got \"\", want \"Ramesh\""
+              "detail": "got \"\", want \"Ramesh\"",
+              "silent": false
             },
             {
               "area": "patient.ageYears",
@@ -1259,7 +1281,8 @@
             {
               "area": "complaint.keywords",
               "ok": false,
-              "detail": "terms [], missing [\"sneezing\",\"runny nose\"]"
+              "detail": "terms [], missing [\"sneezing\",\"runny nose\"]",
+              "silent": false
             },
             {
               "area": "complaint.durationDays",
@@ -1274,17 +1297,20 @@
             {
               "area": "vitals.pulse",
               "ok": false,
-              "detail": "got null, want 88"
+              "detail": "got null, want 88",
+              "silent": true
             },
             {
               "area": "medications[cetirizine]",
               "ok": false,
-              "detail": "not found; got [null]"
+              "detail": "not found; got [null]",
+              "silent": false
             },
             {
               "area": "medications[?] extra",
               "ok": false,
-              "detail": "unexpected medicine (false positive)"
+              "detail": "unexpected medicine (false positive)",
+              "silent": false
             },
             {
               "area": "advice.tags",
@@ -1325,27 +1351,32 @@
           {
             "area": "patient.name",
             "ok": false,
-            "detail": "got \"\", want \"Ramesh\""
+            "detail": "got \"\", want \"Ramesh\"",
+            "silent": false
           },
           {
             "area": "complaint.keywords",
             "ok": false,
-            "detail": "terms [], missing [\"sneezing\",\"runny nose\"]"
+            "detail": "terms [], missing [\"sneezing\",\"runny nose\"]",
+            "silent": false
           },
           {
             "area": "vitals.pulse",
             "ok": false,
-            "detail": "got null, want 88"
+            "detail": "got null, want 88",
+            "silent": true
           },
           {
             "area": "medications[cetirizine]",
             "ok": false,
-            "detail": "not found; got [null]"
+            "detail": "not found; got [null]",
+            "silent": false
           },
           {
             "area": "medications[?] extra",
             "ok": false,
-            "detail": "unexpected medicine (false positive)"
+            "detail": "unexpected medicine (false positive)",
+            "silent": false
           }
         ],
         "missedFlags": [],
@@ -1357,8 +1388,9 @@
         "clip": "S02_noisy",
         "noisy": true,
         "transcript": "Station from age 52, seizing and running news for one week was in the morning, Bp140 over 90. False 88, gives the Tuesday and 10 milligrams once at night for five days. Follow up in one week.",
+        "warnings": [],
         "audioSeconds": 12.932,
-        "transcribeMs": 344.72670800000014,
+        "transcribeMs": 362.0166670000001,
         "wer": 0.4166666666666667,
         "wordErrors": 15,
         "refWords": 36
@@ -1372,12 +1404,14 @@
             {
               "area": "patient.name",
               "ok": false,
-              "detail": "got \"\", want \"Sunita\""
+              "detail": "got \"\", want \"Sunita\"",
+              "silent": false
             },
             {
               "area": "patient.ageYears",
               "ok": false,
-              "detail": "got null, want 26"
+              "detail": "got null, want 26",
+              "silent": true
             },
             {
               "area": "complaint.keywords",
@@ -1429,12 +1463,14 @@
           {
             "area": "patient.name",
             "ok": false,
-            "detail": "got \"\", want \"Sunita\""
+            "detail": "got \"\", want \"Sunita\"",
+            "silent": false
           },
           {
             "area": "patient.ageYears",
             "ok": false,
-            "detail": "got null, want 26"
+            "detail": "got null, want 26",
+            "silent": true
           }
         ],
         "missedFlags": [],
@@ -1444,8 +1480,9 @@
         "clip": "S03",
         "noisy": false,
         "transcript": "Fish and Sunita 26 /7 months pregnant, swelling of feet and headaches since yesterday, BP 160 /110, referred to the district hospital today, follow up after delivery.",
+        "warnings": [],
         "audioSeconds": 11.9276875,
-        "transcribeMs": 298.31379100000004,
+        "transcribeMs": 300.2853339999997,
         "wer": 0.21428571428571427,
         "wordErrors": 6,
         "refWords": 28
@@ -1459,7 +1496,8 @@
             {
               "area": "patient.name",
               "ok": false,
-              "detail": "got \"\", want \"Aarav\""
+              "detail": "got \"\", want \"Aarav\"",
+              "silent": false
             },
             {
               "area": "patient.ageYears",
@@ -1484,17 +1522,20 @@
             {
               "area": "medications[ors].prn",
               "ok": false,
-              "detail": "got undefined, want true"
+              "detail": "got undefined, want true",
+              "silent": true
             },
             {
               "area": "medications[zinc]",
               "ok": false,
-              "detail": "not found; got [\"ors\",null]"
+              "detail": "not found; got [\"ors\",null]",
+              "silent": false
             },
             {
               "area": "medications[?] extra",
               "ok": false,
-              "detail": "unexpected medicine (false positive)"
+              "detail": "unexpected medicine (false positive)",
+              "silent": false
             },
             {
               "area": "advice.tags",
@@ -1536,22 +1577,26 @@
           {
             "area": "patient.name",
             "ok": false,
-            "detail": "got \"\", want \"Aarav\""
+            "detail": "got \"\", want \"Aarav\"",
+            "silent": false
           },
           {
             "area": "medications[ors].prn",
             "ok": false,
-            "detail": "got undefined, want true"
+            "detail": "got undefined, want true",
+            "silent": true
           },
           {
             "area": "medications[zinc]",
             "ok": false,
-            "detail": "not found; got [\"ors\",null]"
+            "detail": "not found; got [\"ors\",null]",
+            "silent": false
           },
           {
             "area": "medications[?] extra",
             "ok": false,
-            "detail": "unexpected medicine (false positive)"
+            "detail": "unexpected medicine (false positive)",
+            "silent": false
           }
         ],
         "missedFlags": [],
@@ -1562,8 +1607,9 @@
         "clip": "S04",
         "noisy": false,
         "transcript": "patient baby are of two years brought by mother, loose motions since two days, give ORS after every loose tool and in 20mg once daily for 14 days, advise mother to continue breastfeeding and give plenty of fluids. Review in five days.",
+        "warnings": [],
         "audioSeconds": 14.65075,
-        "transcribeMs": 359.5562920000002,
+        "transcribeMs": 360.6090829999998,
         "wer": 0.14285714285714285,
         "wordErrors": 6,
         "refWords": 42
@@ -1577,7 +1623,8 @@
             {
               "area": "patient.name",
               "ok": false,
-              "detail": "got \"\", want \"Lakshmi\""
+              "detail": "got \"\", want \"Lakshmi\"",
+              "silent": false
             },
             {
               "area": "patient.ageYears",
@@ -1587,7 +1634,8 @@
             {
               "area": "complaint.keywords",
               "ok": false,
-              "detail": "terms [], missing [\"knee\"]"
+              "detail": "terms [], missing [\"knee\"]",
+              "silent": false
             },
             {
               "area": "complaint.durationDays",
@@ -1627,7 +1675,8 @@
             {
               "area": "medications[?] extra",
               "ok": false,
-              "detail": "unexpected medicine (false positive)"
+              "detail": "unexpected medicine (false positive)",
+              "silent": false
             },
             {
               "area": "advice.tags",
@@ -1679,17 +1728,20 @@
           {
             "area": "patient.name",
             "ok": false,
-            "detail": "got \"\", want \"Lakshmi\""
+            "detail": "got \"\", want \"Lakshmi\"",
+            "silent": false
           },
           {
             "area": "complaint.keywords",
             "ok": false,
-            "detail": "terms [], missing [\"knee\"]"
+            "detail": "terms [], missing [\"knee\"]",
+            "silent": false
           },
           {
             "area": "medications[?] extra",
             "ok": false,
-            "detail": "unexpected medicine (false positive)"
+            "detail": "unexpected medicine (false positive)",
+            "silent": false
           }
         ],
         "missedFlags": [],
@@ -1702,8 +1754,9 @@
         "clip": "S05",
         "noisy": false,
         "transcript": "Fish and Locks Me, 60 Years, Fain in both knees for two months, gave that clothing a 50 mg twice a day after food for five days, sorry make that abu -profend 400 mg twice a day after food for five days, review in two weeks.",
+        "warnings": [],
         "audioSeconds": 14.6620625,
-        "transcribeMs": 397.27991599999996,
+        "transcribeMs": 407.80366600000025,
         "wer": 0.24390243902439024,
         "wordErrors": 10,
         "refWords": 41
@@ -1727,7 +1780,8 @@
             {
               "area": "complaint.keywords",
               "ok": false,
-              "detail": "terms [], missing [\"burning\"]"
+              "detail": "terms [], missing [\"burning\"]",
+              "silent": false
             },
             {
               "area": "complaint.durationDays",
@@ -1804,7 +1858,8 @@
           {
             "area": "complaint.keywords",
             "ok": false,
-            "detail": "terms [], missing [\"burning\"]"
+            "detail": "terms [], missing [\"burning\"]",
+            "silent": false
           }
         ],
         "missedFlags": [],
@@ -1815,8 +1870,9 @@
         "clip": "S06",
         "noisy": false,
         "transcript": "patient Kavita, 33. Running while passing urine for two days. Temperature 99.8. Gave Nitrofuranto in 100 mg twice a day for five days. Advice to drink plenty of water.",
+        "warnings": [],
         "audioSeconds": 12.907875,
-        "transcribeMs": 328.5183750000001,
+        "transcribeMs": 330.9691249999996,
         "wer": 0.14285714285714285,
         "wordErrors": 4,
         "refWords": 28
@@ -1830,37 +1886,44 @@
             {
               "area": "patient.name",
               "ok": false,
-              "detail": "got \"\", want \"Kavita\""
+              "detail": "got \"\", want \"Kavita\"",
+              "silent": false
             },
             {
               "area": "patient.ageYears",
               "ok": false,
-              "detail": "got null, want 33"
+              "detail": "got null, want 33",
+              "silent": true
             },
             {
               "area": "complaint.keywords",
               "ok": false,
-              "detail": "terms [], missing [\"burning\"]"
+              "detail": "terms [], missing [\"burning\"]",
+              "silent": false
             },
             {
               "area": "complaint.durationDays",
               "ok": false,
-              "detail": "got null, want 2"
+              "detail": "got null, want 2",
+              "silent": true
             },
             {
               "area": "vitals.temp",
               "ok": false,
-              "detail": "got null, want {\"value\":99.8,\"unit\":\"F\"}"
+              "detail": "got null, want {\"value\":99.8,\"unit\":\"F\"}",
+              "silent": true
             },
             {
               "area": "medications[nitrofurantoin]",
               "ok": false,
-              "detail": "not found; got []"
+              "detail": "not found; got []",
+              "silent": true
             },
             {
               "area": "advice.tags",
               "ok": false,
-              "detail": "got null, want [\"fluids\"]"
+              "detail": "got null, want [\"fluids\"]",
+              "silent": false
             },
             {
               "area": "referral",
@@ -1902,37 +1965,44 @@
           {
             "area": "patient.name",
             "ok": false,
-            "detail": "got \"\", want \"Kavita\""
+            "detail": "got \"\", want \"Kavita\"",
+            "silent": false
           },
           {
             "area": "patient.ageYears",
             "ok": false,
-            "detail": "got null, want 33"
+            "detail": "got null, want 33",
+            "silent": true
           },
           {
             "area": "complaint.keywords",
             "ok": false,
-            "detail": "terms [], missing [\"burning\"]"
+            "detail": "terms [], missing [\"burning\"]",
+            "silent": false
           },
           {
             "area": "complaint.durationDays",
             "ok": false,
-            "detail": "got null, want 2"
+            "detail": "got null, want 2",
+            "silent": true
           },
           {
             "area": "vitals.temp",
             "ok": false,
-            "detail": "got null, want {\"value\":99.8,\"unit\":\"F\"}"
+            "detail": "got null, want {\"value\":99.8,\"unit\":\"F\"}",
+            "silent": true
           },
           {
             "area": "medications[nitrofurantoin]",
             "ok": false,
-            "detail": "not found; got []"
+            "detail": "not found; got []",
+            "silent": true
           },
           {
             "area": "advice.tags",
             "ok": false,
-            "detail": "got null, want [\"fluids\"]"
+            "detail": "got null, want [\"fluids\"]",
+            "silent": false
           }
         ],
         "missedFlags": [],
@@ -1944,8 +2014,11 @@
         "clip": "S06_noisy",
         "noisy": true,
         "transcript": "The first was the first to be",
+        "warnings": [
+          "repeated"
+        ],
         "audioSeconds": 12.907875,
-        "transcribeMs": 2154.165958,
+        "transcribeMs": 2202.118208,
         "wer": 0.9642857142857143,
         "wordErrors": 27,
         "refWords": 28
@@ -1984,7 +2057,8 @@
             {
               "area": "vitals.weightKg",
               "ok": false,
-              "detail": "got null, want 62"
+              "detail": "got null, want 62",
+              "silent": true
             },
             {
               "area": "medications[amlodipine]",
@@ -2004,7 +2078,8 @@
             {
               "area": "medications[amlodipine].perDay",
               "ok": false,
-              "detail": "got null, want 1"
+              "detail": "got null, want 1",
+              "silent": false
             },
             {
               "area": "medications[amlodipine].ongoing",
@@ -2045,12 +2120,14 @@
           {
             "area": "vitals.weightKg",
             "ok": false,
-            "detail": "got null, want 62"
+            "detail": "got null, want 62",
+            "silent": true
           },
           {
             "area": "medications[amlodipine].perDay",
             "ok": false,
-            "detail": "got null, want 1"
+            "detail": "got null, want 1",
+            "silent": false
           }
         ],
         "missedFlags": [],
@@ -2061,8 +2138,9 @@
         "clip": "S07",
         "noisy": false,
         "transcript": "patient Mohan's 70, came for a blood pressure check (Bp -150 over 95, with 62 kilos, continue a mooda -pine 5 mg one -staley) review in one month.",
+        "warnings": [],
         "audioSeconds": 11.5774375,
-        "transcribeMs": 344.69537500000024,
+        "transcribeMs": 356.2459170000002,
         "wer": 0.3333333333333333,
         "wordErrors": 9,
         "refWords": 27
@@ -2076,12 +2154,14 @@
             {
               "area": "patient.name",
               "ok": false,
-              "detail": "got \"Him\", want \"Imran\""
+              "detail": "got \"Him\", want \"Imran\"",
+              "silent": true
             },
             {
               "area": "patient.ageYears",
               "ok": false,
-              "detail": "got null, want 29"
+              "detail": "got null, want 29",
+              "silent": true
             },
             {
               "area": "complaint.keywords",
@@ -2096,7 +2176,8 @@
             {
               "area": "complaint.durationDays",
               "ok": false,
-              "detail": "got null, want 0"
+              "detail": "got null, want 0",
+              "silent": true
             },
             {
               "area": "vitals.temp",
@@ -2106,12 +2187,14 @@
             {
               "area": "medications[paracetamol]",
               "ok": false,
-              "detail": "not found; got [null]"
+              "detail": "not found; got [null]",
+              "silent": false
             },
             {
               "area": "medications[?] extra",
               "ok": false,
-              "detail": "unexpected medicine (false positive)"
+              "detail": "unexpected medicine (false positive)",
+              "silent": false
             },
             {
               "area": "advice.tags",
@@ -2153,27 +2236,32 @@
           {
             "area": "patient.name",
             "ok": false,
-            "detail": "got \"Him\", want \"Imran\""
+            "detail": "got \"Him\", want \"Imran\"",
+            "silent": true
           },
           {
             "area": "patient.ageYears",
             "ok": false,
-            "detail": "got null, want 29"
+            "detail": "got null, want 29",
+            "silent": true
           },
           {
             "area": "complaint.durationDays",
             "ok": false,
-            "detail": "got null, want 0"
+            "detail": "got null, want 0",
+            "silent": true
           },
           {
             "area": "medications[paracetamol]",
             "ok": false,
-            "detail": "not found; got [null]"
+            "detail": "not found; got [null]",
+            "silent": false
           },
           {
             "area": "medications[?] extra",
             "ok": false,
-            "detail": "unexpected medicine (false positive)"
+            "detail": "unexpected medicine (false positive)",
+            "silent": false
           }
         ],
         "missedFlags": [
@@ -2190,8 +2278,9 @@
         "clip": "S08",
         "noisy": false,
         "transcript": "Ok so, patient him ran 29, he was saying it is very hot these days, anyway headache and body aches in this morning. Temperature normal, gave Ferris 8 mile 651 tablet 3 times a day for 2 days, if not better come back.",
+        "warnings": [],
         "audioSeconds": 14.186375,
-        "transcribeMs": 395.6721669999997,
+        "transcribeMs": 407.5275839999995,
         "wer": 0.24390243902439024,
         "wordErrors": 10,
         "refWords": 41
@@ -2205,7 +2294,8 @@
             {
               "area": "patient.name",
               "ok": false,
-              "detail": "got \"Guitar\", want \"Geeta\""
+              "detail": "got \"Guitar\", want \"Geeta\"",
+              "silent": true
             },
             {
               "area": "patient.ageYears",
@@ -2215,7 +2305,8 @@
             {
               "area": "complaint.keywords",
               "ok": false,
-              "detail": "terms [], missing [\"blurred vision\"]"
+              "detail": "terms [], missing [\"blurred vision\"]",
+              "silent": false
             },
             {
               "area": "complaint.mustNotContain",
@@ -2235,7 +2326,8 @@
             {
               "area": "referral",
               "ok": false,
-              "detail": "got {\"to\":\"hospital\",\"urgent\":false}, want {\"to\":\"eye hospital\",\"urgent\":false}"
+              "detail": "got {\"to\":\"hospital\",\"urgent\":false}, want {\"to\":\"eye hospital\",\"urgent\":false}",
+              "silent": true
             },
             {
               "area": "followUp",
@@ -2256,17 +2348,20 @@
           {
             "area": "patient.name",
             "ok": false,
-            "detail": "got \"Guitar\", want \"Geeta\""
+            "detail": "got \"Guitar\", want \"Geeta\"",
+            "silent": true
           },
           {
             "area": "complaint.keywords",
             "ok": false,
-            "detail": "terms [], missing [\"blurred vision\"]"
+            "detail": "terms [], missing [\"blurred vision\"]",
+            "silent": false
           },
           {
             "area": "referral",
             "ok": false,
-            "detail": "got {\"to\":\"hospital\",\"urgent\":false}, want {\"to\":\"eye hospital\",\"urgent\":false}"
+            "detail": "got {\"to\":\"hospital\",\"urgent\":false}, want {\"to\":\"eye hospital\",\"urgent\":false}",
+            "silent": true
           }
         ],
         "missedFlags": [],
@@ -2276,8 +2371,9 @@
         "clip": "S09",
         "noisy": false,
         "transcript": "Patient guitar, 41, blood vision fold distance slowly over six months, no pain, referred to the i -hospital in the district for a check -up, follow up on Monday.",
+        "warnings": [],
         "audioSeconds": 10.0899375,
-        "transcribeMs": 305.1062919999995,
+        "transcribeMs": 308.33925,
         "wer": 0.13793103448275862,
         "wordErrors": 4,
         "refWords": 29
@@ -2301,7 +2397,8 @@
             {
               "area": "complaint.keywords",
               "ok": false,
-              "detail": "terms [\"pain\"], missing [\"ear pain\"]"
+              "detail": "terms [\"pain\"], missing [\"ear pain\"]",
+              "silent": false
             },
             {
               "area": "complaint.durationDays",
@@ -2316,7 +2413,8 @@
             {
               "area": "medications[amoxicillin]",
               "ok": false,
-              "detail": "not found; got [null,\"paracetamol\"]"
+              "detail": "not found; got [null,\"paracetamol\"]",
+              "silent": false
             },
             {
               "area": "medications[paracetamol]",
@@ -2331,7 +2429,8 @@
             {
               "area": "medications[?] extra",
               "ok": false,
-              "detail": "unexpected medicine (false positive)"
+              "detail": "unexpected medicine (false positive)",
+              "silent": false
             },
             {
               "area": "advice.tags",
@@ -2378,17 +2477,20 @@
           {
             "area": "complaint.keywords",
             "ok": false,
-            "detail": "terms [\"pain\"], missing [\"ear pain\"]"
+            "detail": "terms [\"pain\"], missing [\"ear pain\"]",
+            "silent": false
           },
           {
             "area": "medications[amoxicillin]",
             "ok": false,
-            "detail": "not found; got [null,\"paracetamol\"]"
+            "detail": "not found; got [null,\"paracetamol\"]",
+            "silent": false
           },
           {
             "area": "medications[?] extra",
             "ok": false,
-            "detail": "unexpected medicine (false positive)"
+            "detail": "unexpected medicine (false positive)",
+            "silent": false
           }
         ],
         "missedFlags": [],
@@ -2400,8 +2502,9 @@
         "clip": "S10",
         "noisy": false,
         "transcript": "Patient Raju 8 years brought by father, Air Pain for 2 days. Temperature 38.2, gave him oxisol in 250 mg 3 times a day for 5 days, and Farasetamal syrup when needed for pain. Review after 5 days.",
+        "warnings": [],
         "audioSeconds": 14.49625,
-        "transcribeMs": 388.82616600000074,
+        "transcribeMs": 391.2486250000002,
         "wer": 0.1388888888888889,
         "wordErrors": 5,
         "refWords": 36
@@ -2413,14 +2516,16 @@
       "fieldChecksPassed": 105,
       "fieldChecksTotal": 148,
       "fieldAccuracy": 0.7094594594594594,
+      "wrongValues": 43,
+      "silentWrongValues": 19,
       "expectedFlagsRaised": 6,
       "expectedFlagsTotal": 7,
       "extraFlags": 26,
       "wer": 0.27699530516431925,
       "meanClipWer": 0.28327801687768045,
       "audioSeconds": 166.12650000000002,
-      "transcribeSeconds": 6.399043832,
-      "realTimeFactor": 0.038519103406139295
+      "transcribeSeconds": 6.520596791999999,
+      "realTimeFactor": 0.0392507925707217
     }
   },
   "recordings": {

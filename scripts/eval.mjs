@@ -49,6 +49,8 @@ function summarize(label, rows) {
     fieldChecksPassed: acc.passed,
     fieldChecksTotal: acc.total,
     fieldAccuracy: acc.ratio,
+    wrongValues: acc.wrong,
+    silentWrongValues: acc.silentWrong,
     expectedFlagsRaised: raised,
     expectedFlagsTotal: flagChecks.length,
     extraFlags: scores.reduce((n, s) => n + s.extraFlags.length, 0),
@@ -134,6 +136,7 @@ for (const source of sources) {
         clip,
         noisy: clip.includes('_noisy'),
         transcript: transcript.text,
+        warnings: transcript.warnings ?? [],
         audioSeconds,
         transcribeMs: ms,
         wer: wer(script.text, transcript.text),
@@ -170,7 +173,7 @@ for (const key of ['reference', 'tts', 'recordings']) {
   }
   const speech = s.wer === undefined ? '' : `  WER ${pct(s.wer)}  RTF ${s.realTimeFactor.toFixed(2)}`;
   console.log(
-    `${key.padEnd(10)} ${String(s.clips).padStart(2)} clips  fields ${s.fieldChecksPassed}/${s.fieldChecksTotal} = ${pct(s.fieldAccuracy)}  flags raised ${s.expectedFlagsRaised}/${s.expectedFlagsTotal}  extra flags ${s.extraFlags}${speech}`,
+    `${key.padEnd(10)} ${String(s.clips).padStart(2)} clips  fields ${s.fieldChecksPassed}/${s.fieldChecksTotal} = ${pct(s.fieldAccuracy)}  flags raised ${s.expectedFlagsRaised}/${s.expectedFlagsTotal}  extra flags ${s.extraFlags}  wrong ${s.wrongValues} (${s.silentWrongValues} not flagged)${speech}`,
   );
 }
 for (const key of ['reference', 'tts', 'recordings']) {

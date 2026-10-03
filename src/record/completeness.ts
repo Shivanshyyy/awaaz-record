@@ -26,7 +26,7 @@ export function medLeaves(med: Medication): Leaf[] {
   });
   return [
     mk('name', 'name', true),
-    mk('dose', 'dose', true),
+    mk('dose', 'dose', false),
     mk('unit', 'unit', false),
     mk('count', 'tablets or spoons', false),
     mk('perDay', 'times a day', false),

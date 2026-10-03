@@ -1,6 +1,10 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { asr } from '../asr/client';
 import type { Transcript } from '../asr/transcript';
+import { extractRecord } from '../extract';
+import { textToTranscript } from '../extract/transcript-from-text';
+import { addMedication, applyEdits, confirmFields, confirmRecord, markNotApplicable, removeMedication, type Edit } from '../record/edit';
+import type { VisitRecord } from '../record/schema';
 import { decodeTo16kMono, RecordingError } from '../audio/decode';
 import { hasSpeech, type Samples } from '../audio/level';
 import { SpanPlayer } from '../audio/player';
@@ -13,6 +17,9 @@ interface VisitState {
   recordSeconds: number;
   level: number;
   transcript: Transcript | null;
+  record: VisitRecord | null;
+  /** the recording is still in memory, so the worker can play parts of it */
+  hasAudio: boolean;
   stats: { audioSeconds: number; ms: number; loadMs: number } | null;
   error: string | null;
   micProblem: MicProblem | null;
@@ -24,12 +31,29 @@ interface VisitApi extends VisitState {
   cancel(): void;
   reset(): void;
   transcribeFile(file: File): Promise<void>;
+  /** developer helper: skip the audio and review a typed or pasted transcript */
+  reviewText(text: string): void;
+  edit(edits: Edit[]): void;
+  lookRight(paths: string[]): void;
+  notApplicable(paths: string[]): void;
+  addMedicine(): string;
+  removeMedicine(id: string): void;
+  confirm(): void;
   playSpan(t0: number, t1: number): void;
   playAll(): void;
   stopPlayback(): void;
 }
 
-const IDLE: VisitState = { stage: 'idle', recordSeconds: 0, level: 0, transcript: null, stats: null, error: null, micProblem: null };
+const IDLE: VisitState = { stage: 'idle', recordSeconds: 0, level: 0, transcript: null, record: null, hasAudio: false, stats: null, error: null, micProblem: null };
+
+function today(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function newRecord(transcript: Transcript): VisitRecord {
+  return extractRecord(transcript, { visitDate: today(), id: crypto.randomUUID() });
+}
 
 const NO_SPEECH = 'No speech was heard. Move closer to the phone, speak clearly, and record again.';
 const MODEL_MISSING =
@@ -49,6 +73,8 @@ export function VisitProvider({ children }: { children: ReactNode }) {
   const recorder = useRef<Recorder | null>(null);
   const player = useRef<SpanPlayer | null>(null);
   const stopRef = useRef<() => Promise<void>>(async () => {});
+  const recordRef = useRef<VisitRecord | null>(null);
+  recordRef.current = state.record;
 
   const patch = useCallback((next: Partial<VisitState>) => setState((s) => ({ ...s, ...next })), []);
 
@@ -70,7 +96,13 @@ export function VisitProvider({ children }: { children: ReactNode }) {
         player.current = new SpanPlayer(samples);
         patch({ stage: 'transcribing' });
         const result = await asr.transcribe(samples);
-        patch({ stage: 'done', transcript: result.transcript, stats: { audioSeconds: result.audioSeconds, ms: result.ms, loadMs: result.loadMs } });
+        patch({
+          stage: 'done',
+          transcript: result.transcript,
+          record: newRecord(result.transcript),
+          hasAudio: true,
+          stats: { audioSeconds: result.audioSeconds, ms: result.ms, loadMs: result.loadMs },
+        });
       } catch (error) {
         patch({ stage: 'error', error: explain(error) });
       }
@@ -122,6 +154,30 @@ export function VisitProvider({ children }: { children: ReactNode }) {
     [process, reset],
   );
 
+  const reviewText = useCallback(
+    (text: string) => {
+      reset();
+      const transcript = textToTranscript(text.trim());
+      setState({ ...IDLE, stage: 'done', transcript, record: newRecord(transcript) });
+    },
+    [reset],
+  );
+
+  // Every change to the record goes through the edit functions, which re-check everything.
+  const change = useCallback((fn: (record: VisitRecord) => VisitRecord) => setState((s) => (s.record ? { ...s, record: fn(s.record) } : s)), []);
+  const edit = useCallback((edits: Edit[]) => change((r) => applyEdits(r, edits)), [change]);
+  const lookRight = useCallback((paths: string[]) => change((r) => confirmFields(r, paths)), [change]);
+  const notApplicable = useCallback((paths: string[]) => change((r) => markNotApplicable(r, paths)), [change]);
+  const removeMedicine = useCallback((id: string) => change((r) => removeMedication(r, id)), [change]);
+  const addMedicine = useCallback((): string => {
+    const current = recordRef.current;
+    if (!current) return '';
+    const added = addMedication(current);
+    setState((s) => ({ ...s, record: added.record }));
+    return added.id;
+  }, []);
+  const confirm = useCallback(() => change((r) => confirmRecord(r)), [change]);
+
   const playSpan = useCallback((t0: number, t1: number) => player.current?.play(t0, t1), []);
   const playAll = useCallback(() => player.current?.play(), []);
   const stopPlayback = useCallback(() => player.current?.stop(), []);
@@ -130,8 +186,8 @@ export function VisitProvider({ children }: { children: ReactNode }) {
   useEffect(() => reset, [reset]);
 
   const api = useMemo<VisitApi>(
-    () => ({ ...state, start, stop, cancel: reset, reset, transcribeFile, playSpan, playAll, stopPlayback }),
-    [state, start, stop, reset, transcribeFile, playSpan, playAll, stopPlayback],
+    () => ({ ...state, start, stop, cancel: reset, reset, transcribeFile, reviewText, edit, lookRight, notApplicable, addMedicine, removeMedicine, confirm, playSpan, playAll, stopPlayback }),
+    [state, start, stop, reset, transcribeFile, reviewText, edit, lookRight, notApplicable, addMedicine, removeMedicine, confirm, playSpan, playAll, stopPlayback],
   );
   return <VisitContext.Provider value={api}>{children}</VisitContext.Provider>;
 }

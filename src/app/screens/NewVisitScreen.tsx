@@ -5,7 +5,7 @@ import { Icon } from '../../ui/Icon';
 import { MAX_RECORD_SECONDS } from '../../audio/recorder';
 import { useOffline } from '../offline-store';
 import { useRouter } from '../router';
-import { TranscriptView } from '../TranscriptView';
+import { ReviewScreen } from '../review/ReviewScreen';
 import { useVisit } from '../visit';
 
 function useElapsed(active: boolean): number {
@@ -48,6 +48,28 @@ function OfflineNotice() {
       <p>Recording works while you have signal. To work with no internet, download the speech model once.</p>
       <Button variant="secondary" onClick={() => go({ name: 'prepare' })}>
         Set up offline mode
+      </Button>
+    </div>
+  );
+}
+
+function PasteTranscript() {
+  const visit = useVisit();
+  const [text, setText] = useState('');
+  return (
+    <div className="space-y-2 rounded-xl border border-dashed border-line p-3 text-sm text-ink-soft">
+      <label className="block">
+        Developer helper: review a pasted transcript (no audio)
+        <textarea
+          data-testid="dev-paste"
+          className="mt-2 block w-full rounded-lg border border-line p-2 text-base text-ink"
+          rows={4}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+      </label>
+      <Button variant="secondary" data-testid="dev-paste-go" disabled={!text.trim()} onClick={() => visit.reviewText(text)}>
+        Review this text
       </Button>
     </div>
   );
@@ -113,33 +135,10 @@ export function NewVisitScreen() {
         </div>
       )}
 
-      {visit.stage === 'done' && visit.transcript && visit.stats && (
-        <div className="space-y-4">
-          <div className="rounded-xl border border-line p-3">
-            <h3 className="mb-1 text-sm font-bold uppercase tracking-wide text-ink-soft">Transcript</h3>
-            <TranscriptView transcript={visit.transcript} onPlayWord={(w) => visit.playSpan(w.t0 - 0.05, w.t1 + 0.1)} />
-            <p className="text-sm text-ink-soft">Tap a word to hear it again.</p>
-          </div>
-          <p
-            data-testid="asr-stats"
-            data-audio-seconds={visit.stats.audioSeconds.toFixed(2)}
-            data-ms={visit.stats.ms}
-            data-load-ms={visit.stats.loadMs}
-            className="text-sm text-ink-soft"
-          >
-            Transcribed {visit.stats.audioSeconds.toFixed(1)} s of audio in {(visit.stats.ms / 1000).toFixed(1)} s on this phone
-            {visit.stats.loadMs > 500 ? ` (model loading took another ${(visit.stats.loadMs / 1000).toFixed(1)} s)` : ''}.
-          </p>
-          <Button variant="secondary" icon="play" onClick={visit.playAll}>
-            Play recording
-          </Button>
-          <Button icon="redo" onClick={() => void visit.start()}>
-            Record again
-          </Button>
-        </div>
-      )}
+      {visit.stage === 'done' && visit.record && <ReviewScreen />}
 
-      {devHelper && visit.stage !== 'recording' && !working && (
+      {devHelper && visit.stage !== 'recording' && visit.stage !== 'done' && !working && <PasteTranscript />}
+      {devHelper && visit.stage !== 'recording' && visit.stage !== 'done' && !working && (
         <label className="block rounded-xl border border-dashed border-line p-3 text-sm text-ink-soft">
           Developer helper: transcribe an audio file
           <input

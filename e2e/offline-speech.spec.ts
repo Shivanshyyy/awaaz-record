@@ -74,7 +74,8 @@ test('prepare online, then record and transcribe with the network off', async ({
   // 4. Transcribing: progress shown, then the transcript.
   await expect(page.getByTestId('working-status')).toBeVisible();
   await shot(page, '13-transcribing');
-  await expect(page.getByTestId('transcript-text')).toBeVisible({ timeout: 120_000 });
+  await expect(page.getByTestId('tab-transcript')).toBeVisible({ timeout: 120_000 });
+  await page.getByTestId('tab-transcript').click();
   const transcript = (await page.getByTestId('transcript-text').innerText()).replace(/\s+/g, ' ').trim();
   console.log('TRANSCRIPT (TTS-synthetic S01):', transcript);
   await shot(page, '14-transcript');
@@ -134,8 +135,9 @@ test('tapping a word plays that word from the recording', async ({ page }) => {
     };
   });
   await page.getByRole('navigation', { name: 'Main' }).getByRole('button', { name: 'New visit' }).click();
-  await page.getByTestId("dev-upload").setInputFiles(clip);
-  await expect(page.getByTestId('transcript-text')).toBeVisible({ timeout: 120_000 });
+  await page.getByTestId('dev-upload').setInputFiles(clip);
+  await expect(page.getByTestId('tab-transcript')).toBeVisible({ timeout: 120_000 });
+  await page.getByTestId('tab-transcript').click();
 
   const words = page.getByTestId('transcript-text').getByRole('button');
   expect(await words.count()).toBeGreaterThan(10);
@@ -169,7 +171,7 @@ test('a silent recording is refused instead of being sent to the model', async (
   await page.waitForTimeout(2500);
   await page.getByTestId('stop-button').click();
   await expect(page.getByRole('alert')).toContainText('No speech was heard');
-  await expect(page.getByTestId('transcript-text')).toHaveCount(0);
+  await expect(page.getByTestId('tab-transcript')).toHaveCount(0);
 });
 
 test('timing for a clip of about 15 seconds (TTS-synthetic S04)', async ({ page }) => {
@@ -177,14 +179,18 @@ test('timing for a clip of about 15 seconds (TTS-synthetic S04)', async ({ page 
   await page.goto(`${BASE}?dev=1`);
   await page.getByRole('navigation', { name: 'Main' }).getByRole('button', { name: 'New visit' }).click();
   await page.getByTestId('dev-upload').setInputFiles(longClip);
-  await expect(page.getByTestId('transcript-text')).toBeVisible({ timeout: 120_000 });
+  await expect(page.getByTestId('tab-transcript')).toBeVisible({ timeout: 120_000 });
+  await page.getByTestId('tab-transcript').click();
   // The first run also loads the model; transcribe the same clip again for the warm figure.
   const first = page.getByTestId('asr-stats');
   const coldMs = Number(await first.getAttribute('data-ms'));
   const coldLoad = Number(await first.getAttribute('data-load-ms'));
+  await page.getByTestId('discard').click();
+  await page.getByTestId('discard-yes').click();
   await page.getByTestId('dev-upload').setInputFiles(longClip);
   await expect(page.getByTestId('working-status')).toBeVisible();
-  await expect(page.getByTestId('transcript-text')).toBeVisible({ timeout: 120_000 });
+  await expect(page.getByTestId('tab-transcript')).toBeVisible({ timeout: 120_000 });
+  await page.getByTestId('tab-transcript').click();
   const audioSeconds = Number(await first.getAttribute('data-audio-seconds'));
   const warmMs = Number(await first.getAttribute('data-ms'));
   console.log(`TIMING S04: ${audioSeconds} s of audio; first run ${coldMs} ms (+${coldLoad} ms model load), second run ${warmMs} ms`);

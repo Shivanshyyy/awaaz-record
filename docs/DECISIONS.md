@@ -42,3 +42,19 @@ One line each: what was decided, and why. Newest at the bottom of each section.
 - No lexicon "prompting" of Whisper: it would turn garbled drug names into plausible wrong ones instead of leaving them visibly wrong. The extractor flags uncertain names instead.
 - The upload-a-file helper shows only in dev builds or with `?dev=1`.
 - TTS test audio uses the macOS Indian-English voice "Tara" (`say`), 16 kHz mono, plus synthetic low-pass noise at 10 dB for the three scripts the kit marks as noisy. All of it is labelled TTS-synthetic.
+
+## Phase 2 (extraction and review)
+- All missing-detail, missing-required and out-of-range flags are derived in one place (`evaluate` in `src/record/completeness.ts`) from the current values, so they clear when the worker edits. The extractor only raises flags about what it heard (unclear, snapped, corrected, unit inferred, conflict). A missing dose is amber (MISSING_DETAIL, as in CLAUDE.md); red is only for a required item that is wholly absent (name, complaint, follow-up, any treatment, a medicine's name).
+- An amber item with no value cannot be cleared with "Looks right" (there is nothing to look at). It needs a value or "Not applicable" (dose, how often, how long).
+- A garbled medicine name next to a dose is snapped to the closest drug by consonant skeleton (distance 1 to 2) and flagged NAME_SNAPPED; two candidates → value left empty, both listed. A name that matches nothing, or a dose with no name, stays an empty "which medicine was it?" row. Names under 4 consonants (zinc, ORS) are never snapped: too short to match safely.
+- Names and ages stay "OK" when extracted (no confidence signal exists to say otherwise) and the eval reports how many wrong values were not flagged. Forcing an identity tap on every record was considered and rejected for now: rubber-stamping would remove the safety it adds. The mitigation is a one-tap "Hear it" on those two rows.
+- No lexicon prompt for Whisper, and no `no_repeat_ngram_size`: a legitimate repeated phrase ("twice a day after food for five days", said twice) must survive. Loops are cut afterwards by `findLoop` instead.
+- Weekday follow-up is always the next such day after the visit; the same weekday as today means a week later. "Tomorrow" = 1 day, "next week" = 7, "next month" = 30. "Since morning" and "since today" = 0 days, "since yesterday" and "since last night" = 1.
+- "Evening" is not mapped to morning, afternoon or night (it is none of them): it raises an UNCLEAR question.
+- Age given in months is stored as fractional years and flagged UNCLEAR; the schema has only `ageYears`.
+- A spoken correction between two medicines keeps both and flags both; the worker removes the wrong one. For a vital sign the later value wins and is flagged. Silent replacement never happens.
+- Advice `other` holds the worker's own words after "advised …", verbatim, only when no known advice tag sits in that clause.
+- Clause boundaries (comma as well as full stop) bound referral, follow-up and advice, because Whisper often writes a whole note with commas and no full stops. Medicine segments end at the next medicine, a section word (advised, referred, review, BP …) or a sentence end.
+- Dev helper `?dev=1` also has a paste-a-transcript box; it builds a record from text with no audio, so the review can be tested deterministically.
+- Confirm lives in a sticky bar above the tab bar so it is always reachable on a long record. The record stays in memory in Phase 2; Phase 3 saves it.
+- `scripts/eval.mjs` loads the TypeScript extractor through Vite's SSR loader, so the eval and the app use the same code. It runs Whisper in Node (onnxruntime-node), not the browser's WASM; the two give slightly different transcripts for the same audio, and the browser path adds Opus compression, so real in-app accuracy may differ.
