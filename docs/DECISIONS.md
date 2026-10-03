@@ -29,3 +29,16 @@ One line each: what was decided, and why. Newest at the bottom of each section.
 - PWA icons are drawn from one SVG and rendered to PNG by `scripts/make-icons.mjs` with the Chromium Playwright already installs (no image library needed). The PNGs are committed.
 - Playwright writes screenshots only with `npm run e2e:shots`, so normal runs don't change tracked PNGs.
 - The service worker precaches the app shell only (~270 KiB). Model and runtime files are excluded from precache and handled by the "Prepare offline mode" step in Phase 1, so a failed 44 MB download can't break service-worker install.
+
+## Phase 1 (offline speech)
+- Tests replace `getUserMedia` with a Web Audio stream that plays the TTS WAV in real time (`e2e/fake-mic.ts`). Chromium's own fake microphone (`--use-fake-device-for-media-stream`, with or without a file) hangs on this Mac even with no file at all, probably the macOS microphone privacy prompt. The recorder, decoding, worker and UI still run for real; only the stream source is faked. The real microphone is on the WHEN YOU WAKE UP list.
+- The service worker only reads the offline cache (`cacheableResponse: { statuses: [-1] }`); "Prepare offline mode" is the only writer. With two writers, Workbox's copy sometimes replaced ours with different headers and the "ready" check failed intermittently.
+- "Ready offline" is shown only after every model and runtime file is found in Cache Storage with the right size and the service worker controls the page. Nothing is assumed.
+- Service worker updates are `prompt`, not automatic: a deploy must not reload the page and lose a recording that only exists in memory. The worker sees an "Update now" banner.
+- ONNX Runtime: the `jsep` wasm (21.6 MB) that Transformers.js 3.8.1 ships, copied to `public/ort/` by `scripts/copy-ort.mjs` and loaded from our origin, single-threaded (GitHub Pages cannot send the headers that threads need). Vite also emitted a second copy of that wasm into `assets/`; a tiny plugin removes it (deployment 87 MB → 66 MB).
+- Offline download total is 66.1 MB (44.5 MB model + 21.6 MB runtime). The app shell adds about 1.1 MB.
+- Audio is kept only as decoded 16 kHz samples in memory (never IndexedDB or Cache Storage) and is dropped on reset or when the app closes. Phase 3 deletes it at confirm.
+- A recording with no speech-level audio is refused before it reaches Whisper (it invents words from silence).
+- No lexicon "prompting" of Whisper: it would turn garbled drug names into plausible wrong ones instead of leaving them visibly wrong. The extractor flags uncertain names instead.
+- The upload-a-file helper shows only in dev builds or with `?dev=1`.
+- TTS test audio uses the macOS Indian-English voice "Tara" (`say`), 16 kHz mono, plus synthetic low-pass noise at 10 dB for the three scripts the kit marks as noisy. All of it is labelled TTS-synthetic.

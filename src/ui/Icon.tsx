@@ -20,6 +20,28 @@ const PATHS = {
       <path d="m3.5 6 1.3 1.3L7 5M3.5 12l1.3 1.3L7 11M3.5 18l1.3 1.3L7 17" />
     </>
   ),
+  check: <path d="m5 12.5 4.5 4.5L19 7.5" />,
+  alert: (
+    <>
+      <path d="M12 4 2.8 19.5h18.4z" />
+      <path d="M12 10v4.5M12 17.2v.1" />
+    </>
+  ),
+  x: <path d="m6 6 12 12M18 6 6 18" />,
+  play: <path d="M8 5.5v13l11-6.5z" />,
+  stop: <rect x="6" y="6" width="12" height="12" rx="1.5" />,
+  redo: (
+    <>
+      <path d="M20 12a8 8 0 1 1-2.6-5.9" />
+      <path d="M20 4v4.5h-4.5" />
+    </>
+  ),
+  download: (
+    <>
+      <path d="M12 4v11M7.5 11 12 15.5 16.5 11" />
+      <path d="M5 19.5h14" />
+    </>
+  ),
 } as const;
 
 export type IconName = keyof typeof PATHS;

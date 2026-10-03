@@ -1,17 +1,26 @@
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const base = '/awaaz-record/';
 
+// onnxruntime-web references its wasm by URL, so Vite emits a second 21 MB copy; we load it from /ort/ instead.
+const dropDuplicateOrtWasm: Plugin = {
+  name: 'drop-duplicate-ort-wasm',
+  generateBundle(_options, bundle) {
+    for (const name of Object.keys(bundle)) if (/ort-wasm.*\.wasm$/.test(name)) delete bundle[name];
+  },
+};
+
 export default defineConfig({
   base,
   plugins: [
     react(),
     tailwindcss(),
+    dropDuplicateOrtWasm,
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       injectRegister: false,
       includeAssets: ['icons/favicon.svg', 'icons/apple-touch-icon.png'],
       manifest: {
@@ -37,7 +46,18 @@ export default defineConfig({
         navigateFallback: `${base}index.html`,
         cleanupOutdatedCaches: true,
         clientsClaim: true,
-        skipWaiting: true,
+        // A new version waits for the worker to tap "Update", so a deploy can't reload the page and lose a recording.
+        skipWaiting: false,
+        runtimeCaching: [
+          {
+            // "Prepare offline mode" is the only writer of this cache; the worker only reads from it.
+            // Status -1 never matches, so Workbox serves cache hits but never stores a response itself
+            // (two writers raced and replaced our entries with ones that have different headers).
+            urlPattern: new RegExp(`${base}(models|ort)/`),
+            handler: 'CacheFirst',
+            options: { cacheName: 'awaaz-offline-v1', cacheableResponse: { statuses: [-1] } },
+          },
+        ],
       },
     }),
   ],

@@ -1,21 +1,160 @@
-const STEPS = ['Patient consent', 'Record the visit note', 'Check the record', 'Confirm and save', 'Patient slip and Hindi audio'];
+import { useEffect, useState } from 'react';
+import { Button } from '../../ui/Button';
+import { formatClock } from '../../ui/format';
+import { Icon } from '../../ui/Icon';
+import { MAX_RECORD_SECONDS } from '../../audio/recorder';
+import { useOffline } from '../offline-store';
+import { useRouter } from '../router';
+import { TranscriptView } from '../TranscriptView';
+import { useVisit } from '../visit';
+
+function useElapsed(active: boolean): number {
+  const [seconds, setSeconds] = useState(0);
+  useEffect(() => {
+    if (!active) return;
+    const startedAt = performance.now();
+    setSeconds(0);
+    const timer = window.setInterval(() => setSeconds(Math.floor((performance.now() - startedAt) / 1000)), 250);
+    return () => window.clearInterval(timer);
+  }, [active]);
+  return seconds;
+}
+
+function LevelMeter({ level }: { level: number }) {
+  const percent = Math.round(level * 100);
+  return (
+    <div
+      role="meter"
+      aria-label="Microphone level"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={percent}
+      className="h-4 w-full overflow-hidden rounded-full bg-line"
+    >
+      <div className="h-full bg-brand-600" style={{ width: `${percent}%` }} />
+    </div>
+  );
+}
+
+function OfflineNotice() {
+  const { status } = useOffline();
+  const { go } = useRouter();
+  if (status.state === 'ready' || status.state === 'checking') return null;
+  return (
+    <div className="space-y-2 rounded-xl border-2 border-check bg-check-bg p-3 text-check">
+      <p className="flex items-center gap-2 font-bold">
+        <Icon name="alert" /> Offline mode is not set up
+      </p>
+      <p>Recording works while you have signal. To work with no internet, download the speech model once.</p>
+      <Button variant="secondary" onClick={() => go({ name: 'prepare' })}>
+        Set up offline mode
+      </Button>
+    </div>
+  );
+}
 
 export function NewVisitScreen() {
+  const visit = useVisit();
+  const working = visit.stage === 'decoding' || visit.stage === 'transcribing';
+  const waited = useElapsed(working);
+  const devHelper = import.meta.env.DEV || new URLSearchParams(location.search).has('dev');
+
   return (
     <section aria-labelledby="new-title" className="space-y-4">
       <h2 id="new-title" className="text-2xl font-bold">
         New visit
       </h2>
-      <ol className="space-y-2">
-        {STEPS.map((step, i) => (
-          <li key={step} className="flex items-center gap-3 rounded-xl border border-line p-3">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 font-bold text-brand-800">
-              {i + 1}
-            </span>
-            <span>{step}</span>
-          </li>
-        ))}
-      </ol>
+      <OfflineNotice />
+
+      {visit.stage === 'idle' && (
+        <>
+          <p>Speak a short visit note in English, about 20 to 60 seconds: patient, complaint, readings, medicines, follow-up.</p>
+          <Button icon="mic" onClick={() => void visit.start()} data-testid="record-button">
+            Start recording
+          </Button>
+        </>
+      )}
+
+      {visit.stage === 'recording' && (
+        <div className="space-y-4">
+          <p data-testid="record-timer" className="text-center text-4xl font-bold tabular-nums">
+            {formatClock(visit.recordSeconds)} <span className="text-xl font-semibold text-ink-soft">/ {formatClock(MAX_RECORD_SECONDS)}</span>
+          </p>
+          <LevelMeter level={visit.level} />
+          <Button variant="danger" icon="stop" onClick={() => void visit.stop()} data-testid="stop-button">
+            Stop
+          </Button>
+          <Button variant="secondary" onClick={visit.cancel}>
+            Cancel
+          </Button>
+        </div>
+      )}
+
+      {working && (
+        <div role="status" data-testid="working-status" className="space-y-2 rounded-xl border-2 border-brand-700 bg-brand-50 p-4">
+          <p className="flex items-center gap-3 text-lg font-bold text-brand-800">
+            <span aria-hidden="true" className="inline-block h-5 w-5 animate-spin rounded-full border-4 border-brand-700 border-t-transparent" />
+            {visit.stage === 'decoding' ? 'Reading the recording…' : 'Transcribing on this phone…'}
+          </p>
+          <p data-testid="working-seconds" className="tabular-nums text-ink-soft">
+            {waited} s
+          </p>
+        </div>
+      )}
+
+      {visit.stage === 'error' && (
+        <div className="space-y-3">
+          <p role="alert" className="flex gap-2 rounded-xl border-2 border-missing bg-missing-bg p-3 text-missing">
+            <Icon name="x" /> {visit.error}
+          </p>
+          <Button icon="redo" onClick={() => void visit.start()}>
+            Try again
+          </Button>
+        </div>
+      )}
+
+      {visit.stage === 'done' && visit.transcript && visit.stats && (
+        <div className="space-y-4">
+          <div className="rounded-xl border border-line p-3">
+            <h3 className="mb-1 text-sm font-bold uppercase tracking-wide text-ink-soft">Transcript</h3>
+            <TranscriptView transcript={visit.transcript} onPlayWord={(w) => visit.playSpan(w.t0 - 0.05, w.t1 + 0.1)} />
+            <p className="text-sm text-ink-soft">Tap a word to hear it again.</p>
+          </div>
+          <p
+            data-testid="asr-stats"
+            data-audio-seconds={visit.stats.audioSeconds.toFixed(2)}
+            data-ms={visit.stats.ms}
+            data-load-ms={visit.stats.loadMs}
+            className="text-sm text-ink-soft"
+          >
+            Transcribed {visit.stats.audioSeconds.toFixed(1)} s of audio in {(visit.stats.ms / 1000).toFixed(1)} s on this phone
+            {visit.stats.loadMs > 500 ? ` (model loading took another ${(visit.stats.loadMs / 1000).toFixed(1)} s)` : ''}.
+          </p>
+          <Button variant="secondary" icon="play" onClick={visit.playAll}>
+            Play recording
+          </Button>
+          <Button icon="redo" onClick={() => void visit.start()}>
+            Record again
+          </Button>
+        </div>
+      )}
+
+      {devHelper && visit.stage !== 'recording' && !working && (
+        <label className="block rounded-xl border border-dashed border-line p-3 text-sm text-ink-soft">
+          Developer helper: transcribe an audio file
+          <input
+            type="file"
+            accept="audio/*"
+            data-testid="dev-upload"
+            className="mt-2 block w-full"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) void visit.transcribeFile(file);
+              e.target.value = '';
+            }}
+          />
+        </label>
+      )}
     </section>
   );
 }

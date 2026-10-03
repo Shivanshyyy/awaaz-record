@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { RouterProvider, useRouter } from './router';
 import { APP_NAME, TABS } from './meta';
 import { Icon } from '../ui/Icon';
@@ -5,6 +6,11 @@ import { TodayScreen } from './screens/TodayScreen';
 import { NewVisitScreen } from './screens/NewVisitScreen';
 import { RecordsScreen } from './screens/RecordsScreen';
 import { TasksScreen } from './screens/TasksScreen';
+import { PrepareScreen } from './screens/PrepareScreen';
+import { OfflineBadge } from './OfflineBadge';
+import { UpdateBanner } from './UpdateBanner';
+import { refreshOfflineStatus } from './offline-store';
+import { VisitProvider } from './visit';
 
 function Screen() {
   const { route } = useRouter();
@@ -17,6 +23,8 @@ function Screen() {
       return <RecordsScreen />;
     case 'tasks':
       return <TasksScreen />;
+    case 'prepare':
+      return <PrepareScreen />;
   }
 }
 
@@ -52,17 +60,28 @@ function BottomNav() {
 }
 
 export function App() {
+  useEffect(() => {
+    void refreshOfflineStatus();
+    const onControl = () => void refreshOfflineStatus();
+    navigator.serviceWorker?.addEventListener('controllerchange', onControl);
+    return () => navigator.serviceWorker?.removeEventListener('controllerchange', onControl);
+  }, []);
+
   return (
     <RouterProvider>
-      <div className="flex min-h-dvh flex-col">
-        <header className="sticky top-0 z-10 flex min-h-14 items-center bg-brand-700 px-4 text-white">
-          <h1 className="text-lg font-bold">{APP_NAME}</h1>
-        </header>
-        <main className="mx-auto w-full max-w-xl flex-1 px-4 pb-24 pt-4">
-          <Screen />
-        </main>
-        <BottomNav />
-      </div>
+      <VisitProvider>
+        <div className="flex min-h-dvh flex-col">
+          <header className="sticky top-0 z-10 flex min-h-14 items-center gap-2 bg-brand-700 px-4 text-white">
+            <h1 className="text-lg font-bold">{APP_NAME}</h1>
+            <OfflineBadge />
+          </header>
+          <UpdateBanner />
+          <main className="mx-auto w-full max-w-xl flex-1 px-4 pb-24 pt-4">
+            <Screen />
+          </main>
+          <BottomNav />
+        </div>
+      </VisitProvider>
     </RouterProvider>
   );
 }
