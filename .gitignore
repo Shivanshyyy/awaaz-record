@@ -1,0 +1,13 @@
+node_modules/
+dist/
+public/models/
+public/ort/
+recordings/
+eval/tts/
+test-results/
+playwright-report/
+.env*
+.DS_Store
+.tmp-scaffold/
+ps.pdf
+*.log

@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "note": "SYNTHETIC. Scripted visit notes written for this hackathon. Not real patients. Read aloud by the builder to create recordings/S01..S10 (+ _noisy variants).",
+  "visitDate": "2026-10-04",
+  "matching": {
+    "patient.name": "case-insensitive; Levenshtein distance <= 2 counts as a match (ASR spells names differently)",
+    "patient.ageYears": "exact",
+    "complaint.keywords": "every keyword must appear (case-insensitive) in the extracted complaint terms or their evidence text",
+    "complaint.mustNotContain": "none of these may appear in the extracted complaint terms",
+    "complaint.durationDays": "exact; null means no duration should be extracted",
+    "vitals": "exact numbers; temperature compared in the unit spoken; only listed vitals are scored",
+    "medications": "matched by canonical generic name; only the listed keys are compared",
+    "mayAlsoContain": "an extra medication not in the list is a false positive unless listed here and carrying the required flag",
+    "advice.tags": "exact set",
+    "referral": "null means no referral should be extracted; 'to' is a case-insensitive substring match",
+    "followUp": "null means no valid follow-up should be extracted; 'date' is computed from visitDate",
+    "flags": "each expected {code, target} must appear: same code, and the produced target contains the expected target (case-insensitive). Extra flags are listed in the report, not penalised."
+  },
+  "scripts": [
+    {
+      "id": "S01",
+      "tests": "basic clean note; number words; temperature unit inferred from range (no flag)",
+      "noisyVariant": true,
+      "text": "Patient Noor, thirty-eight years. Complains of fever for three days. Temperature one hundred and one. Gave paracetamol five hundred milligrams three times a day for three days. Review after three days.",
+      "expect": {
+        "patient": { "name": "Noor", "ageYears": 38 },
+        "complaint": { "keywords": ["fever"], "durationDays": 3 },
+        "vitals": { "temp": { "value": 101, "unit": "F" } },
+        "medications": [
+          { "name": "paracetamol", "dose": 500, "unit": "mg", "perDay": 3, "durationDays": 3 }
+        ],
+        "advice": { "tags": [] },
+        "referral": null,
+        "followUp": { "kind": "days", "days": 3 },
+        "flags": []
+      }
+    },
+    {
+      "id": "S02",
+      "tests": "BP and pulse; 'once at night' timing; 'worse in the mornings' must not become a follow-up or a medicine timing",
+      "noisyVariant": true,
+      "text": "Patient Ramesh, fifty-two. Sneezing and runny nose for one week, worse in the mornings. BP one forty over ninety. Pulse eighty-eight. Gave cetirizine ten milligrams once at night for five days. Follow up in one week.",
+      "expect": {
+        "patient": { "name": "Ramesh", "ageYears": 52 },
+        "complaint": { "keywords": ["sneezing", "runny nose"], "durationDays": 7 },
+        "vitals": { "bp": { "sys": 140, "dia": 90 }, "pulse": 88 },
+        "medications": [
+          { "name": "cetirizine", "dose": 10, "unit": "mg", "perDay": 1, "timing": ["night"], "durationDays": 5 }
+        ],
+        "advice": { "tags": [] },
+        "referral": null,
+        "followUp": { "kind": "days", "days": 7 },
+        "flags": []
+      }
+    },
+    {
+      "id": "S03",
+      "tests": "urgent referral; 'seven months pregnant' must not become the complaint duration; unclear follow-up",
+      "noisyVariant": false,
+      "text": "Patient Sunita, twenty-six, seven months pregnant. Swelling of feet and headache since yesterday. BP one sixty over one hundred and ten. Referred to the district hospital today. Follow up after delivery.",
+      "expect": {
+        "patient": { "name": "Sunita", "ageYears": 26 },
+        "complaint": { "keywords": ["swelling", "headache"], "durationDays": 1 },
+        "vitals": { "bp": { "sys": 160, "dia": 110 } },
+        "medications": [],
+        "advice": { "tags": [] },
+        "referral": { "to": "district hospital", "urgent": true },
+        "followUp": null,
+        "flags": [ { "code": "UNCLEAR", "target": "followUp" } ]
+      }
+    },
+    {
+      "id": "S04",
+      "tests": "child; 'O R S' alias; prn medicine with no dose; two medicines; advice tags",
+      "noisyVariant": false,
+      "text": "Patient baby Aarav, two years, brought by mother. Loose motions since two days. Gave O R S after every loose stool, and zinc twenty milligrams once daily for fourteen days. Advised mother to continue breastfeeding and give plenty of fluids. Review in five days.",
+      "expect": {
+        "patient": { "name": "Aarav", "ageYears": 2 },
+        "complaint": { "keywords": ["loose motions"], "durationDays": 2 },
+        "vitals": {},
+        "medications": [
+          { "name": "ors", "prn": true },
+          { "name": "zinc", "dose": 20, "unit": "mg", "perDay": 1, "durationDays": 14 }
+        ],
+        "advice": { "tags": ["breastfeeding", "fluids"] },
+        "referral": null,
+        "followUp": { "kind": "days", "days": 5 },
+        "flags": [ { "code": "MISSING_DETAIL", "target": "ors" } ]
+      }
+    },
+    {
+      "id": "S05",
+      "tests": "spoken correction ('sorry, make that'); with food; weeks",
+      "noisyVariant": false,
+      "text": "Patient Lakshmi, sixty years. Pain in both knees for two months. Gave diclofenac fifty milligrams twice a day after food for five days. Sorry, make that ibuprofen four hundred milligrams twice a day after food for five days. Review in two weeks.",
+      "expect": {
+        "patient": { "name": "Lakshmi", "ageYears": 60 },
+        "complaint": { "keywords": ["knee"], "durationDays": 60 },
+        "vitals": {},
+        "medications": [
+          { "name": "ibuprofen", "dose": 400, "unit": "mg", "perDay": 2, "durationDays": 5, "withFood": "after" }
+        ],
+        "mayAlsoContain": [ { "name": "diclofenac", "requireFlag": "CORRECTION_CUE" } ],
+        "advice": { "tags": [] },
+        "referral": null,
+        "followUp": { "kind": "days", "days": 14 },
+        "flags": [ { "code": "CORRECTION_CUE", "target": "medications" } ]
+      }
+    },
+    {
+      "id": "S06",
+      "tests": "missing follow-up (red); decimal temperature; hard drug name for ASR",
+      "noisyVariant": true,
+      "text": "Patient Kavita, thirty-three. Burning while passing urine for two days. Temperature ninety-nine point eight. Gave nitrofurantoin one hundred milligrams twice a day for five days. Advised to drink plenty of water.",
+      "expect": {
+        "patient": { "name": "Kavita", "ageYears": 33 },
+        "complaint": { "keywords": ["burning"], "durationDays": 2 },
+        "vitals": { "temp": { "value": 99.8, "unit": "F" } },
+        "medications": [
+          { "name": "nitrofurantoin", "dose": 100, "unit": "mg", "perDay": 2, "durationDays": 5 }
+        ],
+        "advice": { "tags": ["fluids"] },
+        "referral": null,
+        "followUp": null,
+        "flags": [ { "code": "MISSING", "target": "followUp" } ]
+      }
+    },
+    {
+      "id": "S07",
+      "tests": "visit reason without symptoms; weight; 'continue' = ongoing (no duration needed); months",
+      "noisyVariant": false,
+      "text": "Patient Mohan, seventy. Came for a blood pressure check. BP one fifty over ninety-five. Weight sixty-two kilos. Continue amlodipine five milligrams once daily. Review in one month.",
+      "expect": {
+        "patient": { "name": "Mohan", "ageYears": 70 },
+        "complaint": { "keywords": ["blood pressure"], "durationDays": null },
+        "vitals": { "bp": { "sys": 150, "dia": 95 }, "weightKg": 62 },
+        "medications": [
+          { "name": "amlodipine", "dose": 5, "unit": "mg", "perDay": 1, "ongoing": true }
+        ],
+        "advice": { "tags": [] },
+        "referral": null,
+        "followUp": { "kind": "days", "days": 30 },
+        "flags": []
+      }
+    },
+    {
+      "id": "S08",
+      "tests": "small talk and fillers ignored; qualitative temperature; dose without unit ('six fifty'); conditional follow-up",
+      "noisyVariant": false,
+      "text": "Okay so, patient Imran, twenty-nine. He was saying it is very hot these days. Anyway, headache and body ache since morning. Temperature normal. Gave paracetamol six fifty, one tablet three times a day for two days. If not better, come back.",
+      "expect": {
+        "patient": { "name": "Imran", "ageYears": 29 },
+        "complaint": { "keywords": ["headache", "body ache"], "mustNotContain": ["hot"], "durationDays": 0 },
+        "vitals": { "temp": { "qualitative": "normal" } },
+        "medications": [
+          { "name": "paracetamol", "dose": 650, "unit": "mg", "perDay": 3, "durationDays": 2 }
+        ],
+        "advice": { "tags": [] },
+        "referral": null,
+        "followUp": { "kind": "if_worse" },
+        "flags": [ { "code": "UNIT_INFERRED", "target": "paracetamol" } ]
+      }
+    },
+    {
+      "id": "S09",
+      "tests": "negation ('No pain'); non-urgent referral; weekday follow-up resolved to a date",
+      "noisyVariant": false,
+      "text": "Patient Geeta, forty-one. Blurred vision for distance, slowly over six months. No pain. Referred to the eye hospital in the district for a check-up. Follow up on Monday.",
+      "expect": {
+        "patient": { "name": "Geeta", "ageYears": 41 },
+        "complaint": { "keywords": ["blurred vision"], "mustNotContain": ["pain"], "durationDays": 180 },
+        "vitals": {},
+        "medications": [],
+        "advice": { "tags": [] },
+        "referral": { "to": "eye hospital", "urgent": false },
+        "followUp": { "kind": "date", "date": "2026-10-05" },
+        "flags": []
+      }
+    },
+    {
+      "id": "S10",
+      "tests": "Celsius temperature; two medicines; prn syrup with no dose",
+      "noisyVariant": false,
+      "text": "Patient Raju, eight years, brought by father. Ear pain for two days. Temperature thirty-eight point two. Gave amoxicillin two hundred and fifty milligrams three times a day for five days, and paracetamol syrup when needed for pain. Review after five days.",
+      "expect": {
+        "patient": { "name": "Raju", "ageYears": 8 },
+        "complaint": { "keywords": ["ear pain"], "durationDays": 2 },
+        "vitals": { "temp": { "value": 38.2, "unit": "C" } },
+        "medications": [
+          { "name": "amoxicillin", "dose": 250, "unit": "mg", "perDay": 3, "durationDays": 5 },
+          { "name": "paracetamol", "prn": true }
+        ],
+        "advice": { "tags": [] },
+        "referral": null,
+        "followUp": { "kind": "days", "days": 5 },
+        "flags": [ { "code": "MISSING_DETAIL", "target": "paracetamol" } ]
+      }
+    }
+  ]
+}
