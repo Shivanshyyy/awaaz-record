@@ -40,7 +40,8 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,webmanifest,mp3}'],
+        // the Hindi clip list must be cached too, or offline the app would think no clips exist
+        globPatterns: ['**/*.{js,css,html,svg,png,webmanifest,mp3}', 'audio/hi/manifest.json'],
         // models and onnx runtime files are cached on demand by "Prepare offline mode" (Phase 1)
         globIgnores: ['models/**', 'ort/**'],
         navigateFallback: `${base}index.html`,

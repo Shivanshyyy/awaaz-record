@@ -12,11 +12,13 @@ interface Props {
   record: VisitRecord;
   row: Row;
   onClose(): void;
+  /** a saved record: look, but do not change */
+  readOnly?: boolean;
 }
 
 // The bottom sheet for one detail: what was heard, the words it came from (with a play button for that part of
 // the recording), the question for the worker, and the ways to answer it.
-export function EvidenceSheet({ record, row, onClose }: Props) {
+export function EvidenceSheet({ record, row, onClose, readOnly = false }: Props) {
   const visit = useVisit();
   const sheet = useRef<HTMLDivElement>(null);
   const hasValue = !row.empty;
@@ -85,12 +87,14 @@ export function EvidenceSheet({ record, row, onClose }: Props) {
           )}
         </section>
 
-        <section aria-label="Change this" className="space-y-3">
-          <h3 className="text-base font-bold text-ink-soft">{hasValue ? 'Change it' : 'Add it'}</h3>
-          <RowEditor record={record} row={row} onSave={save} />
-        </section>
+        {!readOnly && (
+          <section aria-label="Change this" className="space-y-3">
+            <h3 className="text-base font-bold text-ink-soft">{hasValue ? 'Change it' : 'Add it'}</h3>
+            <RowEditor record={record} row={row} onSave={save} />
+          </section>
+        )}
 
-        {!row.resolved && row.status === 'check' && hasValue && (
+        {!readOnly && !row.resolved && row.status === 'check' && hasValue && (
           <Button
             variant="secondary"
             data-testid="sheet-looks-right"
@@ -102,7 +106,7 @@ export function EvidenceSheet({ record, row, onClose }: Props) {
             Looks right
           </Button>
         )}
-        {row.canNa && !row.resolved && (
+        {!readOnly && row.canNa && !row.resolved && (
           <Button
             variant="secondary"
             data-testid="sheet-na"
@@ -114,7 +118,7 @@ export function EvidenceSheet({ record, row, onClose }: Props) {
             Not applicable
           </Button>
         )}
-        {row.editor === 'medName' && row.group && (
+        {!readOnly && row.editor === 'medName' && row.group && (
           <Button
             variant="secondary"
             data-testid="sheet-remove-medicine"

@@ -1,0 +1,166 @@
+{
+  "reviewedByHindiSpeaker": false,
+  "clips": [
+    {
+      "id": "consent",
+      "group": "Before recording",
+      "hindi": "नमस्ते। आपका रिकॉर्ड सही बनाने के लिए, हम आपकी जाँच के बारे में एक छोटी-सी रिकॉर्डिंग करना चाहते हैं। यह रिकॉर्डिंग सिर्फ़ इसी फ़ोन में रहेगी, और रिकॉर्ड पक्का होते ही मिटा दी जाएगी। क्या आपकी इजाज़त है?",
+      "romanized": "Namaste. Aapka record sahi banane ke liye, hum aapki jaanch ke baare mein ek chhoti-si recording karna chahte hain. Yeh recording sirf isi phone mein rahegi, aur record pakka hote hi mita di jaayegi. Kya aapki ijaazat hai?",
+      "english": "Hello. To make your record accurate, we would like to make a short recording about your check-up. The recording stays only on this phone and is deleted as soon as the record is confirmed. Do we have your permission?"
+    },
+    {
+      "id": "intro",
+      "group": "Opening and closing",
+      "hindi": "नमस्ते। आज की जाँच के बारे में कुछ ज़रूरी बातें ध्यान से सुनिए।",
+      "romanized": "Namaste. Aaj ki jaanch ke baare mein kuch zaroori baatein dhyaan se suniye.",
+      "english": "Hello. Please listen carefully to a few important things about today's check-up."
+    },
+    {
+      "id": "worse",
+      "group": "Opening and closing",
+      "hindi": "अगर तबीयत बिगड़ जाए, तो तुरंत क्लिनिक आइए।",
+      "romanized": "Agar tabiyat bigad jaaye, to turant clinic aaiye.",
+      "english": "If you feel worse, come to the clinic right away."
+    },
+    {
+      "id": "keep_slip",
+      "group": "Opening and closing",
+      "hindi": "यह पर्ची संभालकर रखिए, और अगली बार साथ लाइए।",
+      "romanized": "Yeh parchi sambhaalkar rakhiye, aur agli baar saath laaiye.",
+      "english": "Keep this slip safe and bring it with you next time."
+    },
+    {
+      "id": "outro",
+      "group": "Opening and closing",
+      "hindi": "धन्यवाद। अपना ध्यान रखिए।",
+      "romanized": "Dhanyavaad. Apna dhyaan rakhiye.",
+      "english": "Thank you. Take care of yourself."
+    },
+    {
+      "id": "med_1x",
+      "group": "Medicines",
+      "hindi": "पर्ची पर लिखी दवा दिन में एक बार लीजिए।",
+      "romanized": "Parchi par likhi dawa din mein ek baar lijiye.",
+      "english": "Take the medicine written on your slip once a day."
+    },
+    {
+      "id": "med_1x_night",
+      "group": "Medicines",
+      "hindi": "पर्ची पर लिखी दवा दिन में एक बार, रात को लीजिए।",
+      "romanized": "Parchi par likhi dawa din mein ek baar, raat ko lijiye.",
+      "english": "Take the medicine written on your slip once a day, at night."
+    },
+    {
+      "id": "med_2x",
+      "group": "Medicines",
+      "hindi": "पर्ची पर लिखी दवा दिन में दो बार लीजिए — सुबह और रात को।",
+      "romanized": "Parchi par likhi dawa din mein do baar lijiye — subah aur raat ko.",
+      "english": "Take the medicine written on your slip twice a day — morning and night."
+    },
+    {
+      "id": "med_3x",
+      "group": "Medicines",
+      "hindi": "पर्ची पर लिखी दवा दिन में तीन बार लीजिए — सुबह, दोपहर और रात को।",
+      "romanized": "Parchi par likhi dawa din mein teen baar lijiye — subah, dopahar aur raat ko.",
+      "english": "Take the medicine written on your slip three times a day — morning, afternoon and night."
+    },
+    {
+      "id": "med_multi",
+      "group": "Medicines",
+      "hindi": "हर दवा कब लेनी है, यह आपकी पर्ची पर सुबह, दोपहर और रात के निशानों से दिखाया गया है।",
+      "romanized": "Har dawa kab leni hai, yeh aapki parchi par subah, dopahar aur raat ke nishaanon se dikhaaya gaya hai.",
+      "english": "When to take each medicine is shown on your slip with morning, afternoon and night symbols."
+    },
+    {
+      "id": "med_after_food",
+      "group": "Medicines",
+      "hindi": "दवा खाना खाने के बाद लीजिए।",
+      "romanized": "Dawa khaana khaane ke baad lijiye.",
+      "english": "Take the medicine after eating."
+    },
+    {
+      "id": "med_finish",
+      "group": "Medicines",
+      "hindi": "दवा का पूरा कोर्स ख़त्म कीजिए, चाहे बीच में ही आराम मिल जाए।",
+      "romanized": "Dawa ka poora course khatam kijiye, chaahe beech mein hi aaraam mil jaaye.",
+      "english": "Finish the full course of medicine, even if you feel better partway through."
+    },
+    {
+      "id": "adv_water",
+      "group": "Advice",
+      "hindi": "ख़ूब पानी पीजिए।",
+      "romanized": "Khoob paani peejiye.",
+      "english": "Drink plenty of water."
+    },
+    {
+      "id": "adv_rest",
+      "group": "Advice",
+      "hindi": "अच्छे से आराम कीजिए।",
+      "romanized": "Achchhe se aaraam kijiye.",
+      "english": "Rest well."
+    },
+    {
+      "id": "adv_breastfeed",
+      "group": "Advice",
+      "hindi": "बच्चे को माँ का दूध पिलाना जारी रखिए।",
+      "romanized": "Bachche ko maa ka doodh pilaana jaari rakhiye.",
+      "english": "Keep giving the baby breast milk."
+    },
+    {
+      "id": "ref_go",
+      "group": "Referral",
+      "hindi": "पर्ची पर लिखे अस्पताल में जाइए, और यह पर्ची अपने साथ ले जाइए।",
+      "romanized": "Parchi par likhe aspataal mein jaaiye, aur yeh parchi apne saath le jaaiye.",
+      "english": "Go to the hospital written on your slip, and take this slip with you."
+    },
+    {
+      "id": "ref_today",
+      "group": "Referral",
+      "hindi": "वहाँ आज ही जाइए, देर मत कीजिए।",
+      "romanized": "Wahaan aaj hi jaaiye, der mat kijiye.",
+      "english": "Go there today itself; don't delay."
+    },
+    {
+      "id": "fu_3",
+      "group": "Follow-up",
+      "hindi": "तीन दिन बाद दोबारा क्लिनिक आइए।",
+      "romanized": "Teen din baad dobaara clinic aaiye.",
+      "english": "Come back to the clinic after three days."
+    },
+    {
+      "id": "fu_5",
+      "group": "Follow-up",
+      "hindi": "पाँच दिन बाद दोबारा क्लिनिक आइए।",
+      "romanized": "Paanch din baad dobaara clinic aaiye.",
+      "english": "Come back to the clinic after five days."
+    },
+    {
+      "id": "fu_7",
+      "group": "Follow-up",
+      "hindi": "एक हफ़्ते बाद दोबारा क्लिनिक आइए।",
+      "romanized": "Ek hafte baad dobaara clinic aaiye.",
+      "english": "Come back to the clinic after one week."
+    },
+    {
+      "id": "fu_14",
+      "group": "Follow-up",
+      "hindi": "दो हफ़्ते बाद दोबारा क्लिनिक आइए।",
+      "romanized": "Do hafte baad dobaara clinic aaiye.",
+      "english": "Come back to the clinic after two weeks."
+    },
+    {
+      "id": "fu_30",
+      "group": "Follow-up",
+      "hindi": "एक महीने बाद दोबारा क्लिनिक आइए।",
+      "romanized": "Ek mahine baad dobaara clinic aaiye.",
+      "english": "Come back to the clinic after one month."
+    },
+    {
+      "id": "fu_slip",
+      "group": "Follow-up",
+      "hindi": "दोबारा आने की तारीख़ आपकी पर्ची पर लिखी है।",
+      "romanized": "Dobaara aane ki taareekh aapki parchi par likhi hai.",
+      "english": "The date to come back is written on your slip."
+    }
+  ]
+}

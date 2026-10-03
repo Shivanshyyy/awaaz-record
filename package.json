@@ -8,9 +8,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "predev": "node scripts/copy-ort.mjs",
+    "predev": "node scripts/copy-ort.mjs && node scripts/build-hindi-clips.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/copy-ort.mjs",
+    "prebuild": "node scripts/copy-ort.mjs && node scripts/build-hindi-clips.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --port 4173 --strictPort",
     "typecheck": "tsc --noEmit",
@@ -20,7 +20,8 @@
     "fetch-models": "node scripts/fetch-models.mjs",
     "tts-audio": "node scripts/make-tts-audio.mjs",
     "eval": "node scripts/eval.mjs",
-    "icons": "node scripts/make-icons.mjs"
+    "icons": "node scripts/make-icons.mjs",
+    "hindi-clips": "node scripts/build-hindi-clips.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "^3.8.1",

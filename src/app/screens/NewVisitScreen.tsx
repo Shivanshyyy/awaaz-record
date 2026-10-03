@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { playClip, stopClips, type ClipOutcome } from '../../patient/audio';
+import { clip, hindiReviewed } from '../../patient/clips';
 import { Button } from '../../ui/Button';
 import { formatClock } from '../../ui/format';
 import { Icon } from '../../ui/Icon';
@@ -75,6 +77,55 @@ function PasteTranscript() {
   );
 }
 
+const CONSENT = clip('consent');
+
+function ConsentStep() {
+  const visit = useVisit();
+  const [playing, setPlaying] = useState(false);
+  const [outcome, setOutcome] = useState<ClipOutcome | null>(null);
+  const play = async () => {
+    setPlaying(true);
+    setOutcome(null);
+    setOutcome(await playClip('consent'));
+    setPlaying(false);
+  };
+  return (
+    <section aria-label="Patient consent" className="space-y-4">
+      <p className="text-lg">Ask the patient before recording. Play this message in Hindi, or ask in your own words.</p>
+      <blockquote data-testid="consent-english" className="rounded-xl border-l-4 border-brand-700 bg-brand-50 p-3 text-lg">
+        <span className="block text-sm font-bold uppercase tracking-wide text-ink-soft">What the Hindi message says</span>
+        {CONSENT.english}
+      </blockquote>
+      {!hindiReviewed && <p className="rounded-xl border-2 border-check bg-check-bg p-2 text-base font-semibold text-check">The Hindi text has not yet been checked by a Hindi speaker.</p>}
+      <Button variant="secondary" icon={playing ? 'stop' : 'play'} onClick={() => (playing ? (stopClips(), setPlaying(false)) : void play())} data-testid="consent-play">
+        {playing ? 'Stop' : 'Play consent in Hindi'}
+      </Button>
+      {outcome && (
+        <div data-testid="consent-outcome" className="space-y-1">
+          <p className={`flex items-center gap-1 text-base font-bold ${outcome === 'text' ? 'text-check' : 'text-ok'}`}>
+            <Icon name={outcome === 'text' ? 'alert' : 'check'} size={18} />
+            {outcome === 'mp3' ? 'Played from the recording' : outcome === 'speech' ? 'Played with this phone\u2019s Hindi voice' : 'Audio not available on this phone: the Hindi text is shown instead'}
+          </p>
+          {outcome === 'text' && (
+            <p lang="hi" className="text-xl font-semibold leading-8">
+              {CONSENT.hindi}
+            </p>
+          )}
+        </div>
+      )}
+      <Button onClick={() => visit.agree('clip')} data-testid="consent-agree">
+        Patient agreed
+      </Button>
+      <Button variant="secondary" onClick={() => visit.agree('verbal')} data-testid="consent-verbal">
+        Consent asked in another language: patient agreed
+      </Button>
+      <Button variant="secondary" onClick={visit.decline} data-testid="consent-decline">
+        Patient declined: fill in by hand
+      </Button>
+    </section>
+  );
+}
+
 export function NewVisitScreen() {
   const visit = useVisit();
   const working = visit.stage === 'decoding' || visit.stage === 'transcribing';
@@ -86,7 +137,7 @@ export function NewVisitScreen() {
       <h2 id="new-title" className="text-2xl font-bold">
         New visit
       </h2>
-      <OfflineNotice />
+      {visit.stage === 'consent' ? <ConsentStep /> : <OfflineNotice />}
 
       {visit.stage === 'idle' && (
         <>

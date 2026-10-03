@@ -1,8 +1,9 @@
-import { expect, test, type Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { expect, test } from './test';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { installFakeMic } from './fake-mic';
-import { shot } from './helpers';
+import { setPin, shot } from './helpers';
 
 const BASE = '/awaaz-record/?dev=1';
 
@@ -59,6 +60,7 @@ test('Confirm stays disabled until every amber and red item is resolved', async 
   await shot(page, '22-review-all-checked');
 
   await confirm.click();
+  await setPin(page); // the first save asks for a PIN
   await expect(page.getByTestId('confirmed')).toBeVisible();
 });
 

@@ -180,6 +180,14 @@ describe('advice', () => {
     expect(r.advice.other.value).toEqual(['avoid cold drinks']);
   });
 
+  it('reads a bare "rest" inside advice, but not "the rest of the family"', () => {
+    expect(run('Advised plenty of fluids and rest.').advice.tags.value).toEqual(['fluids', 'rest']);
+    expect(run('Advised rest.').advice.tags.value).toEqual(['rest']);
+    expect(run('Patient needs rest.').advice.tags.value).toEqual(['rest']);
+    expect(run('The rest of the family is well.').advice.tags.value).toBeNull();
+    expect(run('Cough for 3 days. Rest is not needed.').advice.tags.value).toBeNull();
+  });
+
   it('does not take "passing water" for fluid advice, or "stop breastfeeding" for a recommendation', () => {
     expect(run('Burning while passing water for two days.').advice.tags.value).toBeNull();
     const r = run('Advised to stop breastfeeding.');

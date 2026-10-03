@@ -91,4 +91,4 @@ Files: `public/audio/hi/<ID>.mp3` (e.g. `public/audio/hi/med_2x.mp3`). Fallback 
 | | | | | |
 
 ## Lines waiting for translation
-_(none yet)_
+- `med_needed` — `NEEDS TRANSLATION + REVIEW` — English: "Take this medicine only when you need it, as written on your slip." Why: the playlist rules send a medicine "only when needed" to `med_multi`, which says the timing is shown with morning, afternoon and night symbols. That is not true for a medicine taken only when needed, so until this line exists the slip shows the "when needed" icon and the English words, and plays `med_multi`.

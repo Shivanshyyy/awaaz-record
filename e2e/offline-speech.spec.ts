@@ -1,8 +1,8 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './test';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { installDeniedMic, installFakeMic } from './fake-mic';
-import { shot } from './helpers';
+import { giveConsent, shot } from './helpers';
 
 const clip = path.resolve('eval/tts/S01.wav');
 const BASE = '/awaaz-record/';
@@ -61,6 +61,7 @@ test('prepare online, then record and transcribe with the network off', async ({
 
   // 3. Record through the fake microphone.
   await page.getByRole('navigation', { name: 'Main' }).getByRole('button', { name: 'New visit' }).click();
+  await giveConsent(page);
   await page.getByTestId('record-button').click();
   await expect(page.getByTestId('record-timer')).toBeVisible();
   await page.waitForTimeout(1500);
@@ -118,6 +119,7 @@ test('a blocked microphone shows plain help and a way to try again', async ({ pa
   await installDeniedMic(page);
   await page.goto(BASE);
   await page.getByRole('navigation', { name: 'Main' }).getByRole('button', { name: 'New visit' }).click();
+  await giveConsent(page);
   await page.getByTestId('record-button').click();
   await expect(page.getByRole('alert')).toContainText('microphone is blocked');
   await expect(page.getByRole('button', { name: 'Try again' })).toBeVisible();
@@ -167,6 +169,7 @@ test('a silent recording is refused instead of being sent to the model', async (
   });
   await page.goto(BASE);
   await page.getByRole('navigation', { name: 'Main' }).getByRole('button', { name: 'New visit' }).click();
+  await giveConsent(page);
   await page.getByTestId('record-button').click();
   await page.waitForTimeout(2500);
   await page.getByTestId('stop-button').click();

@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { TabName } from './meta';
 
-export type Route = { name: TabName | 'prepare' };
+export type Route = { name: TabName | 'prepare' } | { name: 'record'; id: string };
 
 interface Router {
   route: Route;

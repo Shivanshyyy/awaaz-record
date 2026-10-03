@@ -23,6 +23,20 @@ export function extractAdvice(ctx: ExtractContext, exclude: Span[]): { tags: Fie
     tagEvidence.push(evidenceFor(ctx, m.start, m.end));
   }
 
+  // A bare "rest" ("plenty of fluids and rest") counts when it sits in a clause that is giving advice.
+  const REST_LEADS = new Set(['take', 'get', 'complete', 'adequate', 'plenty', 'bed', 'need', 'needs', 'and']);
+  ctx.tokens.forEach((t, i) => {
+    if (t.lower !== 'rest' || ctx.tokens[i + 1]?.lower === 'of' || matched.some((m) => t.start >= m.start && t.end <= m.end)) return;
+    const from = clauseStart(ctx.tokens, i);
+    const to = clauseEnd(ctx.tokens, i);
+    const clause = ctx.tokens.slice(from, to);
+    const advising = clause.some((c) => ADVICE_VERBS.has(c.lower)) || tags.length > 0 && matched.some((m) => m.start >= ctx.tokens[from]!.start && m.end <= ctx.tokens[to - 1]!.end);
+    if (!advising && !REST_LEADS.has(ctx.tokens[i - 1]?.lower ?? '')) return;
+    if (!tags.includes('rest')) tags.push('rest');
+    tagEvidence.push(evidenceFor(ctx, t.start, t.end));
+    matched.push({ start: t.start, end: t.end });
+  });
+
   // Other advice: the worker's own words after "advised", kept verbatim, only when no known advice sits in that sentence.
   const others: string[] = [];
   const otherEvidence: Evidence[] = [];

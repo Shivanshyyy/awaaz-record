@@ -42,3 +42,35 @@ button {
   outline: 3px solid var(--color-brand-700);
   outline-offset: 2px;
 }
+
+/* Printing: only the patient slip, black on white. */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .slip,
+  .slip * {
+    visibility: visible;
+  }
+  .no-print {
+    display: none !important;
+  }
+  header,
+  nav {
+    display: none !important;
+  }
+  .slip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-width: 1px;
+    border-radius: 0;
+    color: #000;
+    background: #fff;
+  }
+  @page {
+    size: A5 portrait;
+    margin: 10mm;
+  }
+}

@@ -7,10 +7,12 @@ import { NewVisitScreen } from './screens/NewVisitScreen';
 import { RecordsScreen } from './screens/RecordsScreen';
 import { TasksScreen } from './screens/TasksScreen';
 import { PrepareScreen } from './screens/PrepareScreen';
+import { RecordScreen } from './screens/RecordScreen';
+import { VaultProvider } from './vault';
 import { OfflineBadge } from './OfflineBadge';
 import { UpdateBanner } from './UpdateBanner';
 import { refreshOfflineStatus } from './offline-store';
-import { VisitProvider } from './visit';
+import { useVisit, VisitProvider } from './visit';
 
 function Screen() {
   const { route } = useRouter();
@@ -25,7 +27,15 @@ function Screen() {
       return <TasksScreen />;
     case 'prepare':
       return <PrepareScreen />;
+    case 'record':
+      return <RecordScreen id={route.id} />;
   }
+}
+
+// Tests read this to prove the recording is gone after Confirm. It holds no patient data.
+function AudioProbe() {
+  const { hasAudio } = useVisit();
+  return <span hidden data-testid="audio-state" data-has-audio={String(hasAudio)} />;
 }
 
 function BottomNav() {
@@ -69,12 +79,14 @@ export function App() {
 
   return (
     <RouterProvider>
+      <VaultProvider>
       <VisitProvider>
         <div className="flex min-h-dvh flex-col">
           <header className="sticky top-0 z-10 flex min-h-14 items-center gap-2 bg-brand-700 px-4 text-white">
             <h1 className="text-lg font-bold">{APP_NAME}</h1>
             <OfflineBadge />
           </header>
+          <AudioProbe />
           <UpdateBanner />
           <main className="mx-auto w-full max-w-xl flex-1 px-4 pb-24 pt-4">
             <Screen />
@@ -82,6 +94,7 @@ export function App() {
           <BottomNav />
         </div>
       </VisitProvider>
+      </VaultProvider>
     </RouterProvider>
   );
 }
