@@ -11,14 +11,14 @@
 _(filled in as the night goes on; each item has exact steps)_
 
 1. **Where to run Claude Code.** The project is the folder `~/Desktop/awaaz_records/awaaz-record-kit/` (that is the git repo). Tonight's session was started one level up, so CLAUDE.md and `.claude/settings.json` were not auto-loaded. To resume: `cd ~/Desktop/awaaz_records/awaaz-record-kit && claude`, then paste Prompt 2.
-2. **Turn on GitHub Pages (needed for the live URL).** Open https://github.com/Shivanshyyy/awaaz-record → *Settings* → *Pages* → under "Build and deployment" set *Source* to **GitHub Actions**. If the repo is private: *Settings* → *General* → *Danger Zone* → *Change visibility* → **Make public** (the hackathon needs it public, and Pages on a private repo needs a paid plan). Then *Actions* tab → "Deploy to GitHub Pages" → *Run workflow* (or push any commit). The site should appear at https://shivanshyyy.github.io/awaaz-record/ (not verified yet).
+2. **Turn on GitHub Pages (needed for the live URL).** Open https://github.com/Shivanshyyy/awaaz-record → *Settings* → *Pages* → under "Build and deployment" set *Source* to **GitHub Actions**. The repo is already public (checked). Then *Actions* tab → "Deploy to GitHub Pages" → *Run workflow* (or push any commit). The site should appear at https://shivanshyyy.github.io/awaaz-record/ (not verified yet).
 3. **Optional security tidy-up.** While checking whether git could push, I ran the macOS keychain credential helper and its output printed the stored GitHub OAuth token once into tonight's session log. It is not in any file or commit. If you want to be safe: revoke it at https://github.com/settings/applications (Authorized OAuth Apps) and sign in again when you next push.
 
 ## Status
 | Phase | State |
 |---|---|
 | 0 Setup | **done** 03:42 IST |
-| 1 Offline speech | not started |
+| 1 Offline speech | in progress (started 03:42 IST) |
 | 2 Extraction + review | not started |
 | 3 Record, privacy, patient | not started |
 | 4 Evaluation | not started |
@@ -38,4 +38,11 @@ _(filled in as the night goes on; each item has exact steps)_
 - Playwright (`npm run e2e`, 2 tests) passes: shell fits 360 px with four tabs ≥ 48 px, every tab opens, no sideways scroll, and the shell reloads with the network off. Screenshots: `docs/screens/00-today.png` … `03-tasks.png`.
 - Model files in `public/models/`: 44,497,724 bytes = 44.5 MB (42.4 MiB), sha256-checked, git-ignored. Under the 100 MB budget.
 - Whisper tiny.en q8 with word timestamps verified in Node first: a 12.3 s TTS clip transcribed in 0.41 s on this machine (Apple M5 Pro) — a Node figure, not a phone figure.
-- Push: attempted at the end of the phase; outcome is in the next log entry.
+- Pushed to `origin/main` (commit `c4b7eb6`), workflow file included. The repo is already public (checked with the public GitHub API); `has_pages` is false, so only the Pages switch in WHEN YOU WAKE UP item 2 is left.
+
+### Phase 1 — Offline speech · plan (03:42 IST)
+1. ASR in a Web Worker (`src/asr/`): Transformers.js with `allowRemoteModels=false`, models from `/awaaz-record/models/`, ONNX runtime `.mjs`/`.wasm` copied to `/awaaz-record/ort/` at build; word timestamps; progress events.
+2. Audio (`src/audio/`): MediaRecorder with permission states, 90 s cap, timer, level meter, stop/redo; decode to 16 kHz mono Float32; silence check so Whisper never runs on an empty recording.
+3. Offline: service-worker CacheFirst route for models + ort; "Prepare offline mode" screen (progress, size, storage persist) that only says "Ready offline ✓" after checking the cache contents; transcript view where a tapped word plays its audio span; `?dev=1` upload helper.
+4. Test audio: `npm run tts-audio` (macOS `say`, Indian-English voice, 16 kHz mono, S01–S10 + synthetic-noise variants → `eval/tts/`, git-ignored); Playwright `e2e/offline-speech.spec.ts` with fake mic.
+5. Acceptance: online prepare → offline reload → fake-mic record of S01 → transcript; zero non-local requests; UI heartbeat never stalls during transcription; log transcript + timing here; commit `phase 1`, push.
