@@ -15,7 +15,7 @@ import { createServer } from 'vite';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const AUDIO_EXTENSIONS = new Set(['.m4a', '.mp3', '.wav', '.ogg', '.webm', '.aac']);
-const MODEL = { repo: 'Xenova/whisper-tiny.en', dtype: 'q8' };
+const MODEL = { repo: 'Xenova/whisper-tiny.en', dtype: 'q8', chunkSeconds: 30, strideSeconds: 5 };
 
 const only = (process.argv.find((a) => a.startsWith('--only='))?.slice(7) ?? '').split(',').filter(Boolean);
 const skipAudio = process.argv.includes('--reference-only');
@@ -36,6 +36,7 @@ const { textToTranscript } = await load('/src/extract/transcript-from-text.ts');
 const { buildTranscript } = await load('/src/asr/transcript.ts');
 const { scoreScript, accuracy } = await load('/src/extract/score.ts');
 const { wer, wordErrors, normalizeForWer } = await load('/src/extract/wer.ts');
+const { renderEvaluation } = await load('/src/eval/report.ts');
 
 function summarize(label, rows) {
   const scores = rows.map((r) => r.score);
@@ -116,7 +117,7 @@ async function transcribe(samples) {
     await transcriber(new Float32Array(16000), { return_timestamps: 'word' }); // warm-up, not timed
   }
   const started = performance.now();
-  const out = await transcriber(samples, { return_timestamps: 'word', chunk_length_s: 30, stride_length_s: 5 });
+  const out = await transcriber(samples, { return_timestamps: 'word', chunk_length_s: MODEL.chunkSeconds, stride_length_s: MODEL.strideSeconds });
   return { out, ms: performance.now() - started };
 }
 
@@ -149,12 +150,19 @@ for (const source of sources) {
   audioResults[source.key] = { label: source.label, rows, summary: rows.length ? summarize(source.label, rows) : null };
 }
 
+function modelManifest() {
+  const file = path.join(ROOT, 'public', 'models', 'manifest.json');
+  return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {};
+}
+
 const cpus = os.cpus();
+const FRIENDLY_OS = { darwin: 'macOS (Darwin)', win32: 'Windows', linux: 'Linux' };
 const results = {
   generatedAt: new Date().toISOString(),
+  generatedOn: new Date().toLocaleDateString('en-CA'),
   visitDate: scriptsFile.visitDate,
-  machine: { cpu: cpus[0]?.model ?? 'unknown', cores: cpus.length, memoryGB: Math.round(os.totalmem() / 2 ** 30), platform: `${os.platform()} ${os.release()}`, node: process.version },
-  model: { ...MODEL, runtime: 'onnxruntime-node (Transformers.js), single run per clip, Node on a laptop, not a phone' },
+  machine: { cpu: cpus[0]?.model ?? 'unknown', cores: cpus.length, memoryGB: Math.round(os.totalmem() / 2 ** 30), platform: `${FRIENDLY_OS[os.platform()] ?? os.platform()} ${os.release()}`, node: process.version },
+  model: { ...MODEL, revision: modelManifest().models?.[0]?.revision, totalBytes: modelManifest().totalBytes, runtime: 'onnxruntime-node (Transformers.js), one run per clip' },
   ttsVoice: existsSync(path.join(ROOT, 'eval', 'tts', 'manifest.json')) ? JSON.parse(readFileSync(path.join(ROOT, 'eval', 'tts', 'manifest.json'), 'utf8')) : null,
   reference: { label: 'Reference text (the script itself): tests the extractor only', rows: referenceRows, summary: summarize('reference', referenceRows) },
   tts: audioResults.tts,
@@ -162,6 +170,11 @@ const results = {
 };
 mkdirSync(path.join(ROOT, 'eval', 'results'), { recursive: true });
 writeFileSync(path.join(ROOT, 'eval', 'results', 'latest.json'), `${JSON.stringify(results, null, 2)}\n`);
+const scriptTexts = Object.fromEntries(scriptsFile.scripts.map((sc) => [sc.id, sc.text]));
+if (only.length === 0 && !skipAudio) {
+  writeFileSync(path.join(ROOT, 'docs', 'EVALUATION.md'), renderEvaluation(results, scriptTexts));
+  console.log('wrote docs/EVALUATION.md');
+}
 
 const pct = (x) => `${(x * 100).toFixed(1)}%`;
 console.log(`\nmachine: ${results.machine.cpu}, ${results.machine.cores} cores, Node ${process.version}`);

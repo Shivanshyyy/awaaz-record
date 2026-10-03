@@ -11,13 +11,13 @@
 _(filled in as the night goes on; each item has exact steps)_
 
 1. **Where to run Claude Code.** The project is the folder `~/Desktop/awaaz_records/awaaz-record-kit/` (that is the git repo). Tonight's session was started one level up, so CLAUDE.md and `.claude/settings.json` were not auto-loaded. To resume: `cd ~/Desktop/awaaz_records/awaaz-record-kit && claude`, then paste Prompt 2.
-2. **Turn on GitHub Pages (needed for the live URL).** Open https://github.com/Shivanshyyy/awaaz-record → *Settings* → *Pages* → under "Build and deployment" set *Source* to **GitHub Actions**. The repo is already public (checked). Then *Actions* tab → "Deploy to GitHub Pages" → *Run workflow* (or push any commit). The site should appear at https://shivanshyyy.github.io/awaaz-record/ (not verified yet).
+2. **Turn on GitHub Pages (needed for the live URL).** Open https://github.com/Shivanshyyy/awaaz-record → *Settings* → *Pages* → under "Build and deployment" set *Source* to **GitHub Actions**. The repo is already public (checked). **GitHub's build already passes** (npm ci, model download, 313 tests, production build); the only step that fails is `configure-pages`, which fails because Pages is off. Then *Actions* tab → "Deploy to GitHub Pages" → *Run workflow* (or push any commit). The site should appear at https://shivanshyyy.github.io/awaaz-record/ (not verified yet).
 3. **Optional security tidy-up.** While checking whether git could push, I ran the macOS keychain credential helper and its output printed the stored GitHub OAuth token once into tonight's session log. It is not in any file or commit. If you want to be safe: revoke it at https://github.com/settings/applications (Authorized OAuth Apps) and sign in again when you next push.
 4. **Try it on your phone (needs step 2 so the site is live).** On an Android phone in Chrome, open https://shivanshyyy.github.io/awaaz-record/ · tap **Set up offline** (top right) → **Download now** (66 MB, use Wi-Fi) → wait for **Ready offline** · switch on airplane mode · close the app and open it again · **New visit** → **Start recording** → allow the microphone → read one script from `docs/RECORDINGS.md` → **Stop**. Note how long the transcript took and what it says, and tell me. Tests tonight could not use a real microphone or a phone.
 5. **If a macOS dialog about microphone access for Chromium or Playwright is on screen**, click *Don't Allow*. The tests don't need the real microphone.
 6. **Hindi: have the text checked, then add the audio.** (a) Give `docs/HINDI_CLIPS.md` to someone fluent in Hindi (10 minutes). They check the 23 lines and fill the review log at the bottom of that file; fix any wording in the file first, because fixing text is free and regenerating audio is not. (b) They also translate the one new line waiting at the bottom, `med_needed` ("Take this medicine only when you need it, as written on your slip"); I did not write it myself. (c) In ElevenLabs make one MP3 per line, named by its id (`consent.mp3`, `med_2x.mp3` …), and put them in `public/audio/hi/`. (d) Paste **Prompt 5** (`docs/PROMPTS.md`). The app already works without the audio: each line falls back to this phone's Hindi voice if it has one, and otherwise shows the Hindi text with "audio not available". While the review log is empty the app shows "The Hindi text has not yet been checked by a Hindi speaker".
 7. **Record the 13 test voice notes** from `docs/RECORDINGS.md` (about 15 minutes, a quiet room, plus 3 with a fan or TV on), save them in `recordings/` (S01 … S10, S01_noisy, S02_noisy, S06_noisy), then paste **Prompt 4**. Until then every number about speech in the docs comes from TTS-synthetic audio and is labelled that way.
-8. **A test spoke aloud once, at about 04:55.** This Mac has Hindi system voices, and an early test played the consent message through the speakers. Every test now runs with a silent speech engine, so it will not happen again. Nothing else in the project makes sound by itself.
+8. **A test spoke aloud once or twice earlier tonight (around 05:00).** This Mac has Hindi system voices, and an early test played the consent message through the speakers. Every test now runs with a silent speech engine, so it will not happen again. Nothing else in the project makes sound by itself.
 
 ## Status
 | Phase | State |
@@ -25,8 +25,8 @@ _(filled in as the night goes on; each item has exact steps)_
 | 0 Setup | **done** 03:42 IST |
 | 1 Offline speech | **done** 04:02 IST |
 | 2 Extraction + review | **done** 04:42 IST (nothing cut) |
-| 3 Record, privacy, patient | **done** 05:20 IST (nothing cut: sync, auto-lock and tasks are in) |
-| 4 Evaluation | not started |
+| 3 Record, privacy, patient | **done** 05:14 IST (nothing cut: sync, auto-lock and tasks are in) |
+| 4 Evaluation | **done** 05:27 IST (human-voice rows say "pending recordings"; PriMock57 is a later P2) |
 | 5 Polish, deploy, docs | not started |
 
 ## Log
@@ -84,7 +84,7 @@ _(filled in as the night goes on; each item has exact steps)_
 4. Patient slip: first name + age only, medicines with timing icons (mapping shown to the worker, adjustable), follow-up, referral, Hindi line per item, QR with a plain-text summary, print CSS; playlist screen with English meanings and ticks.
 5. Mock sync queue (no network request, labelled mock) + DHIS2-shaped export + `docs/DHIS2_MAPPING.md`. Checks: Playwright offline journey, raw IndexedDB has no plaintext, audio gone after confirm, QR decodes with jsqr, wrong PIN cannot decrypt (unit test).
 
-**Phase 3 result (05:20 IST)** — 313 Vitest tests and 42 Playwright tests, all green. Nothing on the cut line was dropped.
+**Phase 3 result (05:14 IST)** — 313 Vitest tests and 42 Playwright tests, all green. Nothing on the cut line was dropped.
 - **Offline journey** (`e2e/journey.spec.ts`, network off after the first load): consent (English meaning shown, Hindi text fallback) → record through the fake mic → review → correct the misheard name and age → resolve the flags → Confirm → set a PIN → encrypted save → slip → Hindi playlist. Zero requests to a non-local host and no failed local request while offline.
 - **Privacy, checked on the raw rows:** `page.evaluate` reads every IndexedDB store: only `meta`, `records` and `tasks`; the largest stored value is under 50 KB; no name, transcript, complaint or medicine text appears; the only clear-text fields are a random id, a timestamp and two states. No audio-like entry in any store or in Cache Storage, and the app reports that the recording is no longer in memory after Confirm (`data-has-audio=false`).
 - **A wrong PIN cannot decrypt** (unit tests): a key derived from the wrong PIN, even with the right salt and rounds, is refused by AES-GCM; a sealed body moved to another record id or changed by one bit is refused; five wrong PINs pause unlocking for 60 s (the pause survives a reload) and delete nothing; two idle minutes lock the app; a touch resets the timer.
@@ -93,3 +93,15 @@ _(filled in as the night goes on; each item has exact steps)_
 - **Records, tasks, sync:** records list newest first with "N waiting for signal"; read-only detail with evidence, transcript, consent and slip; tasks sorted urgent referral → overdue → due date (overdue tested by moving the clock five days); "Send" is a labelled **mock** that makes no network request at all; export gives DHIS2-shaped JSON with placeholder ids (`docs/DHIS2_MAPPING.md`).
 - **Found and fixed by the tests on the way:** the Hindi clip list was not precached (offline the app would have thought no clips existed); "rest" inside advice such as "plenty of fluids and rest" was missed; the PIN box now clears the moment it is submitted.
 - **Known gaps:** no accurate Hindi line exists for a medicine taken only when needed (added to the translation list, see item 6); slip headings are in English because new Hindi cannot be written here; the PIN protects against casual access, not against someone with a copy of the phone's storage who can try PINs offline (4 to 6 digits is small).
+
+### Phase 4 — Evaluation · plan (05:16 IST)
+1. `src/eval/report.ts` turns `eval/results/latest.json` into `docs/EVALUATION.md` as a pure function, so every number in the document is computed, never typed. `scripts/eval.mjs` writes both files.
+2. Sections: results by audio source (reference text, TTS-synthetic, my own voice = "pending recordings"), per-clip tables, where recognition breaks extraction, expected flags, extra questions, transcripts, method and the word-error-rate rules, limitations, how to reproduce.
+3. The eval also records the model revision, per-clip questions and guard warnings.
+4. A Vitest test regenerates the document from the JSON and fails if `docs/EVALUATION.md` differs, so the document cannot drift or be edited by hand. Placeholders for human recordings fill themselves when `recordings/` exists.
+5. P2 later: PriMock57 as an outside benchmark (licence first).
+
+**Phase 4 result (05:27 IST)** — 318 Vitest tests, 42 Playwright tests, all green.
+- `npm run eval` runs the 10 scripts as reference text and, if present, every clip in `eval/tts/` (TTS-synthetic) and `recordings/` (your voice), through the same Whisper model and the same extractor, and writes `eval/results/latest.json` and **`docs/EVALUATION.md`**. The document is produced by `src/eval/report.ts` from the JSON; a test fails if the committed file differs from what the JSON produces, so there are no hand-typed numbers.
+- Numbers in the document right now (this laptop, Node, one run): reference text 128/128 checks = 100.0%, 6/6 expected flags, no extra questions; TTS-synthetic audio 105/148 = 70.9%, 43 wrong values of which 19 not flagged, 6/7 expected flags, pooled word error rate 27.7%, real-time factor 0.04. "My own voice" is marked **pending recordings** and fills in by itself when `recordings/` has files (Prompt 4).
+- The document says what each number does and does not show, lists the normalisation rules for word error rate, and states its limitations (13 clips, one synthetic voice, scripted, TTS cleaner than real speech, laptop not phone, Node not browser, the ten scripts were used to tune the extractor).
