@@ -100,6 +100,8 @@ export interface VisitRecord {
   followUp: Field<FollowUp>;
   status: 'draft' | 'confirmed';
   sync: 'pending' | 'sent';
+  /** a made-up demo record, never a real patient */
+  synthetic?: boolean;
 }
 
 export function emptyField<T>(source: Source = 'voice'): Field<T> {

@@ -33,6 +33,11 @@ function Qr({ text }: { text: string }) {
 export function SlipView({ slip }: { slip: SlipData }) {
   return (
     <article data-testid="slip" aria-label="Patient slip" className="slip space-y-4 rounded-xl border-2 border-ink bg-white p-4 text-ink">
+      {slip.synthetic && (
+        <p data-testid="slip-synthetic" className="border-2 border-dashed border-ink p-2 text-center text-base font-bold uppercase tracking-wide">
+          Synthetic demo: not a real patient
+        </p>
+      )}
       <header className="flex items-start justify-between gap-3 border-b-2 border-ink pb-2">
         <div>
           <p className="text-xl font-bold">{slip.clinicName || 'Health centre'}</p>

@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { rowsOf } from '../../record/rows';
 import type { VisitRecord } from '../../record/schema';
-import { listRecords, setSyncState } from '../../store/db';
+import { demoRecords } from '../../demo/demo';
+import { deleteRecords, listRecords, saveRecord, saveTask, setSyncState } from '../../store/db';
+import { tasksFor } from '../../store/tasks';
+import { today } from '../visit';
 import { patientLabel } from '../../store/tasks';
 import { Button } from '../../ui/Button';
 import { Icon } from '../../ui/Icon';
@@ -56,6 +59,41 @@ function SyncPanel({ records, onSent }: { records: VisitRecord[]; onSent(): void
   );
 }
 
+function DemoCard({ records, onChanged }: { records: VisitRecord[]; onChanged(): void }) {
+  const vault = useVault();
+  const [busy, setBusy] = useState(false);
+  const demo = records.filter((r) => r.synthetic);
+  return (
+    <section aria-label="Demo visits" data-testid="demo-card" className="space-y-2 rounded-xl border-2 border-dashed border-brand-700 p-3">
+      <p className="text-lg font-bold">{demo.length ? 'Demo visits are loaded' : 'Look around without recording'}</p>
+      <p className="text-base text-ink-soft">
+        {demo.length
+          ? 'The three SYNTHETIC visits below are made up. Open them to see the review, the slip and the Hindi instructions.'
+          : 'Load three made-up visits (marked SYNTHETIC) to see records, tasks and slips. They are saved locked with your PIN like real ones, and you can remove them.'}
+      </p>
+      <Button
+        variant="secondary"
+        disabled={busy}
+        data-testid={demo.length ? 'demo-remove' : 'demo-load'}
+        onClick={async () => {
+          setBusy(true);
+          if (demo.length) await deleteRecords(demo.map((r) => r.id));
+          else {
+            for (const r of demoRecords(today())) {
+              await saveRecord(vault.key!, r);
+              for (const t of tasksFor(r)) await saveTask(vault.key!, t);
+            }
+          }
+          setBusy(false);
+          onChanged();
+        }}
+      >
+        {demo.length ? 'Remove the demo visits' : 'Load 3 demo visits (SYNTHETIC)'}
+      </Button>
+    </section>
+  );
+}
+
 function RecordsList() {
   const vault = useVault();
   const { go } = useRouter();
@@ -70,6 +108,7 @@ function RecordsList() {
   if (!records) return <p className="text-ink-soft">Opening the records…</p>;
   return (
     <div className="space-y-4">
+      <DemoCard records={records} onChanged={load} />
       {records.length > 0 && <SyncPanel records={records} onSent={load} />}
       {records.length === 0 ? (
         <p className="rounded-xl border border-line p-4 text-ink-soft">No records yet. Confirmed visits will appear here.</p>
@@ -85,8 +124,11 @@ function RecordsList() {
                       <span className="block text-xl font-bold">{patientLabel(r)}</span>
                       <span className="block text-base text-ink-soft">{r.visitDate} · {open?.display ?? ''}</span>
                     </span>
-                    <span className={`shrink-0 rounded-full px-2 py-1 text-sm font-bold ${r.sync === 'sent' ? 'bg-ok-bg text-ok' : 'bg-check-bg text-check'}`}>
-                      {r.sync === 'sent' ? 'Sent (mock)' : 'Waiting for signal'}
+                    <span className="flex shrink-0 flex-col items-end gap-1">
+                      {r.synthetic && <span className="rounded-full border-2 border-dashed border-ink px-2 text-xs font-bold uppercase">Synthetic</span>}
+                      <span className={`rounded-full px-2 py-1 text-sm font-bold ${r.sync === 'sent' ? 'bg-ok-bg text-ok' : 'bg-check-bg text-check'}`}>
+                        {r.sync === 'sent' ? 'Sent (mock)' : 'Waiting for signal'}
+                      </span>
                     </span>
                   </span>
                 </button>

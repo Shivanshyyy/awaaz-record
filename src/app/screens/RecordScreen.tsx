@@ -43,6 +43,11 @@ function Detail({ id }: { id: string }) {
       <Button variant="secondary" onClick={back}>
         Back to records
       </Button>
+      {record.synthetic && (
+        <p data-testid="saved-synthetic" className="rounded-xl border-2 border-dashed border-ink p-2 text-center font-bold uppercase tracking-wide">
+          Synthetic demo: not a real patient
+        </p>
+      )}
       <div>
         <h3 data-testid="saved-title" className="text-2xl font-bold">{patientLabel(record)}</h3>
         <p className="text-ink-soft">

@@ -58,6 +58,7 @@ export interface SlipMedicine {
 }
 
 export interface Slip {
+  synthetic: boolean;
   clinicName: string;
   date: string;
   who: string;
@@ -112,6 +113,7 @@ export function buildSlip(record: VisitRecord, clinicName: string, overrides: Re
 
   const referral = record.referral.value;
   return {
+    synthetic: Boolean(record.synthetic),
     clinicName,
     date: longDate(record.visitDate),
     who: patientLabel(record),
@@ -125,7 +127,7 @@ export function buildSlip(record: VisitRecord, clinicName: string, overrides: Re
 
 /** A short plain-text summary any phone camera can read. English only; no surname, phone number or address. */
 export function slipQrText(slip: Slip): string {
-  const lines = [`AWAAZ SLIP ${slip.date}`, ...(slip.clinicName ? [slip.clinicName] : []), slip.who];
+  const lines = [...(slip.synthetic ? ['SYNTHETIC DEMO, NOT A REAL PATIENT'] : []), `AWAAZ SLIP ${slip.date}`, ...(slip.clinicName ? [slip.clinicName] : []), slip.who];
   const meds = slip.medicines.slice(0, 4).map((m) => {
     const how = m.how === 'Only when needed' ? 'when needed' : m.how.replace(' times a day', 'x/day').replace(' time a day', 'x/day');
     return [m.name, m.dose, how, m.duration.replace('for ', '').replace(' days', 'd').replace(' day', 'd')].filter(Boolean).join(' ');

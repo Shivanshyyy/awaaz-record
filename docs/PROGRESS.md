@@ -26,8 +26,8 @@ _(filled in as the night goes on; each item has exact steps)_
 | 1 Offline speech | **done** 04:02 IST |
 | 2 Extraction + review | **done** 04:42 IST (nothing cut) |
 | 3 Record, privacy, patient | **done** 05:14 IST (nothing cut: sync, auto-lock and tasks are in) |
-| 4 Evaluation | **done** 05:27 IST (human-voice rows say "pending recordings"; PriMock57 is a later P2) |
-| 5 Polish, deploy, docs | not started |
+| 4 Evaluation | **done** 05:17 IST (human-voice rows say "pending recordings"; PriMock57 is a later P2) |
+| 5 Polish, deploy, docs | in progress (started 05:17 IST) |
 
 ## Log
 
@@ -101,7 +101,18 @@ _(filled in as the night goes on; each item has exact steps)_
 4. A Vitest test regenerates the document from the JSON and fails if `docs/EVALUATION.md` differs, so the document cannot drift or be edited by hand. Placeholders for human recordings fill themselves when `recordings/` exists.
 5. P2 later: PriMock57 as an outside benchmark (licence first).
 
-**Phase 4 result (05:27 IST)** — 318 Vitest tests, 42 Playwright tests, all green.
+**Phase 4 result (05:17 IST)** — 318 Vitest tests, 42 Playwright tests, all green.
 - `npm run eval` runs the 10 scripts as reference text and, if present, every clip in `eval/tts/` (TTS-synthetic) and `recordings/` (your voice), through the same Whisper model and the same extractor, and writes `eval/results/latest.json` and **`docs/EVALUATION.md`**. The document is produced by `src/eval/report.ts` from the JSON; a test fails if the committed file differs from what the JSON produces, so there are no hand-typed numbers.
 - Numbers in the document right now (this laptop, Node, one run): reference text 128/128 checks = 100.0%, 6/6 expected flags, no extra questions; TTS-synthetic audio 105/148 = 70.9%, 43 wrong values of which 19 not flagged, 6/7 expected flags, pooled word error rate 27.7%, real-time factor 0.04. "My own voice" is marked **pending recordings** and fills in by itself when `recordings/` has files (Prompt 4).
 - The document says what each number does and does not show, lists the normalisation rules for word error rate, and states its limitations (13 clips, one synthetic voice, scripted, TTS cleaner than real speech, laptop not phone, Node not browser, the ten scripts were used to tune the extractor).
+
+### Phase 5 — Polish, deploy, docs · plan (05:17 IST)
+1. Demo: "Load 3 demo visits (SYNTHETIC)" on Records, saved sealed like real ones and marked SYNTHETIC on the list, the detail and the printed slip; a useful Today screen; remove-demo button.
+2. UI pass at 360 px: an automated axe scan (contrast, names, focus) on every screen with fixes, empty/error/loading states, screenshots of every screen into `docs/screens/`.
+3. Evidence: find 3 to 5 sources for the problem, open each, record name, year, country, URL; an in-app "About and evidence" screen.
+4. `README.md` with every section in PLAN.md, `docs/VIDEO_SCRIPT.md` from Prompt 9, using only numbers from `docs/EVALUATION.md` and sources I opened.
+5. Deploy check: the preview build passes the offline Playwright journey (done each phase); once Pages is on, confirm the live URL. Then "If you finish early": judge audit, accessibility, Lighthouse, PriMock57, WebGPU.
+
+**Phase 5, part 1 (12:25 IST)** — 318 Vitest tests, 50 Playwright tests, all green.
+- **Demo visits:** Records has "Load 3 demo visits (SYNTHETIC)": Noor (fever), Sunita (urgent referral) and Aarav (child, ORS and zinc), from the scripts, through the same extractor and checks, saved sealed like real records, marked SYNTHETIC on the list, the detail, the tasks and the printed slip (and the QR text), removable in one tap. Today now summarises the day (visits, follow-ups due) once unlocked.
+- **Accessibility:** an automated axe-core scan (WCAG 2 A and AA) of every screen, sheet and the slip finds no violations, and a canary test proves the scanner does catch low contrast and an unnamed button.

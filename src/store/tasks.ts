@@ -13,6 +13,8 @@ export interface Task {
   dueDate: string | null;
   urgent: boolean;
   done: boolean;
+  /** made from a demo visit */
+  synthetic?: boolean;
 }
 
 export function patientLabel(record: VisitRecord): string {
@@ -30,7 +32,7 @@ export function tasksFor(record: VisitRecord): Task[] {
   if (follow?.kind === 'days') followDue = addDays(record.visitDate, follow.days);
   if (follow?.kind === 'date') followDue = follow.date;
   if (followDue) {
-    tasks.push({ id: `${record.id}:follow-up`, recordId: record.id, kind: 'follow-up', patient: who, title: 'Follow-up visit', dueDate: followDue, urgent: false, done: false });
+    tasks.push({ id: `${record.id}:follow-up`, recordId: record.id, kind: 'follow-up', patient: who, title: 'Follow-up visit', dueDate: followDue, urgent: false, done: false, ...(record.synthetic ? { synthetic: true } : {}) });
   }
   const referral = record.referral.value;
   if (referral) {
@@ -44,6 +46,7 @@ export function tasksFor(record: VisitRecord): Task[] {
       dueDate: referral.urgent ? record.visitDate : followDue,
       urgent: referral.urgent,
       done: false,
+      ...(record.synthetic ? { synthetic: true } : {}),
     });
   }
   return tasks;

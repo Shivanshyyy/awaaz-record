@@ -32,7 +32,10 @@ function TaskList() {
                 <p className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide">
                   {t.urgent && t.kind === 'referral' ? <><Icon name="x" size={18} /> Urgent referral</> : overdue ? <><Icon name="alert" size={18} /> Overdue</> : <><Icon name="check" size={18} /> {t.kind === 'follow-up' ? 'Follow-up' : 'Referral'}</>}
                 </p>
-                <p className="text-xl font-bold">{t.patient}</p>
+                <p className="text-xl font-bold">
+                  {t.patient}
+                  {t.synthetic && <span className="ml-2 rounded-full border-2 border-dashed border-ink px-2 text-xs font-bold uppercase">Synthetic</span>}
+                </p>
                 <p className="text-lg">{t.title}</p>
                 <p className="text-base font-semibold text-ink-soft">{dueText(t, day)}</p>
                 <Button

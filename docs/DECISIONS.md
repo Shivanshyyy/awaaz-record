@@ -19,6 +19,7 @@ One line each: what was decided, and why. Newest at the bottom of each section.
 - vitest — unit tests. @playwright/test — browser tests. ffmpeg-static — audio conversion in scripts. wavefile — read/write WAV in scripts and tests. jsqr — decode the slip QR in a test.
 - fake-indexeddb (dev) — Node has no IndexedDB, so the storage unit tests need it. Not in the original stack list.
 - @types/node, @types/react, @types/react-dom, @types/qrcode — typings.
+- @axe-core/playwright (dev) — automated accessibility scan (contrast, names, roles) of every screen in the browser tests.
 
 ## Speech model
 - Whisper tiny.en from `Xenova/whisper-tiny.en`, q8 files only (encoder 10.1 MB + merged decoder 30.7 MB + tokenizer/config); total 44,497,724 bytes (44.5 MB). Checked in Node before fixing the choice: `return_timestamps: 'word'` works with this export and gives a start/end for every word, so no fallback to chunk timestamps is needed.
@@ -76,3 +77,7 @@ One line each: what was decided, and why. Newest at the bottom of each section.
 - "Send" is a pure mock with no network call, because ps.pdf p.13 warns that patient data moving through a mobile network carries risks a paper record does not. The button is disabled with no signal and is labelled MOCK. The export is a file the worker chooses to create.
 - Tests never speak: this Mac has Hindi system voices and Chromium used one aloud. `e2e/test.ts` gives every spec a silent speech engine with no voices; tests that need a voice install a fake one.
 - Print uses `visibility` so only the slip prints on A5, black on white; every icon has its word beside it so a black-and-white printer loses nothing.
+
+## Phase 5 (polish)
+- Demo visits are three of the ten scripts run through the real extractor, with the worker's answers applied the way a worker would (the unclear "follow up after delivery" becomes two weeks; ORS gets "not applicable" for its dose). They carry `synthetic: true`, an extra optional field on the record that the fixed schema otherwise lacks, shown as SYNTHETIC on every screen and printed on the slip and in the QR text, so a demo can never be mistaken for a patient.
+- The Today screen reads saved records only when the PIN is open and otherwise says they are locked; it never shows patient names while locked.

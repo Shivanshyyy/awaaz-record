@@ -152,3 +152,13 @@ export async function listTasks(key: CryptoKey): Promise<Task[]> {
   const all = await (await db()).getAll('tasks');
   return Promise.all(all.map((t) => open<Task>(key, t, t.id)));
 }
+
+/** Removes records and the tasks made from them (used for the demo visits). */
+export async function deleteRecords(ids: string[]): Promise<void> {
+  const database = await db();
+  const tasks = await database.getAll('tasks');
+  for (const id of ids) {
+    await database.delete('records', id);
+    for (const t of tasks) if (t.recordId === id) await database.delete('tasks', t.id);
+  }
+}
