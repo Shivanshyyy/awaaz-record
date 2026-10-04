@@ -6,7 +6,7 @@ An offline phone app for a clinic health worker. She speaks a 20 to 60 second no
 
 Built solo for the Hack-Nation × World Bank *Small AI for Development* hackathon, **Health** track (ps.pdf Annex A). Challenge: help a frontline worker serve a patient like Noor better, without diagnosing anything.
 
-- **Live app:** https://shivanshyyy.github.io/awaaz-record/ (it goes live when GitHub Pages is switched on for this repo; see [Deploy](#deploy))
+- **Live app:** https://shivanshyyy.github.io/awaaz-record/ (published by GitHub Actions from `main`; if the link does not open yet, see [Deploy](#deploy))
 - **Code:** https://github.com/Shivanshyyy/awaaz-record
 - **Try it in two minutes:** open the app in Chrome on an Android phone, tap *Set up offline* once on Wi-Fi, then *Records → Load 3 demo visits (SYNTHETIC)* and open one to see the review, the slip and the Hindi instructions. Add `?dev=1` to the address to paste a transcript instead of recording.
 
@@ -214,7 +214,7 @@ Project map: `src/asr/` speech in a worker · `src/audio/` recorder · `src/extr
 
 ## Deploy
 
-GitHub Actions (`.github/workflows/deploy.yml`) installs, downloads the model, runs the unit tests, builds, and publishes `dist/` to GitHub Pages at `/awaaz-record/`. The repository setting *Settings → Pages → Source* must be **GitHub Actions** once; until then the last step fails and nothing is published. The built site is about 66 MB (model, runtime and app).
+GitHub Actions (`.github/workflows/deploy.yml`) installs, downloads the model, runs the unit tests, builds, and publishes `dist/` to GitHub Pages at `/awaaz-record/`. The repository setting *Settings → Pages → Source* must be **GitHub Actions** once; until then the last step fails and nothing is published. The built site is about 66 MB (model, runtime and app). Once it is live, `npm run check-live` asks the published site for every file the offline mode saves, checks each size against its manifest and that files can be fetched in parts, without downloading the 66 MB.
 
 ## Licence
 

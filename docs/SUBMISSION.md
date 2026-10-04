@@ -16,6 +16,10 @@ Ready to paste into the portal. Everything here is true as of the last push; che
 4. **For the patient:** a printed slip with medicine-timing icons, the return date and a QR summary, and 23 fixed Hindi instructions as voice and text (the Hindi still needs a check by a Hindi speaker).
 5. **Honest evidence:** on computer-voice test notes 70.9% of fields were right and 19 of 43 wrong values looked fine; on real clinicians' speech from an outside dataset (PriMock57, UK English) 28.1% of words were wrong. Not yet tested on a real phone, with our own voices, or with a real worker, which is why a person checks every record.
 
+## Check the live site from your computer (10 seconds)
+
+`npm run check-live` asks the published site for every file the offline mode needs and ends with "All checks passed." if the sizes match their manifests.
+
 ## Check offline mode on your phone (about 5 minutes)
 
 1. On an Android phone, open Chrome and go to the live link, on Wi-Fi.
