@@ -36,11 +36,15 @@ export function TodayScreen() {
         <p className="text-ink-soft">{date}</p>
       </div>
 
-      {visits === null ? (
+      {vault.status === 'no-pin' ? (
+        <p data-testid="today-empty" className="rounded-xl border border-line p-4 text-ink-soft">
+          Nothing is saved on this phone yet. Start a new visit, or look around with the demo visits.
+        </p>
+      ) : vault.status === 'locked' ? (
         <p data-testid="today-locked" className="flex gap-2 rounded-xl border border-line p-4 text-ink-soft">
           <Icon name="lock" /> Saved records are locked. Open Records and enter your PIN to see today’s summary.
         </p>
-      ) : (
+      ) : visits === null ? null : (
         <div className="space-y-3" data-testid="today-summary">
           <p className="rounded-xl border border-line p-4">
             <span className="block text-3xl font-bold">{visits.length}</span>

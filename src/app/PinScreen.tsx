@@ -115,7 +115,7 @@ export function PinPanel({ why }: { why: string }) {
       <h2 className="flex items-center gap-2 text-xl font-bold">
         <Icon name="lock" /> {vault.status === 'no-pin' ? 'Set a PIN' : 'Enter your PIN'}
       </h2>
-      <p className="text-ink-soft">{why}</p>
+      {vault.status === 'locked' && <p className="text-ink-soft">{why}</p>}
       {vault.status === 'no-pin' ? <SetPin /> : <Unlock />}
     </section>
   );

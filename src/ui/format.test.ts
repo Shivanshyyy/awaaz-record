@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { describeStorageError } from '../asr/offline';
-import { formatClock, formatMB } from './format';
+import { formatClock, formatMB, formatSize } from './format';
 
 describe('format helpers', () => {
   it('formats megabytes and clock time', () => {
     expect(formatMB(44_497_724)).toBe('44.5 MB');
+    expect(formatSize(44_497_724)).toBe('44.5 MB');
+    expect(formatSize(5_368_700_000)).toBe('5.4 GB');
     expect(formatClock(0)).toBe('0:00');
     expect(formatClock(75.9)).toBe('1:15');
     expect(formatClock(90)).toBe('1:30');

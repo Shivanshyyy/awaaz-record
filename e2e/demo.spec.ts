@@ -55,8 +55,21 @@ test('demo records go through the same checks as real ones: nothing is left ambe
   void unlock;
 });
 
-test('Today says the records are locked until the PIN is entered', async ({ page }) => {
+test('on a first visit Today says nothing is saved yet, not that anything is locked', async ({ page }) => {
   await page.goto('/awaaz-record/');
+  await expect(page.getByTestId('today-empty')).toContainText('Nothing is saved on this phone yet');
+  await expect(page.getByTestId('today-locked')).toHaveCount(0);
+  await expect(page.getByTestId('start-visit')).toBeVisible();
+});
+
+test('once a PIN exists, Today says the records are locked until it is entered', async ({ page }) => {
+  await page.goto('/awaaz-record/');
+  await nav(page, 'Records').click();
+  await setPin(page);
+  await expect(page.getByTestId('demo-card')).toBeVisible();
+  await page.reload();
+  await nav(page, 'Today').click();
   await expect(page.getByTestId('today-locked')).toContainText('locked');
+  await expect(page.getByTestId('today-empty')).toHaveCount(0);
   await expect(page.getByTestId('start-visit')).toBeVisible();
 });

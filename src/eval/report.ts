@@ -326,6 +326,7 @@ export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, str
     'npm run fetch-models   # the speech model, once',
     'npm run tts-audio      # TTS-synthetic clips into eval/tts/ (macOS: say; Windows: System.Speech; Linux: espeak-ng)',
     '# put your own recordings in recordings/ (S01 … S10, S01_noisy, S02_noisy, S06_noisy) to fill the last section',
+    'npm run fetch-primock  # optional: the outside real-clinician check (88 MB, CC BY 4.0, checksum-verified)',
     'npm run eval           # writes eval/results/latest.json and this file',
     '```',
     '',

@@ -9,6 +9,8 @@ const summary = generated as unknown as { generatedOn: string; cpu: string; refe
 
 const pct = (x: number) => `${(x * 100).toFixed(1)}%`;
 
+const version = typeof __APP_VERSION__ === 'undefined' ? null : __APP_VERSION__;
+
 const SOURCES = [
   { name: 'Irving et al., BMJ Open, 2017 (67 countries)', says: 'Four Indian studies measured primary care consultations of 1.5 to 2.3 minutes (Fair or Poor quality data).', url: 'https://doi.org/10.1136/bmjopen-2017-017902' },
   { name: 'Ministry of Health and Family Welfare, India (PIB), 9 Sep 2024', says: 'The Union Health Secretary called for cutting the burden of work on health functionaries who report data.', url: 'https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2053070' },
@@ -108,6 +110,12 @@ export function AboutScreen() {
           ))}
         </ul>
       </Section>
+
+      {version && (
+        <p data-testid="about-version" className="text-sm text-ink-soft">
+          Version {version.stamp}, built {version.builtAt.slice(0, 16).replace('T', ' ')} UTC.
+        </p>
+      )}
     </article>
   );
 }

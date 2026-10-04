@@ -80,6 +80,7 @@ test('the About screen has no violations and shows the generated results', async
   if (generated.primock57) await expect(page.getByTestId('about-primock')).toContainText(`${generated.primock57.wordErrors} of ${generated.primock57.words} words were wrong`);
   else await expect(page.getByTestId('about-primock')).toHaveCount(0);
   await expect(page.getByText('never diagnoses')).toBeVisible();
+  await expect(page.getByTestId('about-version')).toContainText(/Version ([0-9a-f]{7}(-dirty)?|unknown), built \d{4}-\d{2}-\d{2} \d{2}:\d{2} UTC/);
   await scan(page, 'About, evidence and limits');
 });
 

@@ -1,5 +1,5 @@
 import { hindiVoice } from '../patient/audio';
-import { formatMB } from '../ui/format';
+import { formatMB, formatSize } from '../ui/format';
 
 // A plain-words check of whether this phone and browser can run the app. Pure rules over a snapshot, so they can be tested.
 
@@ -43,11 +43,11 @@ export function evaluateDevice(env: DeviceEnv, neededBytes: number): DeviceCheck
   if (env.freeBytes === null) {
     rows.push({ id: 'space', label: 'Free space', status: 'warn', detail: `The browser will not say how much space is free. The speech files need ${formatMB(neededBytes)}.` });
   } else if (env.freeBytes < neededBytes) {
-    rows.push({ id: 'space', label: 'Free space', status: 'fail', detail: `About ${formatMB(env.freeBytes)} is free but the speech files need ${formatMB(neededBytes)}. Free some space first.` });
+    rows.push({ id: 'space', label: 'Free space', status: 'fail', detail: `About ${formatSize(env.freeBytes)} is free but the speech files need ${formatMB(neededBytes)}. Free some space first.` });
   } else if (env.freeBytes < neededBytes + 100e6) {
-    rows.push({ id: 'space', label: 'Free space', status: 'warn', detail: `About ${formatMB(env.freeBytes)} is free; the speech files need ${formatMB(neededBytes)}. It will fit, but there is little room left for records.` });
+    rows.push({ id: 'space', label: 'Free space', status: 'warn', detail: `About ${formatSize(env.freeBytes)} is free; the speech files need ${formatMB(neededBytes)}. It will fit, but there is little room left for records.` });
   } else {
-    rows.push({ id: 'space', label: 'Free space', status: 'ok', detail: `About ${formatMB(env.freeBytes)} is free; the speech files need ${formatMB(neededBytes)}.` });
+    rows.push({ id: 'space', label: 'Free space', status: 'ok', detail: `About ${formatSize(env.freeBytes)} is free; the speech files need ${formatMB(neededBytes)}.` });
   }
 
   if (env.persisted !== null) {

@@ -1,9 +1,19 @@
+import { execSync } from 'node:child_process';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const base = '/awaaz-record/';
+
+// Shown on the About screen so that, on a phone, you can tell which build you are looking at.
+function gitStamp(): string {
+  try {
+    return execSync('git describe --always --dirty --abbrev=7', { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim();
+  } catch {
+    return 'unknown';
+  }
+}
 
 // onnxruntime-web references its wasm by URL, so Vite emits a second 21 MB copy; we load it from /ort/ instead.
 const dropDuplicateOrtWasm: Plugin = {
@@ -15,6 +25,7 @@ const dropDuplicateOrtWasm: Plugin = {
 
 export default defineConfig({
   base,
+  define: { __APP_VERSION__: JSON.stringify({ stamp: gitStamp(), builtAt: new Date().toISOString() }) },
   plugins: [
     react(),
     tailwindcss(),

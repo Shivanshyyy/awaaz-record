@@ -16,9 +16,9 @@ The app has two parts that can be wrong: **speech recognition** (the audio becom
 | Audio source | Clips | Field checks right | Wrong values | …of which not flagged | Expected flags raised | Other questions to the worker | Word error rate | Real-time factor |
 |---|---|---|---|---|---|---|---|---|
 | Reference text: the script itself, so only the extractor is tested | 10 | 128/128 = 100.0% | 0 | 0 | 6/6 | 0 | n/a (no audio) | n/a |
-| TTS-synthetic speech (operating-system voice): a pipeline check only | 13 | 105/148 = 70.9% | 43 | 19 | 6/7 | 26 | 27.7% | 0.06 |
+| TTS-synthetic speech (operating-system voice): a pipeline check only | 13 | 105/148 = 70.9% | 43 | 19 | 6/7 | 26 | 27.7% | 0.04 |
 | My own voice (`recordings/`) | **pending recordings** | | | | | | | |
-| Outside data: real clinicians in mock consultations (PriMock57, UK English), speech recognition only | 9 utterances | n/a | n/a | n/a | n/a | n/a | 28.1% | 0.04 |
+| Outside data: real clinicians in mock consultations (PriMock57, UK English), speech recognition only | 9 utterances | n/a | n/a | n/a | n/a | n/a | 28.1% | 0.03 |
 
 > **Read this carefully.** The only audio of our own scripts so far is **TTS-synthetic**: a computer voice reading the scripts (voice "Tara" on macOS; the `_noisy` clips add synthetic noise at 10 dB signal-to-noise). It is good for checking that the pipeline works. It says little about how real clinic speech will do: a real voice, a real room and a real accent will differ, in either direction. No accuracy claim about real speech is made until the "my own voice" row is filled. The outside PriMock57 row is real clinicians' speech, but UK English in acted consultations, and it measures speech recognition only.
 
@@ -43,23 +43,23 @@ Every field and every expected flag was right on all 10 scripts, with no extra q
 
 ## TTS-synthetic audio
 
-13 clips, 166.1 s of audio, transcribed in 9.4 s. Pooled word error rate 27.7% (mean per clip 28.3%).
+13 clips, 166.1 s of audio, transcribed in 6.5 s. Pooled word error rate 27.7% (mean per clip 28.3%).
 
 | Clip | Word error rate | Field checks right | Wrong | Not flagged | Expected flags raised | Other questions | Audio | Transcribing |
 |---|---|---|---|---|---|---|---|---|
-| S01 | 18.5% | 11/13 | 2 | 2 | 0/0 | 1 | 11.4 s | 0.5 s |
-| S01_noisy | 18.5% | 12/13 | 1 | 1 | 0/0 | 1 | 11.4 s | 0.5 s |
-| S02 | 33.3% | 6/11 | 5 | 3 | 0/0 | 1 | 12.9 s | 0.6 s |
-| S02_noisy | 41.7% | 6/11 | 5 | 1 | 0/0 | 3 | 12.9 s | 0.5 s |
-| S03 | 21.4% | 6/8 | 2 | 1 | 1/1 | 1 | 11.9 s | 0.4 s |
-| S04 | 14.3% | 7/11 | 4 | 1 | 1/1 | 2 | 14.7 s | 0.5 s |
-| S05 | 24.4% | 11/14 | 3 | 0 | 1/1 | 4 | 14.7 s | 0.6 s |
-| S06 | 14.3% | 12/13 | 1 | 0 | 1/1 | 2 | 12.9 s | 0.5 s |
-| S06_noisy ⚠ repetition guard | 96.4% | 2/9 | 7 | 4 | 1/1 | 3 | 12.9 s | 3.5 s |
-| S07 | 33.3% | 12/14 | 2 | 1 | 0/0 | 2 | 11.6 s | 0.4 s |
-| S08 | 24.4% | 6/11 | 5 | 3 | 0/1 | 2 | 14.2 s | 0.5 s |
-| S09 | 13.8% | 5/8 | 3 | 2 | 0/0 | 1 | 10.1 s | 0.4 s |
-| S10 | 13.9% | 9/12 | 3 | 0 | 1/1 | 3 | 14.5 s | 0.5 s |
+| S01 | 18.5% | 11/13 | 2 | 2 | 0/0 | 1 | 11.4 s | 0.3 s |
+| S01_noisy | 18.5% | 12/13 | 1 | 1 | 0/0 | 1 | 11.4 s | 0.3 s |
+| S02 | 33.3% | 6/11 | 5 | 3 | 0/0 | 1 | 12.9 s | 0.4 s |
+| S02_noisy | 41.7% | 6/11 | 5 | 1 | 0/0 | 3 | 12.9 s | 0.4 s |
+| S03 | 21.4% | 6/8 | 2 | 1 | 1/1 | 1 | 11.9 s | 0.3 s |
+| S04 | 14.3% | 7/11 | 4 | 1 | 1/1 | 2 | 14.7 s | 0.4 s |
+| S05 | 24.4% | 11/14 | 3 | 0 | 1/1 | 4 | 14.7 s | 0.4 s |
+| S06 | 14.3% | 12/13 | 1 | 0 | 1/1 | 2 | 12.9 s | 0.3 s |
+| S06_noisy ⚠ repetition guard | 96.4% | 2/9 | 7 | 4 | 1/1 | 3 | 12.9 s | 2.2 s |
+| S07 | 33.3% | 12/14 | 2 | 1 | 0/0 | 2 | 11.6 s | 0.3 s |
+| S08 | 24.4% | 6/11 | 5 | 3 | 0/1 | 2 | 14.2 s | 0.4 s |
+| S09 | 13.8% | 5/8 | 3 | 2 | 0/0 | 1 | 10.1 s | 0.3 s |
+| S10 | 13.9% | 9/12 | 3 | 0 | 1/1 | 3 | 14.5 s | 0.4 s |
 
 ### Where speech recognition breaks extraction
 
@@ -98,7 +98,7 @@ Every field and every expected flag was right on all 10 scripts, with no extra q
 
 ## Outside data: real clinicians (PriMock57)
 
-9 utterances of real clinicians speaking in mock primary-care consultations, 327 words and 97.4 s of audio, transcribed in 4.1 s by the same speech model. **92 of 327 words were wrong: a word error rate of 28.1%** (mean per utterance 26.3%). This measures **speech recognition only**. The extractor is not run on these, because they are conversations, not notes in our format.
+9 utterances of real clinicians speaking in mock primary-care consultations, 327 words and 97.4 s of audio, transcribed in 3.0 s by the same speech model. **92 of 327 words were wrong: a word error rate of 28.1%** (mean per utterance 26.3%). This measures **speech recognition only**. The extractor is not run on these, because they are conversations, not notes in our format.
 
 | Utterance | Audio | Word errors / words | Word error rate |
 |---|---|---|---|
@@ -251,5 +251,6 @@ npm ci
 npm run fetch-models   # the speech model, once
 npm run tts-audio      # TTS-synthetic clips into eval/tts/ (macOS: say; Windows: System.Speech; Linux: espeak-ng)
 # put your own recordings in recordings/ (S01 … S10, S01_noisy, S02_noisy, S06_noisy) to fill the last section
+npm run fetch-primock  # optional: the outside real-clinician check (88 MB, CC BY 4.0, checksum-verified)
 npm run eval           # writes eval/results/latest.json and this file
 ```
