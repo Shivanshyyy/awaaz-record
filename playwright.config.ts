@@ -17,7 +17,7 @@ export default defineConfig({
   },
   webServer: {
     command: 'npm run build && npm run preview',
-    url: 'http://localhost:4173/awaaz-record/',
+    url: 'http://localhost:4173/',
     reuseExistingServer: true,
     timeout: 240_000,
   },

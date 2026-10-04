@@ -101,10 +101,10 @@ ps.pdf (p.8) asks for every dataset, its source, licence and size, and says that
 | Facility types (12) and cue words | Hand-compiled by the builder | ours | tiny | Referrals, negation, corrections |
 | 10 scripted visit notes with gold answers (`eval/scripts.json`) | Written for this hackathon, **synthetic**, no real patients | ours | 10 KB | Testing the extractor and speech |
 | TTS-synthetic audio (13 clips, git-ignored) | The Indian-English voice "Tara" on macOS, plus synthetic noise at 10 dB signal-to-noise | not distributed | 5.3 MB | A pipeline check only |
-| My own voice recordings | The builder's voice, from `docs/RECORDINGS.md` | not yet recorded | n/a | **pending recordings** |
+| Real human recordings (3 clips: S01, S04, S06) | The builder's voice reading 3 of the 13 scripts in `docs/RECORDINGS.md`; only these 3 were recorded | the builder's own recordings, not shared (git-ignored) | about 0.4 MB, not in the app | A real-voice check of speech recognition and extraction: too few clips to be an accuracy claim |
 | PriMock57: the clinician channel of 5 of its 57 mock primary-care consultations (9 utterances scored) | Babylon Health; Papadopoulos Korfiatis et al., ACL 2022; https://github.com/babylonhealth/primock57 at commit `cd2ac707` | CC BY 4.0 (credit above; we cut utterances and normalised text for scoring) | 88.1 MB downloaded by `npm run fetch-primock` (git-ignored, not in the app) | An outside check of speech recognition on real clinicians, UK English; the extractor is not run on it |
 | Speech Accent Archive: 40 recordings of one paragraph read aloud (20 speakers born in India with an Indian mother tongue, 20 native English speakers born in the USA) | Steven H. Weinberger and Matthew C. Kelley, George Mason University; https://accent.gmu.edu; files from https://osf.io/yh23d | CC BY-NC-SA 4.0 (credit above; used for non-commercial evaluation; the audio is not redistributed here) | 16.4 MB downloaded by `npm run fetch-accent` (git-ignored, not in the app) | A small check of how the speech model copes with Indian-language accents; speech recognition only |
-| 23 patient lines in Hindi (`docs/HINDI_CLIPS.md`) | Written before this build, **not yet checked by a Hindi speaker** (the app says so on screen) | ours | text only; audio files not yet made | Consent message, slip lines, instructions |
+| 23 patient lines in Hindi (`docs/HINDI_CLIPS.md`) | Written before this build, **not yet checked by a Hindi speaker** (the app says so on screen) | ours | text, plus 23 mp3 files (about 1.7 MB) in `public/audio/hi/` made with ElevenLabs text-to-speech from that text by `npm run make-hindi-clips`; the voice's licence terms come from the ElevenLabs plan used and were not checked here | Consent message, slip lines, instructions |
 
 ps.pdf lists common speech datasets (Common Voice, FLEURS, IndicVoices and others); we **did not use them**: Whisper tiny.en is English only, and we did not fine-tune.
 
@@ -142,11 +142,11 @@ ps.pdf (p.13) warns of *"biases encoded in algorithms"* and of models that under
 
 ## Local language: Hindi
 
-The patient (Noor) speaks Hindi; the clinic writes in English. **Hindi** is the language of the consent message, of every line on the slip, and of the instructions, as **voice and text**. These are 23 fixed lines (`docs/HINDI_CLIPS.md`), not generated speech: the app can never say anything unchecked to a patient.
+The patient (Noor) speaks Hindi; the clinic writes in English. **Hindi** is the language of the consent message, of every line on the slip, and of the instructions, as **voice and text**. These are 23 fixed lines (`docs/HINDI_CLIPS.md`): the app never makes up a Hindi sentence, so it can only say one of those 23.
 
 How it fares in a less-supported language (ps.pdf p.7 asks): no speech model is needed for the patient's side. A community member who speaks the language records the same 23 lines in a voice tool, puts the files in a folder, and has the list checked; a new language is a new folder and a new text file. The weak spot is the **worker's** side: Whisper tiny.en understands only English, so a worker who dictates in another language would need a multilingual model (larger, slower) or a model fine-tuned on that language. For Indian languages the AI4Bharat resources named in ps.pdf are the next place to look; we did not use them.
 
-Right now there is **no audio for the Hindi lines**. The playlist uses an mp3 if it exists, then the phone's own Hindi voice if it has one, and otherwise shows the Hindi text with "audio not available". All three paths are tested.
+All 23 lines now have an mp3 in `public/audio/hi/`, made with ElevenLabs text-to-speech from the text in `docs/HINDI_CLIPS.md` (existing files are never overwritten). **The Hindi text has not yet been checked by a Hindi speaker, so the audio has not been either**; the app says so on screen until the review log in `docs/HINDI_CLIPS.md` is filled, and if a line is corrected the clip must be made again. The playlist uses the mp3, then the phone's own Hindi voice if it has one, and otherwise shows the Hindi text with "audio not available". All three paths are tested, a test checks the manifest against the 23 files, and a browser test fetches every clip with the network off.
 
 ## Evaluation
 
@@ -158,7 +158,7 @@ Full tables, the method and the limits are in **[docs/EVALUATION.md](docs/EVALUA
 |---|---|---|---|---|---|
 | Reference text (extractor alone) | 10 | 128/128 = 100.0% | 0 (0) | 6/6 | n/a |
 | TTS-synthetic speech (a pipeline check) | 13 | 105/148 = 70.9% | 43 (19) | 6/7 | 27.7% |
-| My own voice | **pending recordings** | | | | |
+| Real human recordings (3 clips) | 3 | 29/39 = 74.4% | 10 (3) | 1/2 | 30.9% |
 | Accent check, one paragraph read aloud: Born in India, mother tongue not English (Speech Accent Archive) | 20 speakers | n/a | n/a | n/a | 10.1% |
 | Accent check, one paragraph read aloud: Native English speakers born in the USA (Speech Accent Archive) | 20 speakers | n/a | n/a | n/a | 4.4% |
 | Outside data: real clinicians, UK English (PriMock57; speech recognition only) | 9 utterances | n/a | n/a | n/a | 28.1% |
@@ -197,7 +197,7 @@ In the browser (not Node), `e2e/offline-speech.spec.ts` measures an 11.4 second 
 ```
 npm ci
 npm run fetch-models   # the speech model (44.5 MB), checked by sha256 and revision
-npm run dev            # http://localhost:5173/awaaz-record/   (add ?dev=1 for the paste/upload helpers)
+npm run dev            # http://localhost:5173/   (add ?dev=1 for the paste/upload helpers)
 npm test               # unit tests: extraction, numbers, privacy, slip, QR, playlist
 npm run tts-audio      # computer-voice test clips into eval/tts/ (macOS: say)
 npm run eval           # writes eval/results/latest.json, docs/EVALUATION.md and the block above
@@ -212,17 +212,19 @@ Project map: `src/asr/` speech in a worker · `src/audio/` recorder · `src/extr
 
 ## Limitations and next steps
 
-- **Real voices first.** Record the ten scripts in `docs/RECORDINGS.md`, run `npm run eval`, and the "my own voice" rows fill in. Then try a real worker on a real low-end Android phone and time the whole visit.
+- **Real voices first.** Only 3 of the 13 scripts (S01, S04, S06) were recorded. Record the rest in `docs/RECORDINGS.md`, run `npm run eval`, and the real-recording rows grow. Then try a real worker on a real low-end Android phone and time the whole visit.
 - **Confidence.** The speech model returns no usable confidence, so the app cannot tell when a plausible name or number is wrong. Using token probabilities to flag low-confidence names and numbers is the most valuable next step.
 - **Hinglish and Indian accents.** Dictation that mixes Hindi and English, and fine-tuning for Indian-accented clinical speech (see the AI4Bharat resources in ps.pdf), would help most where the model is weakest.
-- **Hindi.** A native-speaker review of the 23 lines, then audio files; one more line ("take this medicine only when you need it") is waiting for translation.
+- **Hindi.** A native-speaker review of the 23 lines (the audio exists but was made from text nobody has reviewed yet); one more line ("take this medicine only when you need it") is waiting for translation.
 - **Speed.** WebGPU where a phone has it; multi-threaded WebAssembly would need a host that can send the right headers.
 - **Sending.** A real, retrying sync to the health system's DHIS2 over HTTPS, and a decision about who holds the keys at the facility.
 - **Known gaps:** the slip headings are English (new Hindi cannot be written without review); an "only when needed" medicine has no accurate Hindi line yet; the PIN protects against casual access, not against someone with a copy of the storage.
 
 ## Deploy
 
-GitHub Actions (`.github/workflows/deploy.yml`) installs, downloads the model, runs the unit tests, builds, and publishes `dist/` to GitHub Pages at `/awaaz-record/`. The repository setting *Settings → Pages → Source* must be **GitHub Actions** once; until then the last step fails and nothing is published. The built site is about 66 MB (model, runtime and app). Once it is live, `npm run check-live` asks the published site for every file the offline mode saves, checks each size against its manifest and that files can be fetched in parts, without downloading the 66 MB.
+GitHub Actions (`.github/workflows/deploy.yml`) installs, downloads the model, runs the unit tests, builds, and publishes `dist/` to GitHub Pages at `/awaaz-record/` (the workflow sets `BASE_PATH=/awaaz-record/`; without it the app is built for the root of a domain). The repository setting *Settings → Pages → Source* must be **GitHub Actions** once; until then the last step fails and nothing is published. The built site is about 66 MB (model, runtime and app). Once it is live, `npm run check-live` asks the published site for every file the offline mode saves, checks each size against its manifest and that files can be fetched in parts, without downloading the 66 MB.
+
+**Netlify (or any root domain):** `npm run build` makes `dist/` with the base path `/`. Run `npm run fetch-models` first so the speech model is inside it, then drag the `dist/` folder onto Netlify's *Deploy manually* page (about 68 MB), or serve it with `npm run preview`. The app has no page addresses of its own, so no redirect rules are needed. Then `npm run check-live -- https://your-site.netlify.app/`.
 
 ## Licence
 

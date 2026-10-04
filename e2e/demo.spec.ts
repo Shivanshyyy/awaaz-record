@@ -4,7 +4,7 @@ import { nav, setPin, unlock } from './helpers';
 test.describe.configure({ timeout: 60_000 });
 
 async function openRecords(page: import('@playwright/test').Page) {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await nav(page, 'Records').click();
   await setPin(page);
   await expect(page.getByTestId('demo-card')).toBeVisible();
@@ -56,14 +56,14 @@ test('demo records go through the same checks as real ones: nothing is left ambe
 });
 
 test('on a first visit Today says nothing is saved yet, not that anything is locked', async ({ page }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await expect(page.getByTestId('today-empty')).toContainText('Nothing is saved on this phone yet');
   await expect(page.getByTestId('today-locked')).toHaveCount(0);
   await expect(page.getByTestId('start-visit')).toBeVisible();
 });
 
 test('once a PIN exists, Today says the records are locked until it is entered', async ({ page }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await nav(page, 'Records').click();
   await setPin(page);
   await expect(page.getByTestId('demo-card')).toBeVisible();

@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { expect, test } from './test';
 
-const BASE = '/awaaz-record/';
+const BASE = '/';
 const WASM = 'ort/ort-wasm-simd-threaded.jsep.wasm';
 
 test.describe('a download that drops', () => {

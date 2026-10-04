@@ -1,5 +1,6 @@
 import { env, pipeline } from '@huggingface/transformers';
 import type { RawChunk } from './transcript';
+import { installNetMeter, type NetCounts } from '../net/netmeter';
 
 export const MODEL_ID = 'Xenova/whisper-tiny.en';
 
@@ -9,7 +10,11 @@ export type WorkerRequest = RequestBody & { id: number };
 export type WorkerResponse =
   | { id: number; type: 'loaded'; ms: number }
   | { id: number; type: 'result'; text: string; chunks: RawChunk[]; ms: number; loadMs: number }
-  | { id: number; type: 'error'; message: string };
+  | { id: number; type: 'error'; message: string }
+  | { id: 0; type: 'net'; delta: NetCounts };
+
+// Whatever this worker sends is counted too, and reported to the page for the status chip.
+installNetMeter((delta) => self.postMessage({ id: 0, type: 'net', delta } satisfies WorkerResponse));
 
 const base = import.meta.env.BASE_URL;
 env.allowRemoteModels = false;

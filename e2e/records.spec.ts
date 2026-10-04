@@ -147,7 +147,7 @@ test('a follow-up that has passed is shown as overdue, ahead of the ones still t
 });
 
 test('with nothing saved, records and tasks say so after the PIN is set', async ({ page }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await nav(page, 'Records').click();
   await expect(page.getByTestId('pin-new')).toBeVisible();
   await page.getByTestId('pin-new').fill('4821');

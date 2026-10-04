@@ -14,17 +14,18 @@ describe.skipIf(!has)('docs/EVALUATION.md', () => {
     expect(doc).toBe(renderEvaluation(results, texts));
   });
 
-  it('shows the headline numbers from the results, and marks human recordings pending until they exist', () => {
+  it('shows the headline numbers from the results, and says so when no human recordings exist', () => {
     const ref = results.reference.summary!;
     expect(doc).toContain(`${ref.fieldChecksPassed}/${ref.fieldChecksTotal}`);
     if (results.tts?.summary) expect(doc).toContain(`${results.tts.summary.fieldChecksPassed}/${results.tts.summary.fieldChecksTotal}`);
-    if (!results.recordings || results.recordings.rows.length === 0) expect(doc).toContain('pending recordings');
+    if (!results.recordings || results.recordings.rows.length === 0) expect(doc).toContain('none recorded');
+    else expect(doc).toContain('Real human recordings');
     expect(doc).toContain('TTS-synthetic');
   });
 
-  it('labels all audio so far as synthetic and makes no claim about real speech', () => {
+  it('labels computer-voice audio as synthetic and makes no accuracy claim about real speech from a handful of clips', () => {
     expect(doc).toMatch(/pipeline check, not an accuracy claim|a pipeline check only/);
-    expect(doc).toContain('No accuracy claim about real speech is made');
+    expect(doc).toContain('an indicative result and not an accuracy claim');
   });
 });
 
@@ -57,13 +58,15 @@ describe('renderEvaluation', () => {
     expect(doc).toContain('2/4 = 50.0%');
     expect(doc).toContain('| patient name | 1 | 1 | S01 |');
     expect(doc).toContain('heard \\| text');
-    expect(doc).toContain('pending recordings');
+    expect(doc).toContain('none recorded');
   });
 
   it('fills the human section by itself once recordings exist', () => {
     const doc = renderEvaluation(results({ label: 'mine', rows: [{ ...row, id: 'S01' }], summary }), { S01: 'x' });
-    expect(doc).not.toContain('**My own voice: pending recordings.**');
-    expect(doc).toContain('## My own voice');
+    expect(doc).not.toContain('none recorded');
+    expect(doc).not.toContain('pending recordings');
+    expect(doc).toContain('## Real human recordings (1 clip)');
+    expect(doc).toContain('only 1 of the 13 scripts were recorded');
   });
 });
 

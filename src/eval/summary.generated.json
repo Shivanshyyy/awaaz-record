@@ -27,10 +27,26 @@
     "wer": 0.27699530516431925,
     "meanClipWer": 0.28327801687768045,
     "audioSeconds": 166.12650000000002,
-    "transcribeSeconds": 6.500256041999998,
-    "realTimeFactor": 0.03912835123836352
+    "transcribeSeconds": 6.550786246999999,
+    "realTimeFactor": 0.03943251827372513
   },
-  "recordings": null,
+  "recordings": {
+    "label": "Real human recordings",
+    "clips": 3,
+    "fieldChecksPassed": 29,
+    "fieldChecksTotal": 39,
+    "fieldAccuracy": 0.7435897435897436,
+    "wrongValues": 10,
+    "silentWrongValues": 3,
+    "expectedFlagsRaised": 1,
+    "expectedFlagsTotal": 2,
+    "extraFlags": 9,
+    "wer": 0.30927835051546393,
+    "meanClipWer": 0.304673721340388,
+    "audioSeconds": 48.785125,
+    "transcribeSeconds": 1.0331395840000004,
+    "realTimeFactor": 0.021177348300327206
+  },
   "primock57": {
     "utterances": 9,
     "words": 327,
@@ -38,8 +54,8 @@
     "wer": 0.28134556574923547,
     "meanUtteranceWer": 0.26311908191381206,
     "audioSeconds": 97.3605,
-    "transcribeSeconds": 3.0114277490000023,
-    "realTimeFactor": 0.030930693135306435
+    "transcribeSeconds": 3.0068419159999977,
+    "realTimeFactor": 0.030883591559205198
   },
   "accent": [
     {

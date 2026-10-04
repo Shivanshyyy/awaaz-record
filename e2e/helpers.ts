@@ -67,11 +67,22 @@ export async function resolveEverything(page: Page) {
   await expect(confirm).toBeEnabled();
 }
 
+/** The real Hindi clips exist now; tests of the text fallback pretend the manifest lists none. */
+export async function withoutHindiAudio(page: Page) {
+  await page.addInitScript(() => {
+    const realFetch = window.fetch.bind(window);
+    window.fetch = (input, init) =>
+      String(input instanceof Request ? input.url : input).endsWith('audio/hi/manifest.json')
+        ? Promise.resolve(new Response('{"clips":{}}', { headers: { 'content-type': 'application/json' } }))
+        : realFetch(input, init);
+  });
+}
+
 export const CLEAN_NOTE =
   'Patient Noor Fatima, thirty-eight years. Complains of fever for three days. Gave paracetamol five hundred milligrams three times a day for three days. Review after three days.';
 
 /** Opens New visit and reviews a pasted transcript (the developer helper), with consent taken verbally. */
-export async function startFromText(page: Page, text = CLEAN_NOTE, base = '/awaaz-record/?dev=1') {
+export async function startFromText(page: Page, text = CLEAN_NOTE, base = '/?dev=1') {
   await page.goto(base);
   await nav(page, 'New visit').click();
   await page.getByTestId('dev-paste').fill(text);

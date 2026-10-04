@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T07:58:10.757Z",
+  "generatedAt": "2026-10-04T10:38:31.724Z",
   "generatedOn": "2026-10-04",
   "visitDate": "2026-10-04",
   "machine": {
@@ -1035,7 +1035,7 @@
         "transcript": "patient neuroplenty eight years, complaints of fever for three days, temperature 101, gave ferrocyte mild 500 mg three times a day for three days, review after three days.",
         "warnings": [],
         "audioSeconds": 11.428125,
-        "transcribeMs": 354.592041,
+        "transcribeMs": 344.083667,
         "wer": 0.18518518518518517,
         "wordErrors": 5,
         "refWords": 27
@@ -1139,7 +1139,7 @@
         "transcript": "The patient knew 38 years, complaints of fever for 3 days, temperature 101, gave pherosate mild 500mg 3 times a day for 3 days, review after 3 days.",
         "warnings": [],
         "audioSeconds": 11.428125,
-        "transcribeMs": 347.51199999999994,
+        "transcribeMs": 350.5950409999999,
         "wer": 0.18518518518518517,
         "wordErrors": 5,
         "refWords": 27
@@ -1261,7 +1261,7 @@
         "transcript": "Patient - drum -ish 52, sneezing and running nose for one week was in the mornings (B.P. 140 /90). Paul's 88, gives it a \"zine 10 mg once at night\" for five days. Follow up in one week.",
         "warnings": [],
         "audioSeconds": 12.932,
-        "transcribeMs": 402.27041699999995,
+        "transcribeMs": 409.34333300000003,
         "wer": 0.3333333333333333,
         "wordErrors": 12,
         "refWords": 36
@@ -1395,7 +1395,7 @@
         "transcript": "Station from age 52, seizing and running news for one week was in the morning, Bp140 over 90. False 88, gives the Tuesday and 10 milligrams once at night for five days. Follow up in one week.",
         "warnings": [],
         "audioSeconds": 12.932,
-        "transcribeMs": 362.94570899999985,
+        "transcribeMs": 361.4471659999999,
         "wer": 0.4166666666666667,
         "wordErrors": 15,
         "refWords": 36
@@ -1487,7 +1487,7 @@
         "transcript": "Fish and Sunita 26 /7 months pregnant, swelling of feet and headaches since yesterday, BP 160 /110, referred to the district hospital today, follow up after delivery.",
         "warnings": [],
         "audioSeconds": 11.9276875,
-        "transcribeMs": 304.73295800000005,
+        "transcribeMs": 309.01491599999963,
         "wer": 0.21428571428571427,
         "wordErrors": 6,
         "refWords": 28
@@ -1614,7 +1614,7 @@
         "transcript": "patient baby are of two years brought by mother, loose motions since two days, give ORS after every loose tool and in 20mg once daily for 14 days, advise mother to continue breastfeeding and give plenty of fluids. Review in five days.",
         "warnings": [],
         "audioSeconds": 14.65075,
-        "transcribeMs": 369.6552499999998,
+        "transcribeMs": 367.69725000000017,
         "wer": 0.14285714285714285,
         "wordErrors": 6,
         "refWords": 42
@@ -1761,7 +1761,7 @@
         "transcript": "Fish and Locks Me, 60 Years, Fain in both knees for two months, gave that clothing a 50 mg twice a day after food for five days, sorry make that abu -profend 400 mg twice a day after food for five days, review in two weeks.",
         "warnings": [],
         "audioSeconds": 14.6620625,
-        "transcribeMs": 395.7685419999998,
+        "transcribeMs": 403.9120829999997,
         "wer": 0.24390243902439024,
         "wordErrors": 10,
         "refWords": 41
@@ -1877,7 +1877,7 @@
         "transcript": "patient Kavita, 33. Running while passing urine for two days. Temperature 99.8. Gave Nitrofuranto in 100 mg twice a day for five days. Advice to drink plenty of water.",
         "warnings": [],
         "audioSeconds": 12.907875,
-        "transcribeMs": 335.99691600000006,
+        "transcribeMs": 337.0317500000001,
         "wer": 0.14285714285714285,
         "wordErrors": 4,
         "refWords": 28
@@ -2023,7 +2023,7 @@
           "repeated"
         ],
         "audioSeconds": 12.907875,
-        "transcribeMs": 2188.6979169999995,
+        "transcribeMs": 2216.9757080000004,
         "wer": 0.9642857142857143,
         "wordErrors": 27,
         "refWords": 28
@@ -2145,7 +2145,7 @@
         "transcript": "patient Mohan's 70, came for a blood pressure check (Bp -150 over 95, with 62 kilos, continue a mooda -pine 5 mg one -staley) review in one month.",
         "warnings": [],
         "audioSeconds": 11.5774375,
-        "transcribeMs": 342.82987500000036,
+        "transcribeMs": 339.40429199999926,
         "wer": 0.3333333333333333,
         "wordErrors": 9,
         "refWords": 27
@@ -2285,7 +2285,7 @@
         "transcript": "Ok so, patient him ran 29, he was saying it is very hot these days, anyway headache and body aches in this morning. Temperature normal, gave Ferris 8 mile 651 tablet 3 times a day for 2 days, if not better come back.",
         "warnings": [],
         "audioSeconds": 14.186375,
-        "transcribeMs": 391.88195899999937,
+        "transcribeMs": 398.74654199999986,
         "wer": 0.24390243902439024,
         "wordErrors": 10,
         "refWords": 41
@@ -2378,7 +2378,7 @@
         "transcript": "Patient guitar, 41, blood vision fold distance slowly over six months, no pain, referred to the i -hospital in the district for a check -up, follow up on Monday.",
         "warnings": [],
         "audioSeconds": 10.0899375,
-        "transcribeMs": 308.27458299999944,
+        "transcribeMs": 310.0061660000001,
         "wer": 0.13793103448275862,
         "wordErrors": 4,
         "refWords": 29
@@ -2509,7 +2509,7 @@
         "transcript": "Patient Raju 8 years brought by father, Air Pain for 2 days. Temperature 38.2, gave him oxisol in 250 mg 3 times a day for 5 days, and Farasetamal syrup when needed for pain. Review after 5 days.",
         "warnings": [],
         "audioSeconds": 14.49625,
-        "transcribeMs": 395.0978750000004,
+        "transcribeMs": 402.5283330000002,
         "wer": 0.1388888888888889,
         "wordErrors": 5,
         "refWords": 36
@@ -2529,14 +2529,446 @@
       "wer": 0.27699530516431925,
       "meanClipWer": 0.28327801687768045,
       "audioSeconds": 166.12650000000002,
-      "transcribeSeconds": 6.500256041999998,
-      "realTimeFactor": 0.03912835123836352
+      "transcribeSeconds": 6.550786246999999,
+      "realTimeFactor": 0.03943251827372513
     }
   },
   "recordings": {
-    "label": "The builder's own voice",
-    "rows": [],
-    "summary": null
+    "label": "Real human recordings",
+    "rows": [
+      {
+        "id": "S01",
+        "script": "S01",
+        "score": {
+          "id": "S01",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"\", want \"Noor\"",
+              "silent": false
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 38, want 38"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": true,
+              "detail": "terms [\"fever\"], missing []"
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": true,
+              "detail": "got {\"value\":101,\"unit\":\"F\"}, want {\"value\":101,\"unit\":\"F\"}"
+            },
+            {
+              "area": "medications[paracetamol]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[paracetamol].dose",
+              "ok": true,
+              "detail": "got 500, want 500"
+            },
+            {
+              "area": "medications[paracetamol].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[paracetamol].perDay",
+              "ok": false,
+              "detail": "got null, want 3",
+              "silent": false
+            },
+            {
+              "area": "medications[paracetamol].durationDays",
+              "ok": true,
+              "detail": "got 3, want 3"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got null, want []"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got {\"kind\":\"days\",\"days\":3}, want {\"kind\":\"days\",\"days\":3}"
+            }
+          ],
+          "flagChecks": [],
+          "extraFlags": [
+            {
+              "code": "MISSING",
+              "target": "patient.name",
+              "message": "Patient name not heard — who is the patient?"
+            },
+            {
+              "code": "NAME_SNAPPED",
+              "target": "medications[paracetamol].name",
+              "message": "\"Paris a tomorrow\" was heard — taken as Paracetamol. Is that the medicine?"
+            },
+            {
+              "code": "MISSING_DETAIL",
+              "target": "medications[paracetamol].perDay",
+              "message": "How often should Paracetamol be taken?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"\", want \"Noor\"",
+            "silent": false
+          },
+          {
+            "area": "medications[paracetamol].perDay",
+            "ok": false,
+            "detail": "got null, want 3",
+            "silent": false
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "MISSING@patient.name",
+          "NAME_SNAPPED@medications[paracetamol].name",
+          "MISSING_DETAIL@medications[paracetamol].perDay"
+        ],
+        "clip": "S01",
+        "noisy": false,
+        "transcript": "Asian Noor 38 years, complaints of fever for 3 days, temperature 101, give Paris a tomorrow 500mg 3 days, a day for 3 days, review after 3 days.",
+        "warnings": [],
+        "audioSeconds": 13.815875,
+        "transcribeMs": 314.441417,
+        "wer": 0.25925925925925924,
+        "wordErrors": 7,
+        "refWords": 27
+      },
+      {
+        "id": "S04",
+        "script": "S04",
+        "score": {
+          "id": "S04",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"\", want \"Aarav\"",
+              "silent": false
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": false,
+              "detail": "terms [], missing [\"loose motions\"]",
+              "silent": false
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": false,
+              "detail": "got null, want 2",
+              "silent": true
+            },
+            {
+              "area": "medications[ors]",
+              "ok": false,
+              "detail": "not found; got [\"zinc\"]",
+              "silent": true
+            },
+            {
+              "area": "medications[zinc]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[zinc].dose",
+              "ok": true,
+              "detail": "got 20, want 20"
+            },
+            {
+              "area": "medications[zinc].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[zinc].perDay",
+              "ok": true,
+              "detail": "got 1, want 1"
+            },
+            {
+              "area": "medications[zinc].durationDays",
+              "ok": true,
+              "detail": "got 14, want 14"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got [\"breastfeeding\",\"fluids\"], want [\"breastfeeding\",\"fluids\"]"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": false,
+              "detail": "got null, want {\"kind\":\"days\",\"days\":5}",
+              "silent": false
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag MISSING_DETAIL @ ors",
+              "ok": false,
+              "detail": "not raised; flags were [\"MISSING@patient.name\",\"MISSING@complaint.terms\",\"MISSING@followUp\"]"
+            }
+          ],
+          "extraFlags": [
+            {
+              "code": "MISSING",
+              "target": "patient.name",
+              "message": "Patient name not heard — who is the patient?"
+            },
+            {
+              "code": "MISSING",
+              "target": "complaint.terms",
+              "message": "Complaint not heard — what did the patient come for?"
+            },
+            {
+              "code": "MISSING",
+              "target": "followUp",
+              "message": "Follow-up not heard — when should the patient come back?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"\", want \"Aarav\"",
+            "silent": false
+          },
+          {
+            "area": "complaint.keywords",
+            "ok": false,
+            "detail": "terms [], missing [\"loose motions\"]",
+            "silent": false
+          },
+          {
+            "area": "complaint.durationDays",
+            "ok": false,
+            "detail": "got null, want 2",
+            "silent": true
+          },
+          {
+            "area": "medications[ors]",
+            "ok": false,
+            "detail": "not found; got [\"zinc\"]",
+            "silent": true
+          },
+          {
+            "area": "followUp",
+            "ok": false,
+            "detail": "got null, want {\"kind\":\"days\",\"days\":5}",
+            "silent": false
+          }
+        ],
+        "missedFlags": [
+          {
+            "area": "flag MISSING_DETAIL @ ors",
+            "ok": false,
+            "detail": "not raised; flags were [\"MISSING@patient.name\",\"MISSING@complaint.terms\",\"MISSING@followUp\"]"
+          }
+        ],
+        "extraFlags": [
+          "MISSING@patient.name",
+          "MISSING@complaint.terms",
+          "MISSING@followUp"
+        ],
+        "clip": "S04",
+        "noisy": false,
+        "transcript": "Patient baby are of 2 years bought by mother. Lose motions in 2 days, give Rs after every loose tool, and zinc 20mg 1 daily for 14 days. Advice mother to continue breastfeeding and give plenty of fluids.",
+        "warnings": [],
+        "audioSeconds": 19.71375,
+        "transcribeMs": 358.57175000000007,
+        "wer": 0.3333333333333333,
+        "wordErrors": 14,
+        "refWords": 42
+      },
+      {
+        "id": "S06",
+        "script": "S06",
+        "score": {
+          "id": "S06",
+          "checks": [
+            {
+              "area": "patient.name",
+              "ok": false,
+              "detail": "got \"\", want \"Kavita\"",
+              "silent": false
+            },
+            {
+              "area": "patient.ageYears",
+              "ok": false,
+              "detail": "got null, want 33",
+              "silent": true
+            },
+            {
+              "area": "complaint.keywords",
+              "ok": false,
+              "detail": "terms [], missing [\"burning\"]",
+              "silent": false
+            },
+            {
+              "area": "complaint.durationDays",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "vitals.temp",
+              "ok": true,
+              "detail": "got {\"value\":99.8,\"unit\":\"F\"}, want {\"value\":99.8,\"unit\":\"F\"}"
+            },
+            {
+              "area": "medications[nitrofurantoin]",
+              "ok": true,
+              "detail": "found"
+            },
+            {
+              "area": "medications[nitrofurantoin].dose",
+              "ok": true,
+              "detail": "got 100, want 100"
+            },
+            {
+              "area": "medications[nitrofurantoin].unit",
+              "ok": true,
+              "detail": "got \"mg\", want \"mg\""
+            },
+            {
+              "area": "medications[nitrofurantoin].perDay",
+              "ok": true,
+              "detail": "got 2, want 2"
+            },
+            {
+              "area": "medications[nitrofurantoin].durationDays",
+              "ok": true,
+              "detail": "got 5, want 5"
+            },
+            {
+              "area": "advice.tags",
+              "ok": true,
+              "detail": "got [\"fluids\"], want [\"fluids\"]"
+            },
+            {
+              "area": "referral",
+              "ok": true,
+              "detail": "got null, want none"
+            },
+            {
+              "area": "followUp",
+              "ok": true,
+              "detail": "got null, want none"
+            }
+          ],
+          "flagChecks": [
+            {
+              "area": "flag MISSING @ followUp",
+              "ok": true,
+              "detail": "raised"
+            }
+          ],
+          "extraFlags": [
+            {
+              "code": "MISSING",
+              "target": "patient.name",
+              "message": "Patient name not heard — who is the patient?"
+            },
+            {
+              "code": "MISSING",
+              "target": "complaint.terms",
+              "message": "Complaint not heard — what did the patient come for?"
+            },
+            {
+              "code": "NAME_SNAPPED",
+              "target": "medications[nitrofurantoin].name",
+              "message": "\"Nitro Fuan to win\" was heard — taken as Nitrofurantoin. Is that the medicine?"
+            }
+          ]
+        },
+        "failed": [
+          {
+            "area": "patient.name",
+            "ok": false,
+            "detail": "got \"\", want \"Kavita\"",
+            "silent": false
+          },
+          {
+            "area": "patient.ageYears",
+            "ok": false,
+            "detail": "got null, want 33",
+            "silent": true
+          },
+          {
+            "area": "complaint.keywords",
+            "ok": false,
+            "detail": "terms [], missing [\"burning\"]",
+            "silent": false
+          }
+        ],
+        "missedFlags": [],
+        "extraFlags": [
+          "MISSING@patient.name",
+          "MISSING@complaint.terms",
+          "NAME_SNAPPED@medications[nitrofurantoin].name"
+        ],
+        "clip": "S06",
+        "noisy": false,
+        "transcript": "Covita 33. Burning while passing U -D in for two days. Temperature 99.8 gave Nitro Fuan to win 100 milligram twice a day for five days. Advice to drink plenty of water.",
+        "warnings": [],
+        "audioSeconds": 15.2555,
+        "transcribeMs": 360.1264170000004,
+        "wer": 0.32142857142857145,
+        "wordErrors": 9,
+        "refWords": 28
+      }
+    ],
+    "summary": {
+      "label": "Real human recordings",
+      "clips": 3,
+      "fieldChecksPassed": 29,
+      "fieldChecksTotal": 39,
+      "fieldAccuracy": 0.7435897435897436,
+      "wrongValues": 10,
+      "silentWrongValues": 3,
+      "expectedFlagsRaised": 1,
+      "expectedFlagsTotal": 2,
+      "extraFlags": 9,
+      "wer": 0.30927835051546393,
+      "meanClipWer": 0.304673721340388,
+      "audioSeconds": 48.785125,
+      "transcribeSeconds": 1.0331395840000004,
+      "realTimeFactor": 0.021177348300327206
+    }
   },
   "primock57": {
     "dataset": "PriMock57",
@@ -2561,7 +2993,7 @@
         "reference": "No, okay. Um, and um, any any other symptoms at all? So you mentioned tummy pain, you mentioned diarrhea, you mentioned your vomiting, uh, anything else that comes to mind?",
         "heard": "Right, okay. And any other symptoms at all, to mention the tummy pain, you mentioned diarrhea, you mentioned your vomiting, anything else that comes to mind?",
         "audioSeconds": 10.1036875,
-        "transcribeMs": 295.3017090000003,
+        "transcribeMs": 299.4607500000002,
         "wordErrors": 5,
         "refWords": 27,
         "wer": 0.18518518518518517
@@ -2574,7 +3006,7 @@
         "reference": "Fine, so just to resummarize. For the last four days, you've had very itchy skin, very sore skin all over your body, mainly your chest. And did you also mention your arms and legs as well?",
         "heard": "So just to re -summerise, for the last four days you've had very icky skin, very sore skin, all over your body, mainly your chest, and did your tension in your arms and legs as well.",
         "audioSeconds": 10.0668125,
-        "transcribeMs": 347.24441599999955,
+        "transcribeMs": 343.641916999999,
         "wordErrors": 7,
         "refWords": 36,
         "wer": 0.19444444444444445
@@ -2587,7 +3019,7 @@
         "reference": "To see the rash itself, to see exactly what type of rash it is. But from what you've told me, you mentioned it's, you've got some dry skin and some, uh cracked skin as well.",
         "heard": "to see the rash itself, it's exactly what type of rash it is. But for what you've told me, you mentioned it's, you've got some dry skin and some cracked skin as well.",
         "audioSeconds": 9.20325,
-        "transcribeMs": 326.4723750000003,
+        "transcribeMs": 330.62783299999865,
         "wordErrors": 3,
         "refWords": 34,
         "wer": 0.08823529411764706
@@ -2600,7 +3032,7 @@
         "reference": "Well, let's try our best. Let's try and get you, let's try and get you well, soon. Um you mentioned it's on your left hand side. Is that right? And it started at mid-day, a few hours ago.",
         "heard": "Well, let's try best. Let's try and get you well soon. You mentioned some of your left -hand sizes, aren't you? It started midday a few hours ago.",
         "audioSeconds": 8.1845625,
-        "transcribeMs": 304.0850419999988,
+        "transcribeMs": 308.82600000000093,
         "wordErrors": 16,
         "refWords": 38,
         "wer": 0.42105263157894735
@@ -2613,7 +3045,7 @@
         "reference": "Um but you know let let let, as I said let's take it step by step, um to see exactly what the cause of these headaches are first. Um, I'm just going to ask you some, um very uh yes no questions if that's OK, ma'am. Um",
         "heard": "But let's take a step by step and see what the causes can occur first. I'm just going to ask you some very yes, no question. That's okay.",
         "audioSeconds": 11.31375,
-        "transcribeMs": 304.09375,
+        "transcribeMs": 304.8688750000001,
         "wordErrors": 20,
         "refWords": 41,
         "wer": 0.4878048780487805
@@ -2626,7 +3058,7 @@
         "reference": "That's very sensible. Um very good. Um in terms of your chest otherwise, have you any difficulty breathing, or any pain in your chest?",
         "heard": "very sensible, very good. In terms of your chest otherwise, have any difficulty breathing or any pain in your chest?",
         "audioSeconds": 9.1654375,
-        "transcribeMs": 249.5957500000004,
+        "transcribeMs": 244.08279100000073,
         "wordErrors": 2,
         "refWords": 22,
         "wer": 0.09090909090909091
@@ -2639,7 +3071,7 @@
         "reference": "When you say winded, do you feel, uh do you feel more short of breath would you say, on exertion? Is that when you, OK. Um and and that's mainly on exercise. But when you're resting, there's no problem.",
         "heard": "Can you say windage, do you feel more short of breath, would you say, on exerts, is that what you think? And that's mainly on exercise, but when you're resting, there's no problem.",
         "audioSeconds": 11.2781875,
-        "transcribeMs": 357.3450410000005,
+        "transcribeMs": 352.78616599999987,
         "wordErrors": 9,
         "refWords": 37,
         "wer": 0.24324324324324326
@@ -2652,7 +3084,7 @@
         "reference": "OK. And, and so, just to summarize so far, if you don't mind, it's really for the last couple of days, it's tummy pain that's really affected you, mainly lower down towards your belly button. It's quite burning, you said. It's getting worse. Um, you noticed some pink urine.",
         "heard": "Okay, and so just to summarize, so you fire me, don't mind, it's really for the last couple of days, it's a tummy pain, that's really effective to do, many lower down towards your belly button, it's quite burning, you said, it's getting worse, you know, it's the pink urine,",
         "audioSeconds": 14.652,
-        "transcribeMs": 481.78820800000176,
+        "transcribeMs": 483.2069999999985,
         "wordErrors": 13,
         "refWords": 48,
         "wer": 0.2708333333333333
@@ -2665,7 +3097,7 @@
         "reference": "Could just be a, you know, could just be a urine infection, for example. Could just be something related to your gut. Um, could just be something related to your, you know, a pregnancy-related cause. Um, and so it's probably worth doing some tests initially.",
         "heard": "Could just be a year infection, for example, could just be some of the latest you got. Could this be something related to your pregnancy related cause? And so it's probably worth doing some tests initially.",
         "audioSeconds": 13.3928125,
-        "transcribeMs": 345.50145800000064,
+        "transcribeMs": 339.3405839999996,
         "wordErrors": 17,
         "refWords": 44,
         "wer": 0.38636363636363635
@@ -2678,8 +3110,8 @@
       "wer": 0.28134556574923547,
       "meanUtteranceWer": 0.26311908191381206,
       "audioSeconds": 97.3605,
-      "transcribeSeconds": 3.0114277490000023,
-      "realTimeFactor": 0.030930693135306435
+      "transcribeSeconds": 3.0068419159999977,
+      "realTimeFactor": 0.030883591559205198
     }
   },
   "accent": {
@@ -2791,7 +3223,7 @@
         "age": "26",
         "heard": "Please call Stella. Ask her to bring these things with her from the stove. Six poons of fresh snow peas, five thick slabs of blue cheese and maybe a snack for a brother bob. We also need a small plastic snack and a big toy for the kids. She can scoop these things into three red bags and we will go meet her with the train station.",
         "audioSeconds": 24.2205625,
-        "transcribeMs": 511.6788749999996,
+        "transcribeMs": 510.7653339999997,
         "wordErrors": 7,
         "refWords": 69,
         "wer": 0.10144927536231885
@@ -2806,7 +3238,7 @@
         "age": "21",
         "heard": "Please call Stella. Ask her to bring these things with her from the store. 6 spoons of fresh snow peas, 5 thick slabs of blue cheese and maybe a snack for her brother Bob. We also need a small plastic snack, snake and a big toy frog for the kids. She can scoop these things into 3 red bags and we will go meet her when in stay at the train station.",
         "audioSeconds": 26.4563125,
-        "transcribeMs": 527.4029590000009,
+        "transcribeMs": 532.8017089999994,
         "wordErrors": 4,
         "refWords": 69,
         "wer": 0.057971014492753624
@@ -2821,7 +3253,7 @@
         "age": "20",
         "heard": "Please call Shel Salah. Ask her to bring these things with her from the straw. Six spoons of fresh snow peas, five thick slaps of blue cheese and maybe a snake for her brother Bob. We also need a small plastic snake and a big tie frog for our kids. She can scope these things into three red bags and we will go meet her when I stay at the 10th Street.",
         "audioSeconds": 42.7924375,
-        "transcribeMs": 783.8797909999994,
+        "transcribeMs": 773.3601249999992,
         "wordErrors": 14,
         "refWords": 69,
         "wer": 0.2028985507246377
@@ -2836,7 +3268,7 @@
         "age": "35",
         "heard": "Please call Stella. Ask her to bring these things with her from the store. 6 bones of fresh snow peas, 5 thick slabs of blue cheese and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scope these things into 3 red bags and we will go meet her with this day at the Tain station.",
         "audioSeconds": 21.7570625,
-        "transcribeMs": 522.9889579999999,
+        "transcribeMs": 533.0204159999994,
         "wordErrors": 6,
         "refWords": 69,
         "wer": 0.08695652173913043
@@ -2851,7 +3283,7 @@
         "age": "38",
         "heard": "Please call Stella. Ask her to bring these things with her from the store. Six spoons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 27.820375,
-        "transcribeMs": 527.1141670000015,
+        "transcribeMs": 513.5585410000003,
         "wordErrors": 0,
         "refWords": 69,
         "wer": 0
@@ -2866,7 +3298,7 @@
         "age": "29",
         "heard": "Please call Stella, ask her to bring these things with her from the store, six pomps of fresh snow peas, five thick slabs of blue cheese and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go meet her when is day at the train station.",
         "audioSeconds": 25.407125,
-        "transcribeMs": 526.0054170000003,
+        "transcribeMs": 523.1022090000006,
         "wordErrors": 4,
         "refWords": 69,
         "wer": 0.057971014492753624
@@ -2881,7 +3313,7 @@
         "age": "53",
         "heard": "Please call Stila, ask her to bring these things with her from the store. Six phones of fresh snow piece, five thick slabs of blue cheese and may be snake for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. Second scope, these things into three red legs and we will go meet her Wednesday at the train station.",
         "audioSeconds": 46.6140625,
-        "transcribeMs": 756.571582999999,
+        "transcribeMs": 747.6530000000002,
         "wordErrors": 10,
         "refWords": 69,
         "wer": 0.14492753623188406
@@ -2896,7 +3328,7 @@
         "age": "28",
         "heard": "Please call Stella. Ask her to bring these things with her from the store. 6 poons of fresh snow peas, 5 thick slabs of blue cheese and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 32.7200625,
-        "transcribeMs": 780.4833329999983,
+        "transcribeMs": 768.9826670000002,
         "wordErrors": 1,
         "refWords": 69,
         "wer": 0.014492753623188406
@@ -2911,7 +3343,7 @@
         "age": "33",
         "heard": "Please call Stella. Ask her to bring these things with her from the store. Six spoons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for our kids. She can scoop these things into three red bags and will go meet her when stay at that train station.",
         "audioSeconds": 27.49775,
-        "transcribeMs": 512.5736249999991,
+        "transcribeMs": 518.0794169999972,
         "wordErrors": 5,
         "refWords": 69,
         "wer": 0.07246376811594203
@@ -2926,7 +3358,7 @@
         "age": "64",
         "heard": "Please call Stela. Ask her to bring these things with her from the store. 6 pf fresh snow peas, 5 thick slabs of blue cheese and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into 3 red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 29.6551875,
-        "transcribeMs": 518.0862080000006,
+        "transcribeMs": 515.444792000002,
         "wordErrors": 3,
         "refWords": 69,
         "wer": 0.043478260869565216
@@ -2941,7 +3373,7 @@
         "age": "20",
         "heard": "Please call Stella, ask her to bring these things with her from the store 6 pence of fresh snow piece 5 thick slits of blue cheese and maybe of snack for her brother Bob. We also need a small plastic coat snack and a baked toy for the kids. She can scope these things into three red bags and we will go meet her when is the at the train station.",
         "audioSeconds": 37.2541875,
-        "transcribeMs": 760.1604999999981,
+        "transcribeMs": 751.3904169999987,
         "wordErrors": 12,
         "refWords": 69,
         "wer": 0.17391304347826086
@@ -2956,7 +3388,7 @@
         "age": "22",
         "heard": "Please call Stella, ask her to bring these things with her from the store. 6 poons of fresh snow peas, 5 thick slaps of blue cheese and may be a snake for her brother Bob. We also need a small plastic snake and a big toy for the kids. She can scoop these things into 3 red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 30.5939375,
-        "transcribeMs": 790.2022079999988,
+        "transcribeMs": 777.5402500000018,
         "wordErrors": 6,
         "refWords": 69,
         "wer": 0.08695652173913043
@@ -2971,7 +3403,7 @@
         "age": "27",
         "heard": "Please call Stella, ask her to bring these things with her from the store. 6 spoons of fresh snow peas, 5 thick slabs of blue cheese and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into 3 red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 26.285,
-        "transcribeMs": 514.219208999999,
+        "transcribeMs": 514.6361670000006,
         "wordErrors": 0,
         "refWords": 69,
         "wer": 0
@@ -2986,7 +3418,7 @@
         "age": "24",
         "heard": "Please call Stella. Ask her to bring these things with her from the store. 6 pons of fresh snow peas, 5 thick slabs of blue cheese and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into 3 red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 31.1643125,
-        "transcribeMs": 799.273416,
+        "transcribeMs": 799.1611249999987,
         "wordErrors": 1,
         "refWords": 69,
         "wer": 0.014492753623188406
@@ -3001,7 +3433,7 @@
         "age": "28",
         "heard": "Please call Stella, ask her to bring these things with her from the store. 6 spoons of a fresh no -piece, 5 thick slabs of blue cheese and maybe a snack for her brother Bob. We also need a small plastic snack and a big toy frog for the kids. She can scoot these things into the 3 red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 26.652,
-        "transcribeMs": 543.143500000002,
+        "transcribeMs": 562.786500000002,
         "wordErrors": 6,
         "refWords": 69,
         "wer": 0.08695652173913043
@@ -3016,7 +3448,7 @@
         "age": "26",
         "heard": "These called Stella asked her to bring these things with her from the store, six phones of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we'll go meet her Wednesday at the train station.",
         "audioSeconds": 25.348125,
-        "transcribeMs": 510.2722079999985,
+        "transcribeMs": 536.5382090000021,
         "wordErrors": 6,
         "refWords": 69,
         "wer": 0.08695652173913043
@@ -3031,7 +3463,7 @@
         "age": "31",
         "heard": "Please call Stella. Ask her to bring these things with her from the store. Six spoons of fresh snow peas, phythic slops of blue cheese and maybe snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will meet her Wednesday at the train station.",
         "audioSeconds": 23.508375,
-        "transcribeMs": 520.6610409999994,
+        "transcribeMs": 539.3832089999996,
         "wordErrors": 5,
         "refWords": 69,
         "wer": 0.07246376811594203
@@ -3046,7 +3478,7 @@
         "age": "18",
         "heard": "Please call still, I asked her to bring these things with her. From the store, six spoons of fresh snowpins, five thick slabs of blue cheese and maybe a snack for her brother Bob. We also needed a small plastic snack and a big toy frog for the kids. She can snoop these things into three red bags and we'll go meet her once they have the transstation.",
         "audioSeconds": 30.145875,
-        "transcribeMs": 786.4375419999997,
+        "transcribeMs": 793.8807080000006,
         "wordErrors": 15,
         "refWords": 69,
         "wer": 0.21739130434782608
@@ -3061,7 +3493,7 @@
         "age": "35",
         "heard": "Please consider asking to bring the things with heart from the stove, 6p of fresh benefits, 5,6 lats of leaves and maybe snack for a burbop, with some neat small plastic snake and a big toy frog for the kids. Second scoop these things into 3 red bags and will go mid -air once they are at the trench station.",
         "audioSeconds": 16.9435625,
-        "transcribeMs": 499.69024999999965,
+        "transcribeMs": 494.09770899999785,
         "wordErrors": 31,
         "refWords": 69,
         "wer": 0.4492753623188406
@@ -3076,7 +3508,7 @@
         "age": "26",
         "heard": "Please call Stella. I'll get to bring these things with her from the store. 6 spoons of fresh snurpees, 5 thick slabs of blue cheese and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into 3 red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 19.00175,
-        "transcribeMs": 526.820749999999,
+        "transcribeMs": 528.5173340000001,
         "wordErrors": 4,
         "refWords": 69,
         "wer": 0.057971014492753624
@@ -3091,7 +3523,7 @@
         "age": "35",
         "heard": "Please call Stella, ask her to bring these things with her from the store. Six pounds of fresh snow peas, five thick slabs of blue cheese, and maybe snack for her brother, Bob. We also need a small plastic snake and a big toy frog for the kids. She will scoop these things up into three red bags, and we will go meet her Wednesday at the train station.",
         "audioSeconds": 21.57275,
-        "transcribeMs": 524.3604159999995,
+        "transcribeMs": 527.3160830000015,
         "wordErrors": 4,
         "refWords": 69,
         "wer": 0.057971014492753624
@@ -3106,7 +3538,7 @@
         "age": "23",
         "heard": "Please call Stella. Haska to bring these things with her from the store. Six rooms of fresh snow peas, five thick slabs of blue cheese, and maybe a snack with her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 18.723625,
-        "transcribeMs": 523.106416999999,
+        "transcribeMs": 528.4532500000023,
         "wordErrors": 4,
         "refWords": 69,
         "wer": 0.057971014492753624
@@ -3121,7 +3553,7 @@
         "age": "18",
         "heard": "Please call Stella. Ask her to bring these things with her from the store. Six boons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 19.547375,
-        "transcribeMs": 530.4110000000001,
+        "transcribeMs": 517.505416,
         "wordErrors": 1,
         "refWords": 69,
         "wer": 0.014492753623188406
@@ -3136,7 +3568,7 @@
         "age": "7",
         "heard": "Please call Stela, ask her to bring these things from her, with her from the store. Six spoons of fresh snow peas, plastic slas and blue cheese, and maybe a snack for her brother, Bob. We also made a small plastic snack and a big toy from her, for the kids. She can scoop these things into three red bags, and we will go make her win fight at the giant station.",
         "audioSeconds": 27.549,
-        "transcribeMs": 558.6449580000008,
+        "transcribeMs": 563.7816249999996,
         "wordErrors": 15,
         "refWords": 69,
         "wer": 0.21739130434782608
@@ -3151,7 +3583,7 @@
         "age": "39",
         "heard": "Please call Stella, ask her to bring these things with her from the store. Six spoons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go need her Wednesday at the train station.",
         "audioSeconds": 20.816375,
-        "transcribeMs": 519.4898749999993,
+        "transcribeMs": 524.3677500000013,
         "wordErrors": 1,
         "refWords": 69,
         "wer": 0.014492753623188406
@@ -3166,7 +3598,7 @@
         "age": "27",
         "heard": "Please call Stella, ask her to bring these things with her from the store. Six foods of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 20.2881875,
-        "transcribeMs": 519.0043330000008,
+        "transcribeMs": 521.7244169999976,
         "wordErrors": 1,
         "refWords": 69,
         "wer": 0.014492753623188406
@@ -3181,7 +3613,7 @@
         "age": "37",
         "heard": "Please call Stella, ask her to bring these things with her from the store. Six moons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 16.4605625,
-        "transcribeMs": 520.4185419999994,
+        "transcribeMs": 511.36933299999873,
         "wordErrors": 1,
         "refWords": 69,
         "wer": 0.014492753623188406
@@ -3196,7 +3628,7 @@
         "age": "37",
         "heard": "Please, Kostella, ask her to bring these things with her from the store. Six spoons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we'll go meet her Wednesday at the train station.",
         "audioSeconds": 24.41825,
-        "transcribeMs": 530.2041250000002,
+        "transcribeMs": 529.7773750000015,
         "wordErrors": 4,
         "refWords": 69,
         "wer": 0.057971014492753624
@@ -3211,7 +3643,7 @@
         "age": "50",
         "heard": "Please call Stella, ask her to bring these things with her from the store. Six spoons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will meet her Wednesday at the train station.",
         "audioSeconds": 22.5344375,
-        "transcribeMs": 514.6092910000007,
+        "transcribeMs": 520.6703330000018,
         "wordErrors": 1,
         "refWords": 69,
         "wer": 0.014492753623188406
@@ -3226,7 +3658,7 @@
         "age": "18",
         "heard": "Please call Stella, ask her to bring these things with her from the store. 6 spoons of fresh snow peas, 5 thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic steak and a big toy frog for the kids. She gets goop these things to 3 red bags and we will go and meet her Wednesday at the train station.",
         "audioSeconds": 17.6725625,
-        "transcribeMs": 535.7144580000022,
+        "transcribeMs": 534.903374999998,
         "wordErrors": 5,
         "refWords": 69,
         "wer": 0.07246376811594203
@@ -3241,7 +3673,7 @@
         "age": "42",
         "heard": "Please call Stella. Ask her to bring these things with her from the store. Six spoons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags, and we will go meet her Wednesday at the train station.",
         "audioSeconds": 21.8716875,
-        "transcribeMs": 534.497333000003,
+        "transcribeMs": 526.3009170000005,
         "wordErrors": 0,
         "refWords": 69,
         "wer": 0
@@ -3256,7 +3688,7 @@
         "age": "22",
         "heard": "Please call Stella, ask her to bring these things with her from the store. Six boons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 21.8668125,
-        "transcribeMs": 526.5613749999975,
+        "transcribeMs": 521.6221669999977,
         "wordErrors": 1,
         "refWords": 69,
         "wer": 0.014492753623188406
@@ -3271,7 +3703,7 @@
         "age": "21",
         "heard": "Please call Stella, ask her to bring these things with her from the store. Six spoons of fresh snow peas, five thick slaves of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 16.75,
-        "transcribeMs": 534.4580830000014,
+        "transcribeMs": 509.7574590000004,
         "wordErrors": 1,
         "refWords": 69,
         "wer": 0.014492753623188406
@@ -3286,7 +3718,7 @@
         "age": "21",
         "heard": "Please call Stella, ask her to bring these things with her from the store. Six spoons of fresh snow piece, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake or a big toy frog for the kids. She can scoop these things into three red bags. We will go meet her Wednesday at the train station.",
         "audioSeconds": 25.776375,
-        "transcribeMs": 531.3873329999988,
+        "transcribeMs": 524.007916999999,
         "wordErrors": 3,
         "refWords": 69,
         "wer": 0.043478260869565216
@@ -3301,7 +3733,7 @@
         "age": "79",
         "heard": "Please call Stella, ask her to bring those things with her from the store. Six -spooned to fresh snow peas, five -ticks, lab to blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go, go meet her Wednesday at the train station.",
         "audioSeconds": 22.2076875,
-        "transcribeMs": 554.2157909999987,
+        "transcribeMs": 553.2868339999986,
         "wordErrors": 7,
         "refWords": 69,
         "wer": 0.10144927536231885
@@ -3316,7 +3748,7 @@
         "age": "53",
         "heard": "Please call Stella. Ask her to bring these things with her from the store. Six spoons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. You can scoop these things into three red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 24.9063125,
-        "transcribeMs": 537.1587499999987,
+        "transcribeMs": 522.2543750000004,
         "wordErrors": 1,
         "refWords": 69,
         "wer": 0.014492753623188406
@@ -3331,7 +3763,7 @@
         "age": "43",
         "heard": "Please call Stella. Ask her to bring these things with her from the store. Six balloons and fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. So you can scoop these things into three red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 25.7665,
-        "transcribeMs": 536.1462500000016,
+        "transcribeMs": 530.7881669999988,
         "wordErrors": 4,
         "refWords": 69,
         "wer": 0.057971014492753624
@@ -3346,7 +3778,7 @@
         "age": "57",
         "heard": "Please call Stella Escurd to bring these things with her from the store. Six spoons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for a brother Bob. We also need a small plastic snake, a big toy frog for the kids. She can scoop these things into three red bags, and we will go meet her Wednesday at the train station.",
         "audioSeconds": 23.12225,
-        "transcribeMs": 534.7700830000031,
+        "transcribeMs": 529.1043750000026,
         "wordErrors": 4,
         "refWords": 69,
         "wer": 0.057971014492753624
@@ -3361,7 +3793,7 @@
         "age": "71",
         "heard": "Please call Stella, ask her to bring these things with her from the store. Six spoons of fresh snow peas, five thick slabs or blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 30.36025,
-        "transcribeMs": 808.8600420000002,
+        "transcribeMs": 809.3983329999974,
         "wordErrors": 2,
         "refWords": 69,
         "wer": 0.028985507246376812
@@ -3376,7 +3808,7 @@
         "age": "21",
         "heard": "Please call Stella, ask her to bring these things with her from the store. Six spoons of fresh no peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags and we will go meet her Wednesday at the train station.",
         "audioSeconds": 26.8105625,
-        "transcribeMs": 536.5537089999998,
+        "transcribeMs": 536.3482920000024,
         "wordErrors": 1,
         "refWords": 69,
         "wer": 0.014492753623188406

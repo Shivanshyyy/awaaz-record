@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import ffmpeg from 'ffmpeg-static';
 import { expect, test } from './test';
-import { confirmAndSave, shot, startFromText } from './helpers';
+import { confirmAndSave, shot, startFromText, withoutHindiAudio } from './helpers';
 
 test.describe.configure({ timeout: 60_000 });
 
@@ -83,6 +83,7 @@ test('the Hindi lines are listed with their English meaning first; only the open
 });
 
 test('with no audio files and no Hindi voice, each ticked line shows its Hindi text and says audio is not available', async ({ page }) => {
+  await withoutHindiAudio(page);
   await slipFor(page);
   await page.getByTestId('clip-check-adv_water').uncheck();
   await page.getByTestId('clip-check-med_finish').check();
@@ -96,6 +97,7 @@ test('with no audio files and no Hindi voice, each ticked line shows its Hindi t
 });
 
 test('a Hindi voice on the phone is used when there is no mp3, and only ever speaks the Hindi text', async ({ page }) => {
+  await withoutHindiAudio(page);
   await page.addInitScript(() => {
     const w = window as unknown as { __spoken: { text: string; lang: string }[]; SpeechSynthesisUtterance: unknown };
     w.__spoken = [];

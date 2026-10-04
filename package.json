@@ -24,6 +24,7 @@
     "hindi-clips": "node scripts/build-hindi-clips.mjs",
     "fetch-primock": "node scripts/fetch-primock57.mjs",
     "check-live": "node scripts/check-live.mjs",
+    "make-hindi-clips": "node scripts/make-hindi-clips.mjs",
     "fetch-accent": "node scripts/fetch-accent-archive.mjs"
   },
   "dependencies": {

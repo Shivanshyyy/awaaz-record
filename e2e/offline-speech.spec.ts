@@ -5,7 +5,7 @@ import { installDeniedMic, installFakeMic } from './fake-mic';
 import { giveConsent, shot } from './helpers';
 
 const clip = path.resolve('eval/tts/S01.wav');
-const BASE = '/awaaz-record/';
+const BASE = '/';
 
 test.skip(!existsSync(clip), 'Test audio is missing: run `npm run tts-audio` first (needs a text-to-speech voice).');
 
@@ -39,7 +39,7 @@ test('prepare online, then record and transcribe with the network off', async ({
   // Control: a request for something that was never cached must fail, so "offline" really is offline.
   const networkReachable = await page.evaluate(async () => {
     try {
-      await fetch(`/awaaz-record/__probe_${Date.now()}.txt`, { cache: 'no-store' });
+      await fetch(`/__probe_${Date.now()}.txt`, { cache: 'no-store' });
       return true;
     } catch {
       return false;

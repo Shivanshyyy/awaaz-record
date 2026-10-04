@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { downloadOne } from './offline';
 
-const URL = '/awaaz-record/models/big.onnx';
+const URL = '/models/big.onnx';
 const body = Uint8Array.from({ length: 1000 }, (_, i) => i % 251);
 const file = { url: URL, bytes: body.length };
 const noWait = async () => {};

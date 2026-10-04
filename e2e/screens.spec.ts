@@ -9,7 +9,7 @@ const NOTE =
   'Patient Lakshmi, sixty years. Pain in both knees for two months. Gave diclofenac fifty milligrams twice a day after food for five days. Sorry, make that ibuprofen four hundred milligrams twice a day after food for five days.';
 
 test('README screenshots', async ({ page }) => {
-  await page.goto('/awaaz-record/?dev=1');
+  await page.goto('/?dev=1');
   await shot(page, 'readme-1-today');
 
   await nav(page, 'New visit').click();
@@ -28,7 +28,7 @@ test('README screenshots', async ({ page }) => {
   await page.getByTestId('sheet-close').click();
 
   // a clean note, saved, shows the slip and the playlist
-  await page.goto('/awaaz-record/?dev=1');
+  await page.goto('/?dev=1');
   await nav(page, 'New visit').click();
   await page.getByTestId('dev-paste').fill(CLEAN_NOTE);
   await page.getByTestId('dev-paste-go').click();

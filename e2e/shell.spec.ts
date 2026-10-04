@@ -9,7 +9,7 @@ const TABS = [
 ];
 
 test('shell fits 360 px, has four 48 px tabs, and every tab opens', async ({ page }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Awaaz Record', level: 1 })).toBeVisible();
 
   const nav = page.getByRole('navigation', { name: 'Main' });
@@ -30,7 +30,7 @@ test('shell fits 360 px, has four 48 px tabs, and every tab opens', async ({ pag
 });
 
 test('app shell loads again with the network off', async ({ page, context }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await page.evaluate(() => navigator.serviceWorker.ready);
   await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
 
@@ -41,12 +41,12 @@ test('app shell loads again with the network off', async ({ page, context }) => 
 });
 
 test('the app can be installed: a manifest with name, scope, standalone display and real icons, and a service worker', async ({ page, request }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   const href = await page.locator('link[rel="manifest"]').getAttribute('href');
   expect(href).toBeTruthy();
   const manifestUrl = new URL(href!, page.url());
   const manifest = await (await request.get(manifestUrl.toString())).json();
-  expect(manifest).toMatchObject({ name: 'Awaaz Record', start_url: '/awaaz-record/', scope: '/awaaz-record/', display: 'standalone' });
+  expect(manifest).toMatchObject({ name: 'Awaaz Record', start_url: '/', scope: '/', display: 'standalone' });
   const icons = manifest.icons as { src: string; sizes: string }[];
   expect(icons.map((i) => i.sizes)).toEqual(expect.arrayContaining(['192x192', '512x512']));
   for (const icon of icons) expect((await request.get(new URL(icon.src, manifestUrl).toString())).ok(), icon.src).toBe(true);

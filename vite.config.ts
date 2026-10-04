@@ -4,7 +4,8 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
-const base = '/awaaz-record/';
+// '/' suits Netlify and any root domain; the GitHub Pages workflow sets BASE_PATH=/awaaz-record/.
+const base = process.env.BASE_PATH ?? '/';
 
 // Shown on the About screen so that, on a phone, you can tell which build you are looking at.
 function gitStamp(): string {

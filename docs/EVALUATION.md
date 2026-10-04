@@ -17,14 +17,14 @@ The app has two parts that can be wrong: **speech recognition** (the audio becom
 |---|---|---|---|---|---|---|---|---|
 | Reference text: the script itself, so only the extractor is tested | 10 | 128/128 = 100.0% | 0 | 0 | 6/6 | 0 | n/a (no audio) | n/a |
 | TTS-synthetic speech (operating-system voice): a pipeline check only | 13 | 105/148 = 70.9% | 43 | 19 | 6/7 | 26 | 27.7% | 0.04 |
-| My own voice (`recordings/`) | **pending recordings** | | | | | | | |
+| Real human recordings (`recordings/`, 3 clips): only 3 of the 13 scripts were recorded | 3 | 29/39 = 74.4% | 10 | 3 | 1/2 | 9 | 30.9% | 0.02 |
 | Accent check, one paragraph read aloud (Speech Accent Archive): Born in India, mother tongue not English | 20 speakers | n/a | n/a | n/a | n/a | n/a | 10.1% | n/a |
 | Accent check, one paragraph read aloud (Speech Accent Archive): Native English speakers born in the USA | 20 speakers | n/a | n/a | n/a | n/a | n/a | 4.4% | n/a |
 | Outside data: real clinicians in mock consultations (PriMock57, UK English), speech recognition only | 9 utterances | n/a | n/a | n/a | n/a | n/a | 28.1% | 0.03 |
 
-> **Read this carefully.** The only audio of our own scripts so far is **TTS-synthetic**: a computer voice reading the scripts (voice "Tara" on macOS; the `_noisy` clips add synthetic noise at 10 dB signal-to-noise). It is good for checking that the pipeline works. It says little about how real clinic speech will do: a real voice, a real room and a real accent will differ, in either direction. No accuracy claim about real speech is made until the "my own voice" row is filled. The outside PriMock57 row is real clinicians' speech, but UK English in acted consultations, and it measures speech recognition only.
+> **Read this carefully.** Most of the audio of our own scripts is **TTS-synthetic**: a computer voice reading the scripts (voice "Tara" on macOS; the `_noisy` clips add synthetic noise at 10 dB signal-to-noise). It is good for checking that the pipeline works. It says little about how real clinic speech will do: a real voice, a real room and a real accent will differ, in either direction. The **real human recordings** row is real speech, but it is a handful of clips from one person, so it is an indicative result and not an accuracy claim. The outside PriMock57 row is real clinicians' speech, but UK English in acted consultations, and it measures speech recognition only.
 
-**My own voice: pending recordings.** Record the scripts in `docs/RECORDINGS.md` into `recordings/` and run `npm run eval` again; this section then fills in by itself.
+**Real human recordings: only 3 of the 13 scripts were recorded** (S01, S04, S06), by the builder. They are reported in their own section, apart from the TTS-synthetic audio.
 
 ## Reference text (the extractor alone)
 
@@ -45,12 +45,12 @@ Every field and every expected flag was right on all 10 scripts, with no extra q
 
 ## TTS-synthetic audio
 
-13 clips, 166.1 s of audio, transcribed in 6.5 s. Pooled word error rate 27.7% (mean per clip 28.3%).
+13 clips, 166.1 s of audio, transcribed in 6.6 s. Pooled word error rate 27.7% (mean per clip 28.3%).
 
 | Clip | Word error rate | Field checks right | Wrong | Not flagged | Expected flags raised | Other questions | Audio | Transcribing |
 |---|---|---|---|---|---|---|---|---|
-| S01 | 18.5% | 11/13 | 2 | 2 | 0/0 | 1 | 11.4 s | 0.4 s |
-| S01_noisy | 18.5% | 12/13 | 1 | 1 | 0/0 | 1 | 11.4 s | 0.3 s |
+| S01 | 18.5% | 11/13 | 2 | 2 | 0/0 | 1 | 11.4 s | 0.3 s |
+| S01_noisy | 18.5% | 12/13 | 1 | 1 | 0/0 | 1 | 11.4 s | 0.4 s |
 | S02 | 33.3% | 6/11 | 5 | 3 | 0/0 | 1 | 12.9 s | 0.4 s |
 | S02_noisy | 41.7% | 6/11 | 5 | 1 | 0/0 | 3 | 12.9 s | 0.4 s |
 | S03 | 21.4% | 6/8 | 2 | 1 | 1/1 | 1 | 11.9 s | 0.3 s |
@@ -97,6 +97,41 @@ Every field and every expected flag was right on all 10 scripts, with no extra q
 | NAME_SNAPPED | 7 |
 | UNCLEAR | 6 |
 | MISSING_DETAIL | 2 |
+
+## Real human recordings (3 clips)
+
+3 clips, 48.8 s of audio, transcribed in 1.0 s. Pooled word error rate 30.9% (mean per clip 30.5%).
+
+| Clip | Word error rate | Field checks right | Wrong | Not flagged | Expected flags raised | Other questions | Audio | Transcribing |
+|---|---|---|---|---|---|---|---|---|
+| S01 | 25.9% | 11/13 | 2 | 0 | 0/0 | 3 | 13.8 s | 0.3 s |
+| S04 | 33.3% | 8/13 | 5 | 2 | 0/1 | 3 | 19.7 s | 0.4 s |
+| S06 | 32.1% | 10/13 | 3 | 1 | 1/1 | 3 | 15.3 s | 0.4 s |
+
+### Where speech recognition breaks extraction
+
+| What went wrong | Wrong values | …not flagged | Clips |
+|---|---|---|---|
+| patient name | 3 | 0 | S01, S04, S06 |
+| complaint words and duration | 3 | 1 | S04, S06 |
+| medicines | 2 | 1 | S01, S04 |
+| followUp | 1 | 0 | S04 |
+| patient age | 1 | 1 | S06 |
+
+### Expected flags
+
+| Clip | Expected flag | Raised? |
+|---|---|---|
+| S04 | MISSING_DETAIL @ ors | no |
+| S06 | MISSING @ followUp | yes |
+
+### Questions the app raised beyond the expected ones
+
+| Question type | How many |
+|---|---|
+| MISSING | 6 |
+| NAME_SNAPPED | 2 |
+| MISSING_DETAIL | 1 |
 
 ## Outside data: real clinicians (PriMock57)
 
@@ -298,6 +333,20 @@ Mother tongues in the Indian-born group: gujarati 3, hindi 3, malayalam 2, marat
 - Script: Patient Raju, eight years, brought by father. Ear pain for two days. Temperature thirty-eight point two. Gave amoxicillin two hundred and fifty milligrams three times a day for five days, and paracetamol syrup when needed for pain. Review after five days.
 - Heard: Patient Raju 8 years brought by father, Air Pain for 2 days. Temperature 38.2, gave him oxisol in 250 mg 3 times a day for 5 days, and Farasetamal syrup when needed for pain. Review after 5 days.
 
+### Real human recordings
+
+**S01** (word error rate 25.9%)
+- Script: Patient Noor, thirty-eight years. Complains of fever for three days. Temperature one hundred and one. Gave paracetamol five hundred milligrams three times a day for three days. Review after three days.
+- Heard: Asian Noor 38 years, complaints of fever for 3 days, temperature 101, give Paris a tomorrow 500mg 3 days, a day for 3 days, review after 3 days.
+
+**S04** (word error rate 33.3%)
+- Script: Patient baby Aarav, two years, brought by mother. Loose motions since two days. Gave O R S after every loose stool, and zinc twenty milligrams once daily for fourteen days. Advised mother to continue breastfeeding and give plenty of fluids. Review in five days.
+- Heard: Patient baby are of 2 years bought by mother. Lose motions in 2 days, give Rs after every loose tool, and zinc 20mg 1 daily for 14 days. Advice mother to continue breastfeeding and give plenty of fluids.
+
+**S06** (word error rate 32.1%)
+- Script: Patient Kavita, thirty-three. Burning while passing urine for two days. Temperature ninety-nine point eight. Gave nitrofurantoin one hundred milligrams twice a day for five days. Advised to drink plenty of water.
+- Heard: Covita 33. Burning while passing U -D in for two days. Temperature 99.8 gave Nitro Fuan to win 100 milligram twice a day for five days. Advice to drink plenty of water.
+
 ## Method
 
 - **Speech model:** `Xenova/whisper-tiny.en` at revision `79fb389f`, q8 weights (44.5 MB with its tokenizer files), run with Transformers.js. Word-level timestamps on. Long audio is cut into 30 s windows with 5 s overlap.
@@ -313,7 +362,7 @@ Mother tongues in the Indian-born group: gujarati 3, hindi 3, malayalam 2, marat
 
 ## Limitations
 
-- **13 audio clips** from 1 synthetic voice, reading **scripted, made-up** notes. No real patients, no real clinic noise, no variety of accents or speaking styles.
+- **16 audio clips** from one real speaker and 1 synthetic voice, reading **scripted, made-up** notes. No real patients, no real clinic noise, no variety of accents or speaking styles.
 - **TTS audio is cleaner and more regular than real speech** in some ways and different in others. These numbers are a pipeline check, not an accuracy claim.
 - **A laptop, not a phone.** Speed on a basic Android phone will be slower; the app shows progress while it works.
 - **Node, not the browser.** The app runs the same model in the browser with WebAssembly, after the audio has passed through the browser's recorder and its compression. The two can transcribe the same audio slightly differently.
@@ -326,7 +375,7 @@ Mother tongues in the Indian-born group: gujarati 3, hindi 3, malayalam 2, marat
 npm ci
 npm run fetch-models   # the speech model, once
 npm run tts-audio      # TTS-synthetic clips into eval/tts/ (macOS: say; Windows: System.Speech; Linux: espeak-ng)
-# put your own recordings in recordings/ (S01 … S10, S01_noisy, S02_noisy, S06_noisy) to fill the last section
+# put real human recordings in recordings/ (S01 … S10, S01_noisy, S02_noisy, S06_noisy; any subset works) to fill that section
 npm run fetch-primock  # optional: the outside real-clinician check (88 MB, CC BY 4.0, checksum-verified)
 npm run fetch-accent   # optional: the accent check (40 recordings, 16 MB, CC BY-NC-SA 4.0)
 npm run eval           # writes eval/results/latest.json and this file

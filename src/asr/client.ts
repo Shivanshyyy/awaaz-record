@@ -1,6 +1,7 @@
 import { buildTranscript, type Transcript } from './transcript';
 import type { Samples } from '../audio/level';
 import type { RequestBody, WorkerResponse } from './worker';
+import { addNetCounts } from '../net/netmeter';
 
 export interface TranscribeResult {
   transcript: Transcript;
@@ -24,6 +25,7 @@ class AsrClient {
     if (this.worker) return this.worker;
     const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
     worker.onmessage = (event: MessageEvent<WorkerResponse>) => {
+      if (event.data.type === 'net') return addNetCounts(event.data.delta);
       const waiting = this.pending.get(event.data.id);
       if (!waiting) return;
       this.pending.delete(event.data.id);

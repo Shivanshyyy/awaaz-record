@@ -3,10 +3,10 @@ import jsQR from 'jsqr';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { installFakeMic } from './fake-mic';
-import { giveConsent, nav, resolveEverything, setPin, shot } from './helpers';
+import { giveConsent, nav, resolveEverything, setPin, shot, withoutHindiAudio } from './helpers';
 
 const clip = path.resolve('eval/tts/S01.wav');
-const BASE = '/awaaz-record/';
+const BASE = '/';
 const clips = JSON.parse(readFileSync('src/patient/clips.generated.json', 'utf8')).clips as { id: string; hindi: string; english: string }[];
 const byId = (id: string) => clips.find((c) => c.id === id)!;
 
@@ -15,6 +15,7 @@ test.describe.configure({ timeout: 240_000 });
 
 test('the whole visit works offline: consent, record, review, confirm, slip, Hindi playlist', async ({ page, context }) => {
   await installFakeMic(page, clip);
+  await withoutHindiAudio(page);
   const requests: string[] = [];
   const failures: string[] = [];
   context.on('request', (r) => requests.push(r.url()));
@@ -37,7 +38,7 @@ test('the whole visit works offline: consent, record, review, confirm, slip, Hin
   await expect(page.getByTestId('record-button')).toHaveCount(0);
   await expect(page.getByTestId('consent-english')).toContainText(byId('consent').english);
   await page.getByTestId('consent-play').click();
-  // No mp3 and no Hindi voice in this browser: the Hindi text is shown, and it says why.
+  // No mp3 (the manifest is stubbed empty here) and no Hindi voice in this browser: the Hindi text is shown, and it says why.
   const outcome = page.getByTestId('consent-outcome');
   await expect(outcome).toContainText('Audio not available');
   await expect(outcome).toContainText(byId('consent').hindi);
@@ -137,7 +138,13 @@ test('the whole visit works offline: consent, record, review, confirm, slip, Hin
   await expect(page.getByTestId('clip-status-med_finish')).toHaveCount(0);
   await shot(page, '33-playlist');
 
-  // 7. Nothing left the phone, and nothing local failed while offline.
+  // 7. Nothing left the phone, and nothing local failed while offline. The chip, which measures it, agrees.
+  await expect(page.getByTestId('net-state')).toContainText('Offline');
+  await expect(page.getByTestId('net-sent')).toContainText('0 B');
+  await page.getByTestId('net-chip').click();
+  await expect(page.getByTestId('net-panel')).toContainText('0 to other servers');
+  await expect(page.getByTestId('net-timings')).toContainText(/Speech to text: \d+(\.\d+)? (ms|s) for [\d.]+ s of audio/);
+  await expect(page.getByTestId('net-timings')).toContainText(/Encrypting and saving: \d+(\.\d+)? (ms|s)/);
   const outside = requests.filter((u) => !u.startsWith('data:') && !u.startsWith('blob:') && new URL(u).hostname !== 'localhost');
   expect(outside, `non-local requests: ${outside.join(', ')}`).toEqual([]);
   expect(failures.filter((u) => !u.endsWith('/favicon.ico'))).toEqual([]);

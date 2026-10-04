@@ -202,7 +202,7 @@ function glance(r: EvalResults): string {
   };
   line('Reference text: the script itself, so only the extractor is tested', r.reference.summary, 'pending');
   line('TTS-synthetic speech (operating-system voice): a pipeline check only', r.tts?.summary ?? null, 'none');
-  line("My own voice (`recordings/`)", r.recordings?.summary ?? null, '**pending recordings**');
+  line(realLabel(r.recordings), r.recordings?.summary ?? null, '**none recorded**');
   for (const g of r.accent?.groups ?? []) {
     lines.push(`| Accent check, one paragraph read aloud (Speech Accent Archive): ${g.label} | ${g.speakers} speakers | n/a | n/a | n/a | n/a | n/a | ${pct(g.wer)} | n/a |`);
   }
@@ -381,6 +381,11 @@ function accentSection(a: AccentResult): string[] {
   ];
 }
 
+function realLabel(src: EvalSource | null): string {
+  const n = src?.rows.length ?? 0;
+  return n ? `Real human recordings (\`recordings/\`, ${n} ${n === 1 ? 'clip' : 'clips'}): only ${n} of the 13 scripts were recorded` : 'Real human recordings (`recordings/`)';
+}
+
 export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, string>): string {
   const scripts = new Map(Object.entries(scriptTexts));
   const tts = r.tts && r.tts.rows.length ? r.tts : null;
@@ -406,14 +411,16 @@ export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, str
     '',
     glance(r),
     '',
-    `> **Read this carefully.** The only audio of our own scripts so far is **TTS-synthetic**: a computer voice reading the scripts` +
+    `> **Read this carefully.** ${mine ? 'Most of the audio of our own scripts is' : 'The only audio of our own scripts so far is'} **TTS-synthetic**: a computer voice reading the scripts` +
       (r.ttsVoice ? ` (voice "${r.ttsVoice.voice}" on ${OS_NAMES[r.ttsVoice.platform] ?? r.ttsVoice.platform}; the \`_noisy\` clips add synthetic noise at ${r.ttsVoice.noiseSnrDb} dB signal-to-noise)` : '') +
-      '. It is good for checking that the pipeline works. It says little about how real clinic speech will do: a real voice, a real room and a real accent will differ, in either direction. No accuracy claim about real speech is made until the "my own voice" row is filled.' +
+      '. It is good for checking that the pipeline works. It says little about how real clinic speech will do: a real voice, a real room and a real accent will differ, in either direction. The **real human recordings** row is real speech, but it is a handful of clips from one person, so it is an indicative result and not an accuracy claim.' +
       (r.primock57 ? ' The outside PriMock57 row is real clinicians\' speech, but UK English in acted consultations, and it measures speech recognition only.' : ''),
   );
 
   if (!mine) {
-    out.push('', '**My own voice: pending recordings.** Record the scripts in `docs/RECORDINGS.md` into `recordings/` and run `npm run eval` again; this section then fills in by itself.');
+    out.push('', '**Real human recordings: none recorded.** Record the scripts in `docs/RECORDINGS.md` into `recordings/` and run `npm run eval` again; this section then fills in by itself.');
+  } else {
+    out.push('', `**Real human recordings: only ${mine.rows.length} of the 13 scripts were recorded** (${mine.rows.map((x) => x.id).join(', ')}), by the builder. They are reported in their own section, apart from the TTS-synthetic audio.`);
   }
 
   out.push('', '## Reference text (the extractor alone)', '', perClip(r.reference));
@@ -423,7 +430,7 @@ export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, str
     out.push('', '### What went wrong', '', breaks(r.reference));
   }
 
-  for (const [title, source] of [['TTS-synthetic audio', tts], ['My own voice', mine]] as const) {
+  for (const [title, source] of [['TTS-synthetic audio', tts], [mine ? `Real human recordings (${mine.rows.length} ${mine.rows.length === 1 ? 'clip' : 'clips'})` : 'Real human recordings', mine]] as const) {
     if (!source) continue;
     out.push('', `## ${title}`, '', source.summary ? `${source.summary.clips} clips, ${secs(source.summary.audioSeconds ?? 0)} of audio, transcribed in ${secs(source.summary.transcribeSeconds ?? 0)}. Pooled word error rate ${pct(source.summary.wer ?? 0)} (mean per clip ${pct(source.summary.meanClipWer ?? 0)}).` : '', '', perClip(source), '', '### Where speech recognition breaks extraction', '', breaks(source), '', '### Expected flags', '', flagTable(source), '', '### Questions the app raised beyond the expected ones', '', questions(source));
   }
@@ -434,7 +441,7 @@ export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, str
   const heard = [tts, mine].filter((s): s is EvalSource => s !== null);
   if (heard.length) {
     out.push('', '## What the speech model heard', '');
-    for (const s of heard) out.push(`### ${s === tts ? 'TTS-synthetic audio' : 'My own voice'}`, '', transcripts(s, scripts), '');
+    for (const s of heard) out.push(`### ${s === tts ? 'TTS-synthetic audio' : 'Real human recordings'}`, '', transcripts(s, scripts), '');
   }
 
   out.push(
@@ -466,7 +473,7 @@ export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, str
     'npm ci',
     'npm run fetch-models   # the speech model, once',
     'npm run tts-audio      # TTS-synthetic clips into eval/tts/ (macOS: say; Windows: System.Speech; Linux: espeak-ng)',
-    '# put your own recordings in recordings/ (S01 … S10, S01_noisy, S02_noisy, S06_noisy) to fill the last section',
+    '# put real human recordings in recordings/ (S01 … S10, S01_noisy, S02_noisy, S06_noisy; any subset works) to fill that section',
     'npm run fetch-primock  # optional: the outside real-clinician check (88 MB, CC BY 4.0, checksum-verified)',
     'npm run fetch-accent   # optional: the accent check (40 recordings, 16 MB, CC BY-NC-SA 4.0)',
     'npm run eval           # writes eval/results/latest.json and this file',
@@ -490,8 +497,8 @@ export function renderReadmeSummary(r: EvalResults): string {
   if (tts) lines.push(`| TTS-synthetic speech (a pipeline check) | ${tts.clips} | ${tts.fieldChecksPassed}/${tts.fieldChecksTotal} = ${pct(tts.fieldAccuracy)} | ${tts.wrongValues} (${tts.silentWrongValues}) | ${tts.expectedFlagsRaised}/${tts.expectedFlagsTotal} | ${pct(tts.wer ?? 0)} |`);
   lines.push(
     mine
-      ? `| My own voice | ${mine.clips} | ${mine.fieldChecksPassed}/${mine.fieldChecksTotal} = ${pct(mine.fieldAccuracy)} | ${mine.wrongValues} (${mine.silentWrongValues}) | ${mine.expectedFlagsRaised}/${mine.expectedFlagsTotal} | ${pct(mine.wer ?? 0)} |`
-      : '| My own voice | **pending recordings** | | | | |',
+      ? `| Real human recordings (${mine.clips} ${mine.clips === 1 ? 'clip' : 'clips'}) | ${mine.clips} | ${mine.fieldChecksPassed}/${mine.fieldChecksTotal} = ${pct(mine.fieldAccuracy)} | ${mine.wrongValues} (${mine.silentWrongValues}) | ${mine.expectedFlagsRaised}/${mine.expectedFlagsTotal} | ${pct(mine.wer ?? 0)} |`
+      : '| Real human recordings | **none recorded** | | | | |',
   );
   for (const g of r.accent?.groups ?? []) lines.push(`| Accent check, one paragraph read aloud: ${g.label} (Speech Accent Archive) | ${g.speakers} speakers | n/a | n/a | n/a | ${pct(g.wer)} |`);
   const p = r.primock57?.summary;

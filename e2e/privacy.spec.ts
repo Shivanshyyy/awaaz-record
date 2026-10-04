@@ -109,7 +109,7 @@ test('a touch resets the idle timer', async ({ page }) => {
 });
 
 test('if the patient declines, there is no recording and the record is filled in by hand', async ({ page }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await nav(page, 'New visit').click();
   await page.getByTestId('consent-decline').click();
   await expect(page.getByTestId('by-hand')).toContainText('did not agree');
@@ -144,7 +144,7 @@ test('if the patient declines, there is no recording and the record is filled in
 });
 
 test('consent given in another language is kept on the record', async ({ page }) => {
-  await page.goto('/awaaz-record/?dev=1');
+  await page.goto('/?dev=1');
   await nav(page, 'New visit').click();
   await expect(page.getByTestId('consent-english')).toContainText('permission');
   await page.getByTestId('consent-verbal').click();

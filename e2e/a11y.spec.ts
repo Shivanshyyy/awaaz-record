@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { readFileSync } from 'node:fs';
 import type { Page } from '@playwright/test';
 import { expect, test } from './test';
-import { CLEAN_NOTE, confirmAndSave, nav, setPin, startFromText } from './helpers';
+import { CLEAN_NOTE, confirmAndSave, nav, setPin, startFromText, withoutHindiAudio } from './helpers';
 
 test.describe.configure({ timeout: 90_000 });
 
@@ -14,7 +14,7 @@ async function scan(page: Page, what: string) {
 }
 
 test('the main screens have no accessibility violations', async ({ page }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await scan(page, 'Today (locked)');
   await nav(page, 'New visit').click();
   await scan(page, 'New visit: consent');
@@ -46,7 +46,7 @@ test('the visit flow, the review, the sheets and the slip have no violations', a
 });
 
 test('records, a saved record and tasks with demo visits have no violations', async ({ page }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await nav(page, 'Records').click();
   await setPin(page);
   await page.getByTestId('demo-load').click();
@@ -62,7 +62,8 @@ test('records, a saved record and tasks with demo visits have no violations', as
 });
 
 test('the consent step with the Hindi text shown, and the manual form, have no violations', async ({ page }) => {
-  await page.goto('/awaaz-record/');
+  await withoutHindiAudio(page);
+  await page.goto('/');
   await nav(page, 'New visit').click();
   await page.getByTestId('consent-play').click();
   await expect(page.getByTestId('consent-outcome')).toBeVisible();
@@ -72,10 +73,10 @@ test('the consent step with the Hindi text shown, and the manual form, have no v
 });
 
 test('the About screen has no violations and shows the generated results', async ({ page }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await page.getByTestId('about-link').click();
   await expect(page.getByTestId('about-results')).toContainText('128 of 128');
-  await expect(page.getByTestId('about-results')).toContainText('pending recordings');
+  await expect(page.getByTestId('about-results')).toContainText('Real human recordings');
   const generated = JSON.parse(readFileSync('src/eval/summary.generated.json', 'utf8'));
   if (generated.primock57) await expect(page.getByTestId('about-primock')).toContainText(`${generated.primock57.wordErrors} of ${generated.primock57.words} words were wrong`);
   else await expect(page.getByTestId('about-primock')).toHaveCount(0);
@@ -90,7 +91,7 @@ test('the About screen has no violations and shows the generated results', async
 });
 
 test('canary: the scanner really does catch low contrast and an unlabelled button', async ({ page }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await page.evaluate(() => {
     document.body.insertAdjacentHTML('beforeend', '<p style="color:#cccccc;background:#ffffff;font-size:16px">faint text</p><button><svg width="10" height="10"></svg></button>');
   });
@@ -101,7 +102,7 @@ test('canary: the scanner really does catch low contrast and an unlabelled butto
 });
 
 test('"Check this phone" lists what the phone can do in plain words, without violations', async ({ page }) => {
-  await page.goto('/awaaz-record/');
+  await page.goto('/');
   await page.getByTestId('offline-badge').click();
   await page.getByTestId('phone-check').click();
   const results = page.getByTestId('phone-check-results');

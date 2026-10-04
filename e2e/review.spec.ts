@@ -5,7 +5,7 @@ import path from 'node:path';
 import { installFakeMic } from './fake-mic';
 import { setPin, shot } from './helpers';
 
-const BASE = '/awaaz-record/?dev=1';
+const BASE = '/?dev=1';
 
 test.describe.configure({ timeout: 60_000 });
 

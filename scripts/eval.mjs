@@ -2,7 +2,7 @@
 // Evaluation: speech recognition (word error rate) and extraction (field accuracy, flags) on the 10 scripts.
 //   reference  the script text itself, so only the extractor is tested
 //   tts        eval/tts/*.wav, operating-system voice: a pipeline check only (TTS-synthetic)
-//   recordings recordings/*  the builder's own voice, when present
+//   recordings recordings/*  real human recordings by the builder (any subset of the 13), when present
 //   primock57  eval/primock57/*  real clinicians in mock consultations (CC BY 4.0), speech recognition only, when fetched
 //   accent     eval/accent/*     40 speakers reading one paragraph (Speech Accent Archive, CC BY-NC-SA 4.0), when fetched
 // Every number printed here is computed from this run and written to eval/results/latest.json.
@@ -108,7 +108,7 @@ function decode(file) {
 
 const sources = [
   { key: 'tts', label: 'TTS-synthetic speech (operating-system voice), pipeline check only', files: skipAudio ? [] : audioFiles(path.join(ROOT, 'eval', 'tts')) },
-  { key: 'recordings', label: "The builder's own voice", files: skipAudio ? [] : audioFiles(path.join(ROOT, 'recordings')) },
+  { key: 'recordings', label: 'Real human recordings', files: skipAudio ? [] : audioFiles(path.join(ROOT, 'recordings')) },
 ];
 
 let transcriber = null;
@@ -344,7 +344,7 @@ console.log(`\nmachine: ${results.machine.cpu}, ${results.machine.cores} cores, 
 for (const key of ['reference', 'tts', 'recordings']) {
   const s = results[key]?.summary;
   if (!s) {
-    console.log(`${key.padEnd(10)} no clips${key === 'recordings' ? ' (pending recordings)' : ''}`);
+    console.log(`${key.padEnd(10)} no clips${key === 'recordings' ? ' (none recorded)' : ''}`);
     continue;
   }
   const speech = s.wer === undefined ? '' : `  WER ${pct(s.wer)}  RTF ${s.realTimeFactor.toFixed(2)}`;

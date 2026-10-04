@@ -3,7 +3,7 @@
 // the page, the web manifest, the service worker, and every model and runtime file the offline mode saves,
 // each asked for one byte to confirm it exists, has the size its manifest promises, and can be fetched in parts.
 //   npm run check-live
-//   npm run check-live -- http://localhost:4173/awaaz-record/
+//   npm run check-live -- http://localhost:4173/
 const base = (process.argv[2] ?? 'https://shivanshyyy.github.io/awaaz-record/').replace(/\/?$/, '/');
 const results = [];
 const record = (ok, what, detail = '') => {

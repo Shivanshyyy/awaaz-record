@@ -4,9 +4,9 @@ import { Icon, type IconName } from './Icon';
 type Variant = 'primary' | 'secondary' | 'danger';
 
 const STYLES: Record<Variant, string> = {
-  primary: 'bg-brand-700 text-white border-brand-700',
-  secondary: 'bg-white text-brand-800 border-brand-700',
-  danger: 'bg-missing text-white border-missing',
+  primary: 'bg-brand-700 text-white border-brand-700 shadow-md shadow-brand-700/25 hover:bg-brand-800',
+  secondary: 'bg-white text-brand-800 border-brand-700 hover:bg-brand-50',
+  danger: 'bg-missing text-white border-missing shadow-md shadow-missing/25',
 };
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -19,7 +19,7 @@ export function Button({ variant = 'primary', icon, children, className = '', ..
     <button
       type="button"
       {...rest}
-      className={`inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border-2 px-4 text-lg font-bold disabled:cursor-not-allowed disabled:opacity-50 ${STYLES[variant]} ${className}`}
+      className={`inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border-2 px-4 text-lg font-bold transition-transform active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none ${STYLES[variant]} ${className}`}
     >
       {icon && <Icon name={icon} />}
       {children}

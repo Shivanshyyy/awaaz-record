@@ -11,6 +11,7 @@ import { AboutScreen } from './screens/AboutScreen';
 import { RecordScreen } from './screens/RecordScreen';
 import { VaultProvider } from './vault';
 import { OfflineBadge } from './OfflineBadge';
+import { NetworkChip } from './NetworkChip';
 import { UpdateBanner } from './UpdateBanner';
 import { refreshOfflineStatus } from './offline-store';
 import { useVisit, VisitProvider } from './visit';
@@ -85,10 +86,16 @@ export function App() {
       <VaultProvider>
       <VisitProvider>
         <div className="flex min-h-dvh flex-col">
-          <header className="sticky top-0 z-10 flex min-h-14 items-center gap-2 bg-brand-700 px-4 text-white">
-            <h1 className="text-lg font-bold">{APP_NAME}</h1>
-            <OfflineBadge />
-          </header>
+          <div className="sticky top-0 z-10">
+            <header className="flex min-h-14 items-center gap-2 bg-brand-700 px-4 text-white shadow-sm">
+              <span className="grid size-9 place-items-center rounded-xl bg-white/15">
+                <Icon name="mic" size={22} />
+              </span>
+              <h1 className="text-lg font-bold">{APP_NAME}</h1>
+              <OfflineBadge />
+            </header>
+            <NetworkChip />
+          </div>
           <AudioProbe />
           <UpdateBanner />
           <main className="mx-auto w-full max-w-xl flex-1 px-4 pb-24 pt-4">

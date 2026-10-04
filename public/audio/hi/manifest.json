@@ -1,3 +1,73 @@
 {
-  "clips": {}
+  "clips": {
+    "adv_breastfeed": {
+      "bytes": 41004
+    },
+    "adv_rest": {
+      "bytes": 25539
+    },
+    "adv_water": {
+      "bytes": 18852
+    },
+    "consent": {
+      "bytes": 260608
+    },
+    "fu_14": {
+      "bytes": 39750
+    },
+    "fu_3": {
+      "bytes": 55808
+    },
+    "fu_30": {
+      "bytes": 43511
+    },
+    "fu_5": {
+      "bytes": 37660
+    },
+    "fu_7": {
+      "bytes": 42675
+    },
+    "fu_slip": {
+      "bytes": 53960
+    },
+    "intro": {
+      "bytes": 103455
+    },
+    "keep_slip": {
+      "bytes": 82975
+    },
+    "med_1x": {
+      "bytes": 67335
+    },
+    "med_1x_night": {
+      "bytes": 74440
+    },
+    "med_2x": {
+      "bytes": 89487
+    },
+    "med_3x": {
+      "bytes": 115994
+    },
+    "med_after_food": {
+      "bytes": 35152
+    },
+    "med_finish": {
+      "bytes": 76948
+    },
+    "med_multi": {
+      "bytes": 114146
+    },
+    "outro": {
+      "bytes": 61241
+    },
+    "ref_go": {
+      "bytes": 115400
+    },
+    "ref_today": {
+      "bytes": 40586
+    },
+    "worse": {
+      "bytes": 70018
+    }
+  }
 }

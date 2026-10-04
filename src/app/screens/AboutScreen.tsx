@@ -82,7 +82,7 @@ export function AboutScreen() {
             </p>
           )}
           <p>
-            <strong>Real voices in our setting:</strong> {summary.recordings ? `${summary.recordings.fieldChecksPassed} of ${summary.recordings.fieldChecksTotal} fields right` : 'pending recordings. Nobody has tested this app with a health worker’s voice yet.'}
+            <strong>Real human recordings:</strong> {summary.recordings ? `${summary.recordings.clips} clips by the builder (only ${summary.recordings.clips} of the 13 scripts were recorded): ${summary.recordings.fieldChecksPassed} of ${summary.recordings.fieldChecksTotal} fields right, ${pct(summary.recordings.wer ?? 0)} of words wrong. Too few to be an accuracy claim. Nobody has tested this app with a health worker’s voice yet.` : 'none recorded. Nobody has tested this app with a health worker’s voice yet.'}
           </p>
           <p className="text-sm text-ink-soft">Measured on {summary.cpu} on {summary.generatedOn}. Details are in docs/EVALUATION.md.</p>
         </div>

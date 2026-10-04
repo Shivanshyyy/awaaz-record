@@ -4,7 +4,7 @@ Ready to paste into the portal. Everything here is true as of the last push; che
 
 ## Links
 
-- **Live app:** https://shivanshyyy.github.io/awaaz-record/ (**not live until GitHub Pages is switched on**: repo → Settings → Pages → Source: GitHub Actions; then Actions → "Deploy to GitHub Pages" → Run workflow)
+- **Live app:** (add your Netlify address: deploy the `dist/` folder, built with base `/`) or, if you switch it on, https://shivanshyyy.github.io/awaaz-record/ (**not live until GitHub Pages is switched on**: repo → Settings → Pages → Source: GitHub Actions; then Actions → "Deploy to GitHub Pages" → Run workflow)
 - **Code:** https://github.com/Shivanshyyy/awaaz-record
 - **Video:** (add your link)
 
@@ -13,8 +13,8 @@ Ready to paste into the portal. Everything here is true as of the last push; che
 1. **Awaaz Record** is an offline phone web app for a primary health centre worker in India: she speaks a 20 to 60 second English visit note, and the phone writes it down on the device and fills a fixed visit record where every value points to the words it came from.
 2. **The AI is small and does one job:** Whisper tiny.en (English only, 8-bit, 44.5 MB) runs inside the browser to turn speech into text. Everything after that is plain rules and fixed word lists, so the record never contains generated text.
 3. **Guardrails:** no diagnosis and no clinical advice; the app asks "not sure, please check" instead of guessing; a record cannot be confirmed while anything is amber or red; consent comes first; the recording is never stored; records are locked with the worker's PIN.
-4. **For the patient:** a printed slip with medicine-timing icons, the return date and a QR summary, and 23 fixed Hindi instructions as voice and text (the Hindi still needs a check by a Hindi speaker).
-5. **Honest evidence:** on computer-voice test notes 70.9% of fields were right and 19 of 43 wrong values looked fine; on real clinicians' speech from an outside dataset (PriMock57, UK English) 28.1% of words were wrong; and in a small accent check (40 people reading one paragraph) the model made 10.1% word errors on Indian-born speakers with an Indian mother tongue against 4.4% on native English speakers born in the USA. Not yet tested on a real phone, with our own voices, or with a real worker, which is why a person checks every record.
+4. **For the patient:** a printed slip with medicine-timing icons, the return date and a QR summary, and 23 fixed Hindi instructions as voice and text (the audio is made with ElevenLabs from text that still needs a check by a Hindi speaker). A status chip shows Online or Offline and the bytes the app has sent (zero in the offline journey), with timings measured on the device.
+5. **Honest evidence:** on computer-voice test notes 70.9% of fields were right and 19 of 43 wrong values looked fine; on real clinicians' speech from an outside dataset (PriMock57, UK English) 28.1% of words were wrong; and in a small accent check (40 people reading one paragraph) the model made 10.1% word errors on Indian-born speakers with an Indian mother tongue against 4.4% on native English speakers born in the USA. On the builder's own voice, only 3 clips (S01, S04, S06) were recorded: 29 of 39 fields right and 30.9% of words wrong, too few to be an accuracy claim. Not yet tested on a real phone or with a real worker, which is why a person checks every record.
 
 ## Check the live site from your computer (10 seconds)
 

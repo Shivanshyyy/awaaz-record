@@ -12,6 +12,7 @@ import { addMedication, applyEdits, confirmFields, confirmRecord, markNotApplica
 import type { VisitRecord } from '../record/schema';
 import { saveRecord, saveTask } from '../store/db';
 import { tasksFor } from '../store/tasks';
+import { recordTimings, timed } from './timings';
 
 export type Stage = 'consent' | 'idle' | 'recording' | 'decoding' | 'transcribing' | 'done' | 'error';
 export type Consent = NonNullable<VisitRecord['consent']>;
@@ -119,9 +120,11 @@ export function VisitProvider({ children }: { children: ReactNode }) {
         player.current = new SpanPlayer(samples);
         patch({ stage: 'transcribing' });
         const result = await asr.transcribe(samples);
+        const filled = timed(() => newRecord(result.transcript, consentRef.current));
+        recordTimings({ transcribeMs: result.ms, audioSeconds: result.audioSeconds, modelLoadMs: result.loadMs, extractMs: filled.ms, saveMs: null });
         patch({
           stage: 'done',
-          record: newRecord(result.transcript, consentRef.current),
+          record: filled.value,
           hasAudio: true,
           stats: { audioSeconds: result.audioSeconds, ms: result.ms, loadMs: result.loadMs },
         });
@@ -189,7 +192,9 @@ export function VisitProvider({ children }: { children: ReactNode }) {
       const consent: Consent = consentRef.current?.given ? consentRef.current : { given: true, at: new Date().toISOString(), mode: 'verbal' };
       consentRef.current = consent;
       dropAudio();
-      setState({ ...FRESH, consent, stage: 'done', record: newRecord(textToTranscript(text.trim()), consent) });
+      const filled = timed(() => newRecord(textToTranscript(text.trim()), consent));
+      recordTimings({ transcribeMs: null, audioSeconds: null, modelLoadMs: null, extractMs: filled.ms, saveMs: null });
+      setState({ ...FRESH, consent, stage: 'done', record: filled.value });
     },
     [dropAudio],
   );
@@ -213,8 +218,10 @@ export function VisitProvider({ children }: { children: ReactNode }) {
       const current = recordRef.current;
       if (!current) return;
       const confirmed = confirmRecord(current);
+      const saveStart = performance.now();
       await saveRecord(key, confirmed);
       for (const task of tasksFor(confirmed)) await saveTask(key, task);
+      recordTimings({ saveMs: performance.now() - saveStart });
       // The recording is deleted the moment the record is confirmed and saved. It only ever existed in memory.
       dropAudio();
       setState((s) => ({ ...s, record: confirmed, hasAudio: false }));
