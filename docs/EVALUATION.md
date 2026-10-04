@@ -18,6 +18,8 @@ The app has two parts that can be wrong: **speech recognition** (the audio becom
 | Reference text: the script itself, so only the extractor is tested | 10 | 128/128 = 100.0% | 0 | 0 | 6/6 | 0 | n/a (no audio) | n/a |
 | TTS-synthetic speech (operating-system voice): a pipeline check only | 13 | 105/148 = 70.9% | 43 | 19 | 6/7 | 26 | 27.7% | 0.04 |
 | My own voice (`recordings/`) | **pending recordings** | | | | | | | |
+| Accent check, one paragraph read aloud (Speech Accent Archive): Born in India, mother tongue not English | 20 speakers | n/a | n/a | n/a | n/a | n/a | 10.1% | n/a |
+| Accent check, one paragraph read aloud (Speech Accent Archive): Native English speakers born in the USA | 20 speakers | n/a | n/a | n/a | n/a | n/a | 4.4% | n/a |
 | Outside data: real clinicians in mock consultations (PriMock57, UK English), speech recognition only | 9 utterances | n/a | n/a | n/a | n/a | n/a | 28.1% | 0.03 |
 
 > **Read this carefully.** The only audio of our own scripts so far is **TTS-synthetic**: a computer voice reading the scripts (voice "Tara" on macOS; the `_noisy` clips add synthetic noise at 10 dB signal-to-noise). It is good for checking that the pipeline works. It says little about how real clinic speech will do: a real voice, a real room and a real accent will differ, in either direction. No accuracy claim about real speech is made until the "my own voice" row is filled. The outside PriMock57 row is real clinicians' speech, but UK English in acted consultations, and it measures speech recognition only.
@@ -47,7 +49,7 @@ Every field and every expected flag was right on all 10 scripts, with no extra q
 
 | Clip | Word error rate | Field checks right | Wrong | Not flagged | Expected flags raised | Other questions | Audio | Transcribing |
 |---|---|---|---|---|---|---|---|---|
-| S01 | 18.5% | 11/13 | 2 | 2 | 0/0 | 1 | 11.4 s | 0.3 s |
+| S01 | 18.5% | 11/13 | 2 | 2 | 0/0 | 1 | 11.4 s | 0.4 s |
 | S01_noisy | 18.5% | 12/13 | 1 | 1 | 0/0 | 1 | 11.4 s | 0.3 s |
 | S02 | 33.3% | 6/11 | 5 | 3 | 0/0 | 1 | 12.9 s | 0.4 s |
 | S02_noisy | 41.7% | 6/11 | 5 | 1 | 0/0 | 3 | 12.9 s | 0.4 s |
@@ -167,6 +169,79 @@ Quoted from the dataset to show the recognition errors. These are the dataset's 
 - **What we changed:** we used the clinician channel of the first 5 consultations, cut utterances at the annotated times, and normalised the text for scoring with the rules in the Method section. The audio is not in this repository: `npm run fetch-primock` downloads it from the pinned commit and checks every file against its checksum.
 - Clinician channel only. 57 mock primary-care consultations, 7 Babylon clinicians and 57 employees acting as patients, UK English. Audio 16-bit 16 kHz.
 
+## Accent check (Speech Accent Archive)
+
+40 speakers each read the same 69-word paragraph aloud, and the same speech model transcribed every recording. **The model made more errors on the Indian-language speakers: 10.1% of words wrong against 4.4% for native English speakers born in the USA, a gap of 5.7 percentage points (2.3 times as many errors).** This is a **small, indicative** measurement of one thing, how the model copes with different accents on read speech. It is not a fairness audit.
+
+| Group | Speakers | Words | Word errors | Pooled word error rate | Median speaker | Range across speakers | Women | Men | Ages |
+|---|---|---|---|---|---|---|---|---|---|
+| Born in India, mother tongue not English | 20 | 1380 | 140 | **10.1%** | 8.0% | 0.0% to 44.9% | 10: 7.8% | 10: 12.5% | 18 to 64 |
+| Native English speakers born in the USA | 20 | 1380 | 61 | **4.4%** | 2.2% | 0.0% to 21.7% | 10: 5.4% | 10: 3.5% | 7 to 79 |
+
+Mother tongues in the Indian-born group: gujarati 3, hindi 3, malayalam 2, marathi 2, punjabi 2, tamil 2, telugu 2, kannada 1, konkani 1, oriya 1, tibetan 1. Where they lived when recorded (the Archive's "English residence" column): usa 15, australia 1, india 1, not given 1, uk 1, uk,usa 1. The Archive's country column is where a speaker was **born**, so most of this group was recorded abroad, after months or years of living in an English-speaking country, and their accents may have shifted.
+
+<details><summary>Every speaker</summary>
+
+| Speaker | Group | Mother tongue | Lives in | Gender | Age | Word errors / words | Word error rate |
+|---|---|---|---|---|---|---|---|
+| kannada1 | Born in India | kannada | usa | female | 26 | 7/69 | 10.1% |
+| marathi1 | Born in India | marathi | usa | female | 21 | 4/69 | 5.8% |
+| tibetan3 | Born in India | tibetan | usa | female | 20 | 14/69 | 20.3% |
+| tamil2 | Born in India | tamil | usa | female | 35 | 6/69 | 8.7% |
+| konkani1 | Born in India | konkani | india | female | 38 | 0/69 | 0.0% |
+| malayalam2 | Born in India | malayalam | usa | female | 29 | 4/69 | 5.8% |
+| gujarati4 | Born in India | gujarati | usa | female | 53 | 10/69 | 14.5% |
+| hindi4 | Born in India | hindi | usa | female | 28 | 1/69 | 1.4% |
+| punjabi4 | Born in India | punjabi | australia | female | 33 | 5/69 | 7.2% |
+| hindi5 | Born in India | hindi | usa | female | 64 | 3/69 | 4.3% |
+| gujarati1 | Born in India | gujarati | usa | male | 20 | 12/69 | 17.4% |
+| gujarati2 | Born in India | gujarati | usa | male | 22 | 6/69 | 8.7% |
+| hindi1 | Born in India | hindi | uk,usa | male | 27 | 0/69 | 0.0% |
+| malayalam1 | Born in India | malayalam | usa | male | 24 | 1/69 | 1.4% |
+| marathi2 | Born in India | marathi | usa | male | 28 | 6/69 | 8.7% |
+| punjabi2 | Born in India | punjabi | usa | male | 26 | 6/69 | 8.7% |
+| telugu1 | Born in India | telugu | usa | male | 31 | 5/69 | 7.2% |
+| telugu2 | Born in India | telugu | usa | male | 18 | 15/69 | 21.7% |
+| oriya1 | Born in India | oriya | not given | male | 35 | 31/69 | 44.9% |
+| tamil3 | Born in India | tamil | uk | male | 26 | 4/69 | 5.8% |
+| english10 | Born in the USA | english | usa | female | 35 | 4/69 | 5.8% |
+| english100 | Born in the USA | english | usa | female | 23 | 4/69 | 5.8% |
+| english104 | Born in the USA | english | usa | female | 18 | 1/69 | 1.4% |
+| english15 | Born in the USA | english | usa | female | 7 | 15/69 | 21.7% |
+| english18 | Born in the USA | english | usa | female | 39 | 1/69 | 1.4% |
+| english20 | Born in the USA | english | usa | female | 27 | 1/69 | 1.4% |
+| english21 | Born in the USA | english | usa | female | 37 | 1/69 | 1.4% |
+| english27 | Born in the USA | english | usa | female | 37 | 4/69 | 5.8% |
+| english32 | Born in the USA | english | usa | female | 50 | 1/69 | 1.4% |
+| english34 | Born in the USA | english | usa | female | 18 | 5/69 | 7.2% |
+| english1 | Born in the USA | english | usa | male | 42 | 0/69 | 0.0% |
+| english102 | Born in the USA | english | usa | male | 22 | 1/69 | 1.4% |
+| english103 | Born in the USA | english | usa | male | 21 | 1/69 | 1.4% |
+| english16 | Born in the USA | english | usa | male | 21 | 3/69 | 4.3% |
+| english17 | Born in the USA | english | usa | male | 79 | 7/69 | 10.1% |
+| english19 | Born in the USA | english | usa | male | 53 | 1/69 | 1.4% |
+| english23 | Born in the USA | english | usa | male | 43 | 4/69 | 5.8% |
+| english25 | Born in the USA | english | usa | male | 57 | 4/69 | 5.8% |
+| english26 | Born in the USA | english | usa | male | 71 | 2/69 | 2.9% |
+| english33 | Born in the USA | english | usa | male | 21 | 1/69 | 1.4% |
+
+</details>
+
+### What this does and does not show
+
+- **It points to a risk for our setting.** Our workers are in India, and the model was less accurate on Indian-language speakers reading the same words. Names and medicine names are the words the app needs most, and the earlier tables show names and medicines among the words it gets wrong.
+- **The recordings differ in more than accent.** The Archive's own guide says many were made on different recorders and microphones, by different people, in different rooms. Some of the gap may be the recordings, not the speakers.
+- **20 and 20 speakers is small, and the spread is wide** (from 0.0% to 44.9% in the Indian-language group, 0.0% to 21.7% in the other). One poor recording moves a group's rate. The women and men columns show how many speakers each figure rests on (10 and 10 in the Indian-language group); they are not a finding about gender.
+- **It is read speech, one paragraph, not clinical speech.** Spontaneous speech is harder, and a health worker dictating a note will not read a prepared text. The result says nothing about the app's extraction.
+- **The speakers were chosen by a fixed rule before any model output was seen:** in each of two groups (born in India with a mother tongue other than English; native English speakers born in the USA), the first 10 women and the first 10 men by speaker id whose recording is in the repository. pahari1.mp3 (speaker 425) was not in the repository, so the next speaker was taken.
+- **The reference is the Archive's paragraph, not what each speaker said.** A speaker who changes a word, or starts with a greeting, is counted as making errors. Fillers are dropped from both sides, and the same rules for numbers and punctuation apply as everywhere else in this document.
+
+### Data and licence
+
+- **Speech Accent Archive:** Steven H. Weinberger and Matthew C. Kelley, The Speech Accent Archive, George Mason University. https://accent.gmu.edu. Recordings and speaker details from the Archive's repository https://osf.io/yh23d, retrieved 2026-10-04.
+- **Licence:** CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/). Used here for non-commercial evaluation only. The audio is not in this repository: `npm run fetch-accent` downloads the 40 recordings (16 MB). The per-speaker results and the transcripts in `eval/results/latest.json` are derived from those recordings and are shared under the same licence, CC BY-NC-SA 4.0.
+- **Reading text:** Please call Stella. Ask her to bring these things with her from the store: Six spoons of fresh snow peas, five thick slabs of blue cheese, and maybe a snack for her brother Bob. We also need a small plastic snake and a big toy frog for the kids. She can scoop these things into three red bags, and we will go meet her Wednesday at the train station.
+
 ## What the speech model heard
 
 ### TTS-synthetic audio
@@ -234,6 +309,7 @@ Quoted from the dataset to show the recognition errors. These are the dataset's 
 - **Expected flags** are the questions each script is built to provoke (a missing follow-up, a dose with no unit, a spoken correction). Other questions are counted and listed, not penalised.
 - **Real-time factor** = time to transcribe / length of audio; below 1 is faster than real time. The first clip of a run is preceded by an untimed warm-up.
 - **Outside data (PriMock57):** the same model and settings, the same word-error rule, fillers dropped from both sides, utterances chosen by the rule written in that section. Speech recognition only.
+- **Accent check:** the same model and settings and the same word-error rule, fillers dropped from both sides; every speaker is scored against the one paragraph they were asked to read. Speech recognition only.
 
 ## Limitations
 
@@ -252,5 +328,6 @@ npm run fetch-models   # the speech model, once
 npm run tts-audio      # TTS-synthetic clips into eval/tts/ (macOS: say; Windows: System.Speech; Linux: espeak-ng)
 # put your own recordings in recordings/ (S01 … S10, S01_noisy, S02_noisy, S06_noisy) to fill the last section
 npm run fetch-primock  # optional: the outside real-clinician check (88 MB, CC BY 4.0, checksum-verified)
+npm run fetch-accent   # optional: the accent check (40 recordings, 16 MB, CC BY-NC-SA 4.0)
 npm run eval           # writes eval/results/latest.json and this file
 ```

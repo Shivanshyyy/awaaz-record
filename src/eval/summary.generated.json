@@ -27,8 +27,8 @@
     "wer": 0.27699530516431925,
     "meanClipWer": 0.28327801687768045,
     "audioSeconds": 166.12650000000002,
-    "transcribeSeconds": 6.483320373,
-    "realTimeFactor": 0.03902640682251175
+    "transcribeSeconds": 6.500256041999998,
+    "realTimeFactor": 0.03912835123836352
   },
   "recordings": null,
   "primock57": {
@@ -38,7 +38,31 @@
     "wer": 0.28134556574923547,
     "meanUtteranceWer": 0.26311908191381206,
     "audioSeconds": 97.3605,
-    "transcribeSeconds": 2.961060291000001,
-    "realTimeFactor": 0.03041336364336667
-  }
+    "transcribeSeconds": 3.0114277490000023,
+    "realTimeFactor": 0.030930693135306435
+  },
+  "accent": [
+    {
+      "group": "india",
+      "label": "Born in India, mother tongue not English",
+      "speakers": 20,
+      "words": 1380,
+      "wordErrors": 140,
+      "wer": 0.10144927536231885,
+      "medianWer": 0.07971014492753623,
+      "womenWer": 0.0782608695652174,
+      "menWer": 0.1246376811594203
+    },
+    {
+      "group": "usa",
+      "label": "Native English speakers born in the USA",
+      "speakers": 20,
+      "words": 1380,
+      "wordErrors": 61,
+      "wer": 0.04420289855072464,
+      "medianWer": 0.021739130434782608,
+      "womenWer": 0.0536231884057971,
+      "menWer": 0.034782608695652174
+    }
+  ]
 }

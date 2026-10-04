@@ -4,6 +4,7 @@
 //   tts        eval/tts/*.wav, operating-system voice: a pipeline check only (TTS-synthetic)
 //   recordings recordings/*  the builder's own voice, when present
 //   primock57  eval/primock57/*  real clinicians in mock consultations (CC BY 4.0), speech recognition only, when fetched
+//   accent     eval/accent/*     40 speakers reading one paragraph (Speech Accent Archive, CC BY-NC-SA 4.0), when fetched
 // Every number printed here is computed from this run and written to eval/results/latest.json.
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -38,6 +39,7 @@ const { buildTranscript } = await load('/src/asr/transcript.ts');
 const { scoreScript, accuracy } = await load('/src/extract/score.ts');
 const { wer, wordErrors, normalizeForWer } = await load('/src/extract/wer.ts');
 const { parseTextGrid, selectUtterances, dropFillers, SELECTION } = await load('/src/eval/primock.ts');
+const { ELICITATION, GROUP_LABELS } = await load('/src/eval/accent.ts');
 const { renderEvaluation, withReadmeSummary } = await load('/src/eval/report.ts');
 
 function summarize(label, rows) {
@@ -215,6 +217,89 @@ async function primock57() {
 }
 const primockResult = await primock57();
 
+// ---- 4. accent check: one paragraph read by Indian-born speakers (Indian mother tongue) and by native English speakers born in the USA ------
+// Same text for everyone, so the reference is fixed. The speakers are chosen by a rule in src/eval/accent.ts.
+const median = (xs) => {
+  const sorted = [...xs].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+};
+
+async function accentCheck() {
+  const dir = path.join(ROOT, 'eval', 'accent');
+  const manifestFile = path.join(dir, 'manifest.json');
+  if (skipAudio || only.length > 0 || !existsSync(manifestFile)) return null;
+  const manifest = JSON.parse(readFileSync(manifestFile, 'utf8'));
+  const reference = dropFillers(normalizeForWer(ELICITATION));
+  const rows = [];
+  for (const f of manifest.files) {
+    const samples = decode(path.join(dir, f.file));
+    const audioSeconds = samples.length / 16000;
+    const { out, ms } = await transcribe(samples);
+    const heard = buildTranscript(out.chunks ?? [], audioSeconds).text;
+    const errors = wordErrors(reference, dropFillers(normalizeForWer(heard)));
+    rows.push({
+      id: f.file.replace(/\.mp3$/, ''),
+      group: f.group,
+      speakerId: f.speakerId,
+      nativeLanguage: f.nativeLanguage,
+      residence: f.residence ?? '',
+      gender: f.gender,
+      age: f.age,
+      heard,
+      audioSeconds,
+      transcribeMs: ms,
+      wordErrors: errors.errors,
+      refWords: errors.words,
+      wer: errors.errors / errors.words,
+    });
+    process.stdout.write(`  accent ${f.group.padEnd(5)} ${f.file.padEnd(16)} WER ${(rows.at(-1).wer * 100).toFixed(0).padStart(3)}%\n`);
+  }
+  const pooled = (list) => {
+    const words = list.reduce((n, r) => n + r.refWords, 0);
+    const wrong = list.reduce((n, r) => n + r.wordErrors, 0);
+    return { speakers: list.length, words, wordErrors: wrong, wer: words ? wrong / words : 0 };
+  };
+  const groups = ['india', 'usa'].map((group) => {
+    const list = rows.filter((r) => r.group === group);
+    const ages = list.map((r) => Number(r.age)).filter(Number.isFinite);
+    const languages = {};
+    const residences = {};
+    for (const r of list) {
+      languages[r.nativeLanguage] = (languages[r.nativeLanguage] ?? 0) + 1;
+      residences[r.residence || 'not given'] = (residences[r.residence || 'not given'] ?? 0) + 1;
+    }
+    return {
+      group,
+      label: GROUP_LABELS[group],
+      ...pooled(list),
+      medianWer: median(list.map((r) => r.wer)),
+      minWer: Math.min(...list.map((r) => r.wer)),
+      maxWer: Math.max(...list.map((r) => r.wer)),
+      women: pooled(list.filter((r) => r.gender === 'female')),
+      men: pooled(list.filter((r) => r.gender === 'male')),
+      minAge: ages.length ? Math.min(...ages) : null,
+      maxAge: ages.length ? Math.max(...ages) : null,
+      languages,
+      residences,
+    };
+  });
+  return {
+    dataset: manifest.dataset,
+    source: manifest.source,
+    filesFrom: manifest.files_from,
+    licence: manifest.licence,
+    credit: manifest.credit,
+    retrievedOn: manifest.retrievedOn,
+    rule: manifest.rule,
+    skipped: manifest.skipped ?? [],
+    reference: ELICITATION,
+    groups,
+    rows,
+  };
+}
+const accentResult = await accentCheck();
+
 function modelManifest() {
   const file = path.join(ROOT, 'public', 'models', 'manifest.json');
   return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {};
@@ -233,12 +318,13 @@ const results = {
   tts: audioResults.tts,
   recordings: audioResults.recordings,
   primock57: primockResult,
+  accent: accentResult,
 };
 mkdirSync(path.join(ROOT, 'eval', 'results'), { recursive: true });
 writeFileSync(path.join(ROOT, 'eval', 'results', 'latest.json'), `${JSON.stringify(results, null, 2)}\n`);
 writeFileSync(
   path.join(ROOT, 'src', 'eval', 'summary.generated.json'),
-  `${JSON.stringify({ generatedOn: results.generatedOn, cpu: results.machine.cpu, reference: results.reference.summary, tts: results.tts?.summary ?? null, recordings: results.recordings?.summary ?? null, primock57: results.primock57?.summary ?? null }, null, 2)}\n`,
+  `${JSON.stringify({ generatedOn: results.generatedOn, cpu: results.machine.cpu, reference: results.reference.summary, tts: results.tts?.summary ?? null, recordings: results.recordings?.summary ?? null, primock57: results.primock57?.summary ?? null, accent: results.accent ? results.accent.groups.map(({ group, label, speakers, words, wordErrors, wer, medianWer, women, men }) => ({ group, label, speakers, words, wordErrors, wer, medianWer, womenWer: women.wer, menWer: men.wer })) : null }, null, 2)}\n`,
 );
 const scriptTexts = Object.fromEntries(scriptsFile.scripts.map((sc) => [sc.id, sc.text]));
 if (only.length === 0 && !skipAudio) {
@@ -271,6 +357,11 @@ if (results.primock57) {
   console.log(`primock57  ${String(p.utterances).padStart(2)} utterances  ${p.words} words  WER ${pct(p.wer)} (mean per utterance ${pct(p.meanUtteranceWer)})  RTF ${p.realTimeFactor.toFixed(2)}`);
 } else {
   console.log('primock57  not run (npm run fetch-primock to add it)');
+}
+if (results.accent) {
+  for (const g of results.accent.groups) console.log(`accent     ${g.group.padEnd(5)} ${String(g.speakers).padStart(2)} speakers  ${g.words} words  WER ${pct(g.wer)} (median speaker ${pct(g.medianWer)}, range ${pct(g.minWer)} to ${pct(g.maxWer)}; women ${pct(g.women.wer)}, men ${pct(g.men.wer)})`);
+} else {
+  console.log('accent     not run (npm run fetch-accent to add it)');
 }
 for (const key of ['reference', 'tts', 'recordings']) {
   for (const row of results[key]?.rows ?? []) {

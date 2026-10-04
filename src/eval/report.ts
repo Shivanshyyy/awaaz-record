@@ -1,5 +1,6 @@
 // Builds docs/EVALUATION.md from eval/results/latest.json. Every number in the document is computed here from the
 // results; nothing is typed by hand, and a test fails if the committed document differs from this output.
+import type { AccentGroup } from './accent';
 import type { SelectionRule } from './primock';
 
 export interface EvalCheck {
@@ -92,6 +93,69 @@ export interface PrimockResult {
   summary: PrimockSummary;
 }
 
+export interface AccentRow {
+  id: string;
+  group: AccentGroup;
+  speakerId: number;
+  nativeLanguage: string;
+  residence: string;
+  gender: string;
+  age: string;
+  heard: string;
+  audioSeconds: number;
+  transcribeMs: number;
+  wordErrors: number;
+  refWords: number;
+  wer: number;
+}
+
+export interface AccentPool {
+  speakers: number;
+  words: number;
+  wordErrors: number;
+  wer: number;
+}
+
+export interface AccentGroupResult extends AccentPool {
+  group: AccentGroup;
+  label: string;
+  medianWer: number;
+  minWer: number;
+  maxWer: number;
+  women: AccentPool;
+  men: AccentPool;
+  minAge: number | null;
+  maxAge: number | null;
+  languages: Record<string, number>;
+  residences: Record<string, number>;
+}
+
+export interface AccentSummary {
+  group: AccentGroup;
+  label: string;
+  speakers: number;
+  words: number;
+  wordErrors: number;
+  wer: number;
+  medianWer: number;
+  womenWer: number;
+  menWer: number;
+}
+
+export interface AccentResult {
+  dataset: string;
+  source: string;
+  filesFrom: string;
+  licence: string;
+  credit: string;
+  retrievedOn: string;
+  rule: { perGender: number };
+  skipped: { group: AccentGroup; speakerId: number; file: string; reason: string }[];
+  reference: string;
+  groups: AccentGroupResult[];
+  rows: AccentRow[];
+}
+
 export interface EvalResults {
   generatedAt: string;
   /** the local date the run happened, YYYY-MM-DD */
@@ -106,6 +170,8 @@ export interface EvalResults {
   recordings: EvalSource | null;
   /** outside benchmark, speech recognition only; absent or null when the dataset was not fetched */
   primock57?: PrimockResult | null;
+  /** accent check on one read paragraph; absent or null when the recordings were not fetched */
+  accent?: AccentResult | null;
 }
 
 const OS_NAMES: Record<string, string> = { darwin: 'macOS', win32: 'Windows', linux: 'Linux' };
@@ -137,6 +203,9 @@ function glance(r: EvalResults): string {
   line('Reference text: the script itself, so only the extractor is tested', r.reference.summary, 'pending');
   line('TTS-synthetic speech (operating-system voice): a pipeline check only', r.tts?.summary ?? null, 'none');
   line("My own voice (`recordings/`)", r.recordings?.summary ?? null, '**pending recordings**');
+  for (const g of r.accent?.groups ?? []) {
+    lines.push(`| Accent check, one paragraph read aloud (Speech Accent Archive): ${g.label} | ${g.speakers} speakers | n/a | n/a | n/a | n/a | n/a | ${pct(g.wer)} | n/a |`);
+  }
   const p = r.primock57?.summary;
   if (p) lines.push(`| Outside data: real clinicians in mock consultations (PriMock57, UK English), speech recognition only | ${p.utterances} utterances | n/a | n/a | n/a | n/a | n/a | ${pct(p.wer)} | ${p.realTimeFactor.toFixed(2)} |`);
   return lines.join('\n');
@@ -242,6 +311,76 @@ function primockSection(p: PrimockResult): string[] {
   ];
 }
 
+function groupOf(a: AccentResult, group: AccentGroup): AccentGroupResult {
+  return a.groups.find((g) => g.group === group)!;
+}
+
+/** How the Indian-language group compares with the US group, worked out from the two pooled rates. */
+export function accentGap(a: AccentResult): { india: number; usa: number; points: number; times: number } {
+  const india = groupOf(a, 'india').wer;
+  const usa = groupOf(a, 'usa').wer;
+  return { india, usa, points: (india - usa) * 100, times: usa > 0 ? india / usa : Infinity };
+}
+
+function countList(languages: Record<string, number>): string {
+  return Object.entries(languages)
+    .sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0]))
+    .map(([name, n]) => `${name} ${n}`)
+    .join(', ');
+}
+
+function accentSection(a: AccentResult): string[] {
+  const india = groupOf(a, 'india');
+  const usa = groupOf(a, 'usa');
+  const gap = accentGap(a);
+  const per = (g: AccentGroupResult) => `| ${g.label} | ${g.speakers} | ${g.words} | ${g.wordErrors} | **${pct(g.wer)}** | ${pct(g.medianWer)} | ${pct(g.minWer)} to ${pct(g.maxWer)} | ${g.women.speakers}: ${pct(g.women.wer)} | ${g.men.speakers}: ${pct(g.men.wer)} | ${g.minAge ?? '?'} to ${g.maxAge ?? '?'} |`;
+  const finding =
+    gap.points > 0
+      ? `**The model made more errors on the Indian-language speakers: ${pct(gap.india)} of words wrong against ${pct(gap.usa)} for native English speakers born in the USA, a gap of ${gap.points.toFixed(1)} percentage points${Number.isFinite(gap.times) ? ` (${gap.times.toFixed(1)} times as many errors)` : ''}.**`
+      : `The model made no more errors on the Indian-language speakers (${pct(gap.india)} of words wrong) than on native English speakers born in the USA (${pct(gap.usa)}) in this sample.`;
+  const everyone = [
+    '| Speaker | Group | Mother tongue | Lives in | Gender | Age | Word errors / words | Word error rate |',
+    '|---|---|---|---|---|---|---|---|',
+    ...a.rows.map((r) => `| ${r.id} | ${r.group === 'india' ? 'Born in India' : 'Born in the USA'} | ${r.nativeLanguage} | ${r.residence || 'not given'} | ${r.gender} | ${r.age} | ${r.wordErrors}/${r.refWords} | ${pct(r.wer)} |`),
+  ].join('\n');
+  return [
+    '',
+    '## Accent check (Speech Accent Archive)',
+    '',
+    `${india.speakers + usa.speakers} speakers each read the same ${india.words / india.speakers}-word paragraph aloud, and the same speech model transcribed every recording. ${finding} This is a **small, indicative** measurement of one thing, how the model copes with different accents on read speech. It is not a fairness audit.`,
+    '',
+    '| Group | Speakers | Words | Word errors | Pooled word error rate | Median speaker | Range across speakers | Women | Men | Ages |',
+    '|---|---|---|---|---|---|---|---|---|---|',
+    per(india),
+    per(usa),
+    '',
+    `Mother tongues in the Indian-born group: ${countList(india.languages)}. Where they lived when recorded (the Archive's "English residence" column): ${countList(india.residences)}. The Archive's country column is where a speaker was **born**, so most of this group was recorded abroad, after months or years of living in an English-speaking country, and their accents may have shifted.`,
+    '',
+    '<details><summary>Every speaker</summary>',
+    '',
+    everyone,
+    '',
+    '</details>',
+    '',
+    '### What this does and does not show',
+    '',
+    gap.points > 0
+      ? '- **It points to a risk for our setting.** Our workers are in India, and the model was less accurate on Indian-language speakers reading the same words. Names and medicine names are the words the app needs most, and the earlier tables show names and medicines among the words it gets wrong.'
+      : '- **No higher error rate was found for the Indian-language speakers in this sample.** With 20 speakers that does not rule out a gap in clinic speech.',
+    `- **The recordings differ in more than accent.** The Archive's own guide says many were made on different recorders and microphones, by different people, in different rooms. Some of the gap may be the recordings, not the speakers.`,
+    `- **${india.speakers} and ${usa.speakers} speakers is small, and the spread is wide** (from ${pct(india.minWer)} to ${pct(india.maxWer)} in the Indian-language group, ${pct(usa.minWer)} to ${pct(usa.maxWer)} in the other). One poor recording moves a group's rate. The women and men columns show how many speakers each figure rests on (${india.women.speakers} and ${india.men.speakers} in the Indian-language group); they are not a finding about gender.`,
+    `- **It is read speech, one paragraph, not clinical speech.** Spontaneous speech is harder, and a health worker dictating a note will not read a prepared text. The result says nothing about the app's extraction.`,
+    `- **The speakers were chosen by a fixed rule before any model output was seen:** in each of two groups (born in India with a mother tongue other than English; native English speakers born in the USA), the first ${a.rule.perGender} women and the first ${a.rule.perGender} men by speaker id whose recording is in the repository.${a.skipped.length ? ` ${a.skipped.map((x) => `${x.file} (speaker ${x.speakerId}) was not in the repository, so the next speaker was taken`).join('; ')}.` : ''}`,
+    `- **The reference is the Archive's paragraph, not what each speaker said.** A speaker who changes a word, or starts with a greeting, is counted as making errors. Fillers are dropped from both sides, and the same rules for numbers and punctuation apply as everywhere else in this document.`,
+    '',
+    '### Data and licence',
+    '',
+    `- **${a.dataset}:** ${a.credit}. ${a.source}. Recordings and speaker details from the Archive's repository ${a.filesFrom}, retrieved ${a.retrievedOn}.`,
+    `- **Licence:** ${a.licence} (https://creativecommons.org/licenses/by-nc-sa/4.0/). Used here for non-commercial evaluation only. The audio is not in this repository: \`npm run fetch-accent\` downloads the ${a.rows.length} recordings (16 MB). The per-speaker results and the transcripts in \`eval/results/latest.json\` are derived from those recordings and are shared under the same licence, CC BY-NC-SA 4.0.`,
+    `- **Reading text:** ${a.reference}`,
+  ];
+}
+
 export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, string>): string {
   const scripts = new Map(Object.entries(scriptTexts));
   const tts = r.tts && r.tts.rows.length ? r.tts : null;
@@ -290,6 +429,7 @@ export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, str
   }
 
   if (r.primock57) out.push(...primockSection(r.primock57));
+  if (r.accent) out.push(...accentSection(r.accent));
 
   const heard = [tts, mine].filter((s): s is EvalSource => s !== null);
   if (heard.length) {
@@ -309,6 +449,7 @@ export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, str
     '- **Expected flags** are the questions each script is built to provoke (a missing follow-up, a dose with no unit, a spoken correction). Other questions are counted and listed, not penalised.',
     '- **Real-time factor** = time to transcribe / length of audio; below 1 is faster than real time. The first clip of a run is preceded by an untimed warm-up.',
     ...(r.primock57 ? ['- **Outside data (PriMock57):** the same model and settings, the same word-error rule, fillers dropped from both sides, utterances chosen by the rule written in that section. Speech recognition only.'] : []),
+    ...(r.accent ? ['- **Accent check:** the same model and settings and the same word-error rule, fillers dropped from both sides; every speaker is scored against the one paragraph they were asked to read. Speech recognition only.'] : []),
     '',
     '## Limitations',
     '',
@@ -327,6 +468,7 @@ export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, str
     'npm run tts-audio      # TTS-synthetic clips into eval/tts/ (macOS: say; Windows: System.Speech; Linux: espeak-ng)',
     '# put your own recordings in recordings/ (S01 … S10, S01_noisy, S02_noisy, S06_noisy) to fill the last section',
     'npm run fetch-primock  # optional: the outside real-clinician check (88 MB, CC BY 4.0, checksum-verified)',
+    'npm run fetch-accent   # optional: the accent check (40 recordings, 16 MB, CC BY-NC-SA 4.0)',
     'npm run eval           # writes eval/results/latest.json and this file',
     '```',
     '',
@@ -351,12 +493,17 @@ export function renderReadmeSummary(r: EvalResults): string {
       ? `| My own voice | ${mine.clips} | ${mine.fieldChecksPassed}/${mine.fieldChecksTotal} = ${pct(mine.fieldAccuracy)} | ${mine.wrongValues} (${mine.silentWrongValues}) | ${mine.expectedFlagsRaised}/${mine.expectedFlagsTotal} | ${pct(mine.wer ?? 0)} |`
       : '| My own voice | **pending recordings** | | | | |',
   );
+  for (const g of r.accent?.groups ?? []) lines.push(`| Accent check, one paragraph read aloud: ${g.label} (Speech Accent Archive) | ${g.speakers} speakers | n/a | n/a | n/a | ${pct(g.wer)} |`);
   const p = r.primock57?.summary;
   if (p) lines.push(`| Outside data: real clinicians, UK English (PriMock57; speech recognition only) | ${p.utterances} utterances | n/a | n/a | n/a | ${pct(p.wer)} |`);
   if (tts?.realTimeFactor !== undefined) {
     lines.push('', `Speech took ${tts.realTimeFactor.toFixed(2)} times the length of the audio on ${r.machine.cpu} (Node, a laptop, not a phone). Generated by \`npm run eval\` on ${r.generatedOn ?? r.generatedAt.slice(0, 10)}; the full tables, method and limits are in [docs/EVALUATION.md](docs/EVALUATION.md).`);
   }
-  if (p) lines.push('', `${mine ? 'The last row is real speech from outside our setting' : 'The last row is the only real human speech tested so far'}: ${p.utterances} utterances from UK clinicians in acted consultations, ${p.wordErrors} word errors in ${p.words} words. It tests speech recognition only, and says nothing about Indian English, a noisy clinic or a phone microphone.`);
+  if (p) lines.push('', `The PriMock57 row is real clinicians' speech from outside our setting: ${p.utterances} utterances from UK clinicians in acted consultations, ${p.wordErrors} word errors in ${p.words} words. It tests speech recognition only, and says nothing about Indian English, a noisy clinic or a phone microphone.`);
+  if (r.accent) {
+    const gap = accentGap(r.accent);
+    lines.push('', gap.points > 0 ? `The accent rows are the same 69-word paragraph read by ${r.accent.groups.map((g) => g.speakers).join(' and ')} speakers: the model made ${gap.times.toFixed(1)} times as many word errors on the Indian-language speakers (a gap of ${gap.points.toFixed(1)} percentage points). Small sample, varied recordings, read speech, no clinical content: indicative only.` : 'The accent rows are the same paragraph read by speakers in two groups; no higher error rate was found for the Indian-language speakers in this small sample.');
+  }
   lines.push('', README_END);
   return lines.join('\n');
 }

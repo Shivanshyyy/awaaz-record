@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { renderEvaluation, renderReadmeSummary, withReadmeSummary, type EvalResults, type PrimockResult } from './report';
+import { accentGap, renderEvaluation, renderReadmeSummary, withReadmeSummary, type AccentGroupResult, type AccentResult, type EvalResults, type PrimockResult } from './report';
 
 const has = existsSync('eval/results/latest.json') && existsSync('docs/EVALUATION.md');
 const scripts = JSON.parse(readFileSync('eval/scripts.json', 'utf8')).scripts as { id: string; text: string }[];
@@ -122,12 +122,109 @@ describe('the outside benchmark (PriMock57)', () => {
   });
 });
 
+describe('the accent check (Speech Accent Archive)', () => {
+  const pool = (speakers: number, words: number, wordErrors: number) => ({ speakers, words, wordErrors, wer: wordErrors / words });
+  const group = (g: 'india' | 'usa', label: string, wordErrors: number): AccentGroupResult => ({
+    group: g,
+    label,
+    ...pool(2, 20, wordErrors),
+    medianWer: wordErrors / 20,
+    minWer: 0,
+    maxWer: 0.3,
+    women: pool(1, 10, 1),
+    men: pool(1, 10, wordErrors - 1),
+    minAge: 20,
+    maxAge: 40,
+    languages: { hindi: 1, tamil: 1 },
+    residences: { usa: 2 },
+  });
+  const row = (id: string, g: 'india' | 'usa', wordErrors: number) => ({ id, group: g, speakerId: 1, nativeLanguage: 'hindi', residence: 'usa', gender: 'female', age: '30', heard: 'x', audioSeconds: 20, transcribeMs: 500, wordErrors, refWords: 10, wer: wordErrors / 10 });
+  const accent = (indiaErrors: number, usaErrors: number): AccentResult => ({
+    dataset: 'Speech Accent Archive',
+    source: 'https://accent.example',
+    filesFrom: 'https://osf.example/abc',
+    licence: 'CC BY-NC-SA 4.0',
+    credit: 'A. Author and B. Author, The Archive',
+    retrievedOn: '2026-10-04',
+    rule: { perGender: 10 },
+    skipped: [{ group: 'india', speakerId: 425, file: 'pahari1.mp3', reason: 'not in the OSF repository' }],
+    reference: 'Please call Stella.',
+    groups: [group('india', 'Born in India, mother tongue not English', indiaErrors), group('usa', 'Native English speakers born in the USA', usaErrors)],
+    rows: [row('hindi1', 'india', 3), row('english1', 'usa', 1)],
+  });
+  const base: EvalResults = {
+    generatedAt: '2026-10-04T00:00:00.000Z',
+    visitDate: '2026-10-04',
+    machine: { cpu: 'Test CPU', cores: 4, memoryGB: 8, platform: 'test', node: 'v0' },
+    model: { repo: 'x/y', dtype: 'q8', runtime: 'r' },
+    ttsVoice: null,
+    reference: { label: 'r', rows: [], summary: null },
+    tts: null,
+    recordings: null,
+  };
+
+  it('works the gap out from the two pooled rates', () => {
+    const gap = accentGap(accent(4, 2));
+    expect(gap.india).toBeCloseTo(0.2);
+    expect(gap.usa).toBeCloseTo(0.1);
+    expect(gap.points).toBeCloseTo(10);
+    expect(gap.times).toBeCloseTo(2);
+  });
+
+  it('says plainly that the model made more errors on the Indian-language speakers, with the gap, the caveats, the credit and the licence', () => {
+    const doc = renderEvaluation({ ...base, accent: accent(4, 2) }, {});
+    expect(doc).toContain('## Accent check (Speech Accent Archive)');
+    expect(doc).toContain('**The model made more errors on the Indian-language speakers: 20.0% of words wrong against 10.0% for native English speakers born in the USA, a gap of 10.0 percentage points (2.0 times as many errors).**');
+    expect(doc).toContain('small, indicative');
+    expect(doc).toContain('not a fairness audit');
+    expect(doc).toContain('The recordings differ in more than accent');
+    expect(doc).toContain('pahari1.mp3 (speaker 425) was not in the repository, so the next speaker was taken');
+    expect(doc).toContain('CC BY-NC-SA 4.0');
+    expect(doc).toContain('A. Author and B. Author, The Archive');
+    expect(doc).toContain('| Born in India, mother tongue not English | 2 | 20 | 4 | **20.0%** |');
+    expect(doc).toContain('Mother tongues in the Indian-born group: hindi 1, tamil 1.');
+    expect(doc).toContain('Where they lived when recorded');
+    expect(doc).toContain('usa 2');
+    expect(doc).toContain('is where a speaker was **born**');
+  });
+
+  it('does not claim a gap that was not found', () => {
+    const doc = renderEvaluation({ ...base, accent: accent(2, 4) }, {});
+    expect(doc).not.toContain('The model made more errors on the Indian-language speakers');
+    expect(doc).toContain('The model made no more errors on the Indian-language speakers (10.0% of words wrong) than on native English speakers born in the USA (20.0%)');
+  });
+
+  it('puts both groups in the at-a-glance table and the README block, and leaves everything out without the recordings', () => {
+    const doc = renderEvaluation({ ...base, accent: accent(4, 2) }, {});
+    expect(doc).toContain('Speech Accent Archive): Born in India, mother tongue not English | 2 speakers | n/a | n/a | n/a | n/a | n/a | 20.0% | n/a |');
+    const block = renderReadmeSummary({ ...base, accent: accent(4, 2) });
+    expect(block).toContain('Born in India, mother tongue not English (Speech Accent Archive) | 2 speakers | n/a | n/a | n/a | 20.0% |');
+    expect(block).toContain('2.0 times as many word errors on the Indian-language speakers (a gap of 10.0 percentage points)');
+    for (const results of [base, { ...base, accent: null }]) {
+      expect(renderEvaluation(results, {})).not.toContain('Accent check');
+      expect(renderReadmeSummary(results)).not.toContain('Accent');
+    }
+  });
+});
+
 describe.skipIf(!(existsSync('eval/results/latest.json') && existsSync('README.md')))('README.md results block', () => {
   it('is exactly what the results produce, so the README cannot drift from the evaluation', () => {
     const results = JSON.parse(readFileSync('eval/results/latest.json', 'utf8')) as EvalResults;
     const readme = readFileSync('README.md', 'utf8');
     expect(readme).toContain('<!-- eval:start -->');
     expect(withReadmeSummary(readme, results)).toBe(readme);
+  });
+});
+
+describe.skipIf(!(existsSync('eval/results/latest.json') && existsSync('README.md')))('what the README says about the accent check', () => {
+  it('says the model made more errors on the Indian-language speakers only if the results show it', () => {
+    const results = JSON.parse(readFileSync('eval/results/latest.json', 'utf8')) as EvalResults;
+    const readme = readFileSync('README.md', 'utf8');
+    const claims = readme.includes('The model made more errors on the Indian-language speakers');
+    if (claims) {
+      expect(results.accent, 'the README quotes an accent check that has no results').toBeTruthy();
+      expect(accentGap(results.accent!).points).toBeGreaterThan(0);
+    }
   });
 });
 
@@ -139,6 +236,11 @@ describe.skipIf(!existsSync('eval/results/latest.json'))('src/eval/summary.gener
     expect(summary.tts).toEqual(results.tts?.summary ?? null);
     expect(summary.recordings).toEqual(results.recordings?.summary ?? null);
     expect(summary.primock57).toEqual(results.primock57?.summary ?? null);
+    expect(summary.accent).toEqual(
+      results.accent
+        ? results.accent.groups.map(({ group, label, speakers, words, wordErrors, wer, medianWer, women, men }) => ({ group, label, speakers, words, wordErrors, wer, medianWer, womenWer: women.wer, menWer: men.wer }))
+        : null,
+    );
     expect(summary.cpu).toBe(results.machine.cpu);
   });
 });

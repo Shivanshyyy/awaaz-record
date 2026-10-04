@@ -103,16 +103,17 @@ ps.pdf (p.8) asks for every dataset, its source, licence and size, and says that
 | TTS-synthetic audio (13 clips, git-ignored) | The Indian-English voice "Tara" on macOS, plus synthetic noise at 10 dB signal-to-noise | not distributed | 5.3 MB | A pipeline check only |
 | My own voice recordings | The builder's voice, from `docs/RECORDINGS.md` | not yet recorded | n/a | **pending recordings** |
 | PriMock57: the clinician channel of 5 of its 57 mock primary-care consultations (9 utterances scored) | Babylon Health; Papadopoulos Korfiatis et al., ACL 2022; https://github.com/babylonhealth/primock57 at commit `cd2ac707` | CC BY 4.0 (credit above; we cut utterances and normalised text for scoring) | 88.1 MB downloaded by `npm run fetch-primock` (git-ignored, not in the app) | An outside check of speech recognition on real clinicians, UK English; the extractor is not run on it |
+| Speech Accent Archive: 40 recordings of one paragraph read aloud (20 speakers born in India with an Indian mother tongue, 20 native English speakers born in the USA) | Steven H. Weinberger and Matthew C. Kelley, George Mason University; https://accent.gmu.edu; files from https://osf.io/yh23d | CC BY-NC-SA 4.0 (credit above; used for non-commercial evaluation; the audio is not redistributed here) | 16.4 MB downloaded by `npm run fetch-accent` (git-ignored, not in the app) | A small check of how the speech model copes with Indian-language accents; speech recognition only |
 | 23 patient lines in Hindi (`docs/HINDI_CLIPS.md`) | Written before this build, **not yet checked by a Hindi speaker** (the app says so on screen) | ours | text only; audio files not yet made | Consent message, slip lines, instructions |
 
 ps.pdf lists common speech datasets (Common Voice, FLEURS, IndicVoices and others); we **did not use them**: Whisper tiny.en is English only, and we did not fine-tune.
 
 ### What our data does not cover
 
-- **No real patient, no real clinic, no real field audio.** Every transcript in the extraction tests was typed by the builder or made by a computer voice reading a script. The one outside test (PriMock57) is real clinicians speaking, but in acted consultations in UK English, and it checks speech recognition only.
+- **No real patient, no real clinic, no real field audio.** Every transcript in the extraction tests was typed by the builder or made by a computer voice reading a script. The two outside tests (PriMock57 and the Speech Accent Archive) are real people speaking, but one is acted consultations in UK English and the other is one paragraph read aloud, and both check speech recognition only.
 - **One speaker's scripts.** Ten notes by one author, in one style. Real notes are messier, longer and less ordered.
 - **English only on the speech side.** No Hindi or Hinglish dictation, no other Indian language, and nothing for a worker who is more comfortable in another language.
-- **Accents, ages and voices.** Whisper's own card warns of *"disparate performance on different accents and dialects"*. We tested one synthetic Indian-English voice, and nine utterances of UK clinicians. No Indian-accented human speech, no children's or elderly voices, no whispered or rushed speech, no phone-call quality.
+- **Accents, ages and voices.** Whisper's own card warns of *"disparate performance on different accents and dialects"*. We tested one synthetic Indian-English voice, nine utterances of UK clinicians, and twenty Indian-language speakers reading one paragraph. No Indian-accented *clinical* speech, almost no children's or elderly voices, no whispered or rushed speech, no phone-call quality.
 - **Noise.** Only synthetic noise added to three clips. No fans, crying babies, generators or a waiting room.
 - **A phone.** Timings and tests are from a laptop (Apple M5 Pro). The app has not yet been run on a real low-end Android phone.
 - **Medicines.** 90 generic names and a handful of brand names (such as Dolo, Crocin, Calpol). Combination tablets, injections, local brand names, traditional medicine and spelling variants outside the list will not be recognised; the app then asks "which medicine was it?".
@@ -124,7 +125,7 @@ ps.pdf lists common speech datasets (Common Voice, FLEURS, IndicVoices and other
 
 ps.pdf (p.13) warns of *"biases encoded in algorithms"* and of models that underperform on the populations they are deployed to. Where this could bite here, and what we did and did not do:
 
-- **Speech recognition is the main risk.** Whisper's own card says it can show *"higher word error rate across speakers of different genders, races, ages, or other demographic criteria"*. A health worker with a strong regional accent, a woman with a soft voice, or a patient's relative speaking over the worker could be understood less well than a clear standard voice. We have **not measured this**: our only audio is one synthetic voice, so we cannot report error rates by accent, gender or age. This is the first thing a real-voice test must do.
+- **Speech recognition is the main risk, and we measured one slice of it.** Whisper's own card says it can show *"higher word error rate across speakers of different genders, races, ages, or other demographic criteria"*. A health worker with a strong regional accent, a woman with a soft voice, or a patient's relative speaking over the worker could be understood less well than a clear standard voice. We tested it on a small scale: forty people reading the same paragraph, twenty born in India with an Indian language as their mother tongue (most of them recorded while living abroad) and twenty native English speakers born in the USA (the *accent check* rows in the [Evaluation](#evaluation) table, with every speaker in `docs/EVALUATION.md`). **The model made more errors on the Indian-language speakers**; the size of the gap is in that table. It is a small, indicative result: read speech, no clinical content, recordings that differ in more than accent, and 20 speakers per group. It is **not a fairness audit**, and we still have no error rates by age or by gender worth reporting, for clinic speech, or for the many accents and languages not in the sample. This is the first thing a real-voice test with health workers must extend.
 - **Names.** Names from some communities may be heard worse than others; the transcript showed names turned into unrelated words. The app does not judge whether a name "looks right" (that would encode its own bias); it shows the name with a one-tap *Hear it* and lets the worker correct it.
 - **The word lists** were written by one person from common usage. Medicines and complaints outside them, including local and traditional ones, are not recognised and are shown as heard, with a question. They are not dropped or replaced.
 - **Who is left out.** A worker who dictates in another language, a patient who is deaf or does not use the language of the Hindi lines, and anyone without a recent smartphone. The slip carries icons and words, and the app works without hearing, but nothing here replaces a worker's own judgement about the patient in front of her.
@@ -158,11 +159,15 @@ Full tables, the method and the limits are in **[docs/EVALUATION.md](docs/EVALUA
 | Reference text (extractor alone) | 10 | 128/128 = 100.0% | 0 (0) | 6/6 | n/a |
 | TTS-synthetic speech (a pipeline check) | 13 | 105/148 = 70.9% | 43 (19) | 6/7 | 27.7% |
 | My own voice | **pending recordings** | | | | |
+| Accent check, one paragraph read aloud: Born in India, mother tongue not English (Speech Accent Archive) | 20 speakers | n/a | n/a | n/a | 10.1% |
+| Accent check, one paragraph read aloud: Native English speakers born in the USA (Speech Accent Archive) | 20 speakers | n/a | n/a | n/a | 4.4% |
 | Outside data: real clinicians, UK English (PriMock57; speech recognition only) | 9 utterances | n/a | n/a | n/a | 28.1% |
 
 Speech took 0.04 times the length of the audio on Apple M5 Pro (Node, a laptop, not a phone). Generated by `npm run eval` on 2026-10-04; the full tables, method and limits are in [docs/EVALUATION.md](docs/EVALUATION.md).
 
-The last row is the only real human speech tested so far: 9 utterances from UK clinicians in acted consultations, 92 word errors in 327 words. It tests speech recognition only, and says nothing about Indian English, a noisy clinic or a phone microphone.
+The PriMock57 row is real clinicians' speech from outside our setting: 9 utterances from UK clinicians in acted consultations, 92 word errors in 327 words. It tests speech recognition only, and says nothing about Indian English, a noisy clinic or a phone microphone.
+
+The accent rows are the same 69-word paragraph read by 20 and 20 speakers: the model made 2.3 times as many word errors on the Indian-language speakers (a gap of 5.7 percentage points). Small sample, varied recordings, read speech, no clinical content: indicative only.
 
 <!-- eval:end -->
 
@@ -197,6 +202,7 @@ npm test               # unit tests: extraction, numbers, privacy, slip, QR, pla
 npm run tts-audio      # computer-voice test clips into eval/tts/ (macOS: say)
 npm run eval           # writes eval/results/latest.json, docs/EVALUATION.md and the block above
 npm run fetch-primock  # optional: five real-clinician consultations (88 MB, CC BY 4.0), so npm run eval also runs the outside check
+npm run fetch-accent   # optional: 40 recordings of one paragraph (16 MB, CC BY-NC-SA 4.0), so npm run eval also runs the accent check
 npm run check-live     # after deploying: confirms the published site serves every offline file at the right size
 npm run e2e            # browser tests: offline journey, privacy, review gate, accessibility (builds first)
 npm run e2e:shots      # also saves the screenshots in docs/screens/
@@ -220,7 +226,7 @@ GitHub Actions (`.github/workflows/deploy.yml`) installs, downloads the model, r
 
 ## Licence
 
-The code has no licence file yet: the author chooses one (MIT is a common choice for a project like this). The models and libraries it uses are listed with their licences in the data table above.
+The code has no licence file yet: the author chooses one (MIT is a common choice for a project like this). The models and libraries it uses are listed with their licences in the data table above. Outside data keeps its own licence: the accent-check results and transcripts derived from the Speech Accent Archive (the accent section of `docs/EVALUATION.md` and the `accent` part of `eval/results/latest.json`) are shared under CC BY-NC-SA 4.0, and the PriMock57 excerpts in `docs/EVALUATION.md` are CC BY 4.0 with credit to Babylon Health. Whatever licence the author chooses for the code does not change that.
 
 ## Sources I opened
 

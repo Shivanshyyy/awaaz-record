@@ -1,11 +1,11 @@
-import type { EvalSummary, PrimockSummary } from '../../eval/report';
+import type { AccentSummary, EvalSummary, PrimockSummary } from '../../eval/report';
 import generated from '../../eval/summary.generated.json';
 import { hindiReviewed } from '../../patient/clips';
 import { useRouter } from '../router';
 import { Button } from '../../ui/Button';
 
 // The JSON has `null` for rows with no clips yet; say so in the type so the page handles both cases.
-const summary = generated as unknown as { generatedOn: string; cpu: string; reference: EvalSummary; tts: EvalSummary | null; recordings: EvalSummary | null; primock57: PrimockSummary | null };
+const summary = generated as unknown as { generatedOn: string; cpu: string; reference: EvalSummary; tts: EvalSummary | null; recordings: EvalSummary | null; primock57: PrimockSummary | null; accent: AccentSummary[] | null };
 
 const pct = (x: number) => `${(x * 100).toFixed(1)}%`;
 
@@ -33,6 +33,9 @@ export function AboutScreen() {
   const ref = summary.reference;
   const tts = summary.tts;
   const primock = summary.primock57;
+  const india = summary.accent?.find((g) => g.group === 'india');
+  const usa = summary.accent?.find((g) => g.group === 'usa');
+  const accentGap = india && usa ? india.wer - usa.wer : null;
   return (
     <article aria-labelledby="about-title" className="space-y-5">
       <Button variant="secondary" onClick={back}>
@@ -73,6 +76,11 @@ export function AboutScreen() {
               <strong>Real clinicians, outside data</strong> (UK English mock consultations, speech recognition only): {primock.wordErrors} of {primock.words} words were wrong ({pct(primock.wer)}) in {primock.utterances} utterances. That is why a person checks every record.
             </p>
           )}
+          {india && usa && (
+            <p data-testid="about-accent">
+              <strong>Accents, a small check</strong> (one paragraph read aloud, {india.speakers} speakers in each group, speech recognition only): {pct(india.wer)} of words wrong for speakers born in India with an Indian mother tongue (most recorded while living abroad), against {pct(usa.wer)} for native English speakers born in the USA. Indicative only.
+            </p>
+          )}
           <p>
             <strong>Real voices in our setting:</strong> {summary.recordings ? `${summary.recordings.fieldChecksPassed} of ${summary.recordings.fieldChecksTotal} fields right` : 'pending recordings. Nobody has tested this app with a health worker’s voice yet.'}
           </p>
@@ -84,7 +92,7 @@ export function AboutScreen() {
         <ul className="list-disc space-y-1 pl-6">
           <li>No real patients and no real clinic audio. The notes are made up, and the consultations in the outside test are acted.</li>
           <li>English speech only. No Hindi or Hinglish dictation.</li>
-          <li>One synthetic Indian-English voice; no children, elderly or noisy-room speech.</li>
+          <li>Only a computer voice, nine UK clinician utterances and one paragraph read by 40 speakers: no real clinic speech from Indian health workers, and no noisy rooms.</li>
           <li>A word list of 90 generic medicines and 57 complaints. Others are shown as heard, with a question.</li>
           <li>Tested on a laptop, not yet on a low-end phone.</li>
           <li>{hindiReviewed ? 'The Hindi lines have been checked by a Hindi speaker.' : 'The Hindi lines have not yet been checked by a Hindi speaker.'}</li>
@@ -93,7 +101,13 @@ export function AboutScreen() {
 
       <Section title="Bias and fairness">
         <p>
-          Speech recognition can be less accurate for some accents, genders, ages and names. We have only tested one computer voice, so we cannot yet say how large any gap is. That is why a person checks every record, names and ages have a one-tap <em>Hear it</em>, and nothing is used to rank or decide anything about a patient.
+          Speech recognition can be less accurate for some accents, genders, ages and names.{' '}
+          {accentGap === null
+            ? 'We have not measured how large any gap is.'
+            : accentGap > 0
+              ? 'In a small check, the model made more errors on Indian-language speakers than on native English speakers (see above).'
+              : 'In a small check, the model made no more errors on Indian-language speakers than on native English speakers (see above).'}{' '}
+          We have no reliable figures by age or gender, or for clinic speech. That is why a person checks every record, names and ages have a one-tap <em>Hear it</em>, and nothing is used to rank or decide anything about a patient.
         </p>
       </Section>
 
