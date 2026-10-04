@@ -8,7 +8,7 @@
 - ps.pdf gives dates only (3–4 Oct), not the 16:39 IST deadline written in CLAUDE.md: confirm it on the portal.
 
 ## WHEN YOU WAKE UP
-_(filled in as the night goes on; each item has exact steps)_
+**Order that matters now:** 2 (switch on Pages, then run `npm run check-live`) → 4 (try it on your phone) → 10 (your take and the video) → 11 (submit). Items 6, 7 and 9 are improvements you can do if time allows; 1, 3, 5 and 8 are notes. Each item has exact steps.
 
 1. **Where to run Claude Code.** The project is the folder `~/Desktop/awaaz_records/awaaz-record-kit/` (that is the git repo). Tonight's session was started one level up, so CLAUDE.md and `.claude/settings.json` were not auto-loaded. To resume: `cd ~/Desktop/awaaz_records/awaaz-record-kit && claude`, then paste Prompt 2.
 2. **Turn on GitHub Pages (needed for the live URL).** Open https://github.com/Shivanshyyy/awaaz-record → *Settings* → *Pages* → under "Build and deployment" set *Source* to **GitHub Actions**. The repo is already public (checked). **GitHub's build already passes** (npm ci, model download, 313 tests, production build); the only step that fails is `configure-pages`, which fails because Pages is off. Then *Actions* tab → "Deploy to GitHub Pages" → *Run workflow* (or push any commit). The site should appear at https://shivanshyyy.github.io/awaaz-record/ (not verified yet). Then run `npm run check-live`: it checks the published site's files, sizes and range support in a few seconds and ends with "All checks passed." (it was run against the local build only).
