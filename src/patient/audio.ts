@@ -18,7 +18,8 @@ export function resetAudioManifest() {
   manifest = null;
 }
 
-function hindiVoice(): Promise<SpeechSynthesisVoice | null> {
+// Chrome on Android lists its voices a moment after the page loads, so wait briefly for them.
+export function hindiVoice(): Promise<SpeechSynthesisVoice | null> {
   if (typeof speechSynthesis === 'undefined') return Promise.resolve(null);
   const find = () => speechSynthesis.getVoices().find((v) => /^hi([-_]|$)/i.test(v.lang)) ?? null;
   const now = find();

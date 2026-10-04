@@ -1,3 +1,4 @@
+import { hindiVoice } from '../patient/audio';
 import { formatMB } from '../ui/format';
 
 // A plain-words check of whether this phone and browser can run the app. Pure rules over a snapshot, so they can be tested.
@@ -60,7 +61,6 @@ export function evaluateDevice(env: DeviceEnv, neededBytes: number): DeviceCheck
 
 export async function readDeviceEnv(): Promise<DeviceEnv> {
   const estimate = await navigator.storage?.estimate?.().catch(() => undefined);
-  const voices = typeof speechSynthesis !== 'undefined' ? speechSynthesis.getVoices() : null;
   return {
     secureContext: window.isSecureContext,
     hasMic: Boolean(navigator.mediaDevices?.getUserMedia),
@@ -74,6 +74,6 @@ export async function readDeviceEnv(): Promise<DeviceEnv> {
     hasCrypto: Boolean(globalThis.crypto?.subtle),
     freeBytes: estimate?.quota !== undefined && estimate.usage !== undefined ? estimate.quota - estimate.usage : null,
     persisted: (await navigator.storage?.persisted?.().catch(() => undefined)) ?? null,
-    hindiVoice: voices === null || voices.length === 0 ? (voices === null ? null : false) : voices.some((v) => /^hi([-_]|$)/i.test(v.lang)),
+    hindiVoice: typeof speechSynthesis === 'undefined' ? null : (await hindiVoice()) !== null,
   };
 }
