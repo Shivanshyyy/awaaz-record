@@ -39,3 +39,16 @@ test('app shell loads again with the network off', async ({ page, context }) => 
   await expect(page.getByRole('heading', { name: 'Awaaz Record', level: 1 })).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Main' })).toBeVisible();
 });
+
+test('the app can be installed: a manifest with name, scope, standalone display and real icons, and a service worker', async ({ page, request }) => {
+  await page.goto('/awaaz-record/');
+  const href = await page.locator('link[rel="manifest"]').getAttribute('href');
+  expect(href).toBeTruthy();
+  const manifestUrl = new URL(href!, page.url());
+  const manifest = await (await request.get(manifestUrl.toString())).json();
+  expect(manifest).toMatchObject({ name: 'Awaaz Record', start_url: '/awaaz-record/', scope: '/awaaz-record/', display: 'standalone' });
+  const icons = manifest.icons as { src: string; sizes: string }[];
+  expect(icons.map((i) => i.sizes)).toEqual(expect.arrayContaining(['192x192', '512x512']));
+  for (const icon of icons) expect((await request.get(new URL(icon.src, manifestUrl).toString())).ok(), icon.src).toBe(true);
+  expect(await page.evaluate(async () => Boolean((await navigator.serviceWorker.ready).active))).toBe(true);
+});

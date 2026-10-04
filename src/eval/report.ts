@@ -267,9 +267,10 @@ export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, str
     '',
     glance(r),
     '',
-    '> **Read this carefully.** The only audio so far is **TTS-synthetic**: a computer voice reading the scripts' +
+    `> **Read this carefully.** The only audio of our own scripts so far is **TTS-synthetic**: a computer voice reading the scripts` +
       (r.ttsVoice ? ` (voice "${r.ttsVoice.voice}" on ${OS_NAMES[r.ttsVoice.platform] ?? r.ttsVoice.platform}; the \`_noisy\` clips add synthetic noise at ${r.ttsVoice.noiseSnrDb} dB signal-to-noise)` : '') +
-      '. It is good for checking that the pipeline works. It says little about how real clinic speech will do: a real voice, a real room and a real accent will differ, in either direction. No accuracy claim about real speech is made until the "my own voice" row is filled.',
+      '. It is good for checking that the pipeline works. It says little about how real clinic speech will do: a real voice, a real room and a real accent will differ, in either direction. No accuracy claim about real speech is made until the "my own voice" row is filled.' +
+      (r.primock57 ? ' The outside PriMock57 row is real clinicians\' speech, but UK English in acted consultations, and it measures speech recognition only.' : ''),
   );
 
   if (!mine) {

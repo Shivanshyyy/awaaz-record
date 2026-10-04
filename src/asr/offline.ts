@@ -78,25 +78,51 @@ export async function getOfflineStatus(): Promise<OfflineStatus> {
   return { state: 'ready', totalBytes: plan.totalBytes };
 }
 
-async function downloadOne(cache: Cache, file: OfflineFile, onBytes: (n: number) => void): Promise<void> {
-  const res = await fetch(file.url);
-  if (!res.ok || !res.body) throw new Error(`Download failed for ${file.url} (HTTP ${res.status}).`);
-  const reader = res.body.getReader();
-  const parts: Uint8Array<ArrayBuffer>[] = [];
+const MAX_STALLS = 3;
+const STALL_WAIT_MS = 1000;
+
+// A dropped connection continues from the bytes already received (HTTP Range). A server that ignores Range, or
+// answers with the wrong part, restarts that file from zero. Gives up after 3 attempts in a row that bring no new bytes.
+export async function downloadOne(cache: Pick<Cache, 'put'>, file: OfflineFile, onBytes: (delta: number) => void, wait: (ms: number) => Promise<void> = (ms) => new Promise((r) => setTimeout(r, ms))): Promise<void> {
+  let parts: Uint8Array<ArrayBuffer>[] = [];
   let received = 0;
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    parts.push(value as Uint8Array<ArrayBuffer>);
-    received += value.byteLength;
-    onBytes(value.byteLength);
+  let contentType = 'application/octet-stream';
+  const restart = () => {
+    onBytes(-received);
+    parts = [];
+    received = 0;
+  };
+  for (let stalls = 0; ; ) {
+    const before = received;
+    try {
+      const res = await fetch(file.url, received > 0 ? { headers: { Range: `bytes=${received}-` } } : undefined);
+      if (!res.body || (res.status !== 200 && res.status !== 206)) throw new Error(`Download failed for ${file.url} (HTTP ${res.status}).`);
+      if (res.status === 200 && received > 0) restart();
+      if (res.status === 206 && !new RegExp(`^bytes ${received}-\\d+/${file.bytes}$`).test(res.headers.get('content-range') ?? '')) {
+        restart();
+        throw new Error(`The server sent the wrong part of ${file.url}.`);
+      }
+      contentType = res.headers.get('content-type') ?? contentType;
+      const reader = res.body.getReader();
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        parts.push(value as Uint8Array<ArrayBuffer>);
+        received += value.byteLength;
+        onBytes(value.byteLength);
+      }
+      // A short download must never be stored as if it were complete.
+      if (received === file.bytes) break;
+      const problem = `Incomplete download for ${file.url}: got ${received} of ${file.bytes} bytes.`;
+      if (received > file.bytes) restart();
+      throw new Error(problem);
+    } catch (error) {
+      stalls = received > before ? 0 : stalls + 1;
+      if (stalls >= MAX_STALLS) throw error;
+      if (stalls > 0) await wait(STALL_WAIT_MS * stalls);
+    }
   }
-  // A short download must never be stored as if it were complete.
-  if (received !== file.bytes) throw new Error(`Incomplete download for ${file.url}: got ${received} of ${file.bytes} bytes.`);
-  const headers = new Headers({
-    'Content-Type': res.headers.get('content-type') ?? 'application/octet-stream',
-    'Content-Length': String(file.bytes),
-  });
+  const headers = new Headers({ 'Content-Type': contentType, 'Content-Length': String(file.bytes) });
   await cache.put(file.url, new Response(new Blob(parts), { status: 200, headers }));
 }
 
@@ -120,18 +146,10 @@ export async function prepareOffline(onProgress: (p: PrepareProgress) => void): 
       continue;
     }
     let fileBytes = 0;
-    for (let attempt = 1; ; attempt++) {
-      try {
-        await downloadOne(cache, file, (n) => {
-          fileBytes += n;
-          onProgress({ doneBytes: doneBytes + fileBytes, totalBytes: plan.totalBytes, file: file.url });
-        });
-        break;
-      } catch (error) {
-        fileBytes = 0;
-        if (attempt >= 3) throw error;
-      }
-    }
+    await downloadOne(cache, file, (n) => {
+      fileBytes += n;
+      onProgress({ doneBytes: doneBytes + fileBytes, totalBytes: plan.totalBytes, file: file.url });
+    });
     doneBytes += file.bytes;
     onProgress({ doneBytes, totalBytes: plan.totalBytes, file: file.url });
   }
