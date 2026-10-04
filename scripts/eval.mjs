@@ -36,7 +36,7 @@ const { textToTranscript } = await load('/src/extract/transcript-from-text.ts');
 const { buildTranscript } = await load('/src/asr/transcript.ts');
 const { scoreScript, accuracy } = await load('/src/extract/score.ts');
 const { wer, wordErrors, normalizeForWer } = await load('/src/extract/wer.ts');
-const { renderEvaluation } = await load('/src/eval/report.ts');
+const { renderEvaluation, withReadmeSummary } = await load('/src/eval/report.ts');
 
 function summarize(label, rows) {
   const scores = rows.map((r) => r.score);
@@ -170,10 +170,21 @@ const results = {
 };
 mkdirSync(path.join(ROOT, 'eval', 'results'), { recursive: true });
 writeFileSync(path.join(ROOT, 'eval', 'results', 'latest.json'), `${JSON.stringify(results, null, 2)}\n`);
+writeFileSync(
+  path.join(ROOT, 'src', 'eval', 'summary.generated.json'),
+  `${JSON.stringify({ generatedOn: results.generatedOn, cpu: results.machine.cpu, reference: results.reference.summary, tts: results.tts?.summary ?? null, recordings: results.recordings?.summary ?? null }, null, 2)}\n`,
+);
 const scriptTexts = Object.fromEntries(scriptsFile.scripts.map((sc) => [sc.id, sc.text]));
 if (only.length === 0 && !skipAudio) {
   writeFileSync(path.join(ROOT, 'docs', 'EVALUATION.md'), renderEvaluation(results, scriptTexts));
   console.log('wrote docs/EVALUATION.md');
+  const readmePath = path.join(ROOT, 'README.md');
+  if (existsSync(readmePath)) {
+    const before = readFileSync(readmePath, 'utf8');
+    const after = withReadmeSummary(before, results);
+    if (after !== before) writeFileSync(readmePath, after);
+    console.log('updated the results block in README.md');
+  }
 }
 
 const pct = (x) => `${(x * 100).toFixed(1)}%`;

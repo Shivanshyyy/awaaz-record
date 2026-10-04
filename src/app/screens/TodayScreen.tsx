@@ -74,6 +74,9 @@ export function TodayScreen() {
       <Button variant="secondary" onClick={() => go({ name: 'records' })}>
         Look around with demo visits
       </Button>
+      <Button variant="secondary" onClick={() => go({ name: 'about' })} data-testid="about-link">
+        About, evidence and limits
+      </Button>
     </section>
   );
 }

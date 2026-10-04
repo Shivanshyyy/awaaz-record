@@ -74,3 +74,8 @@ button {
     margin: 10mm;
   }
 }
+
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--color-brand-700);
+}

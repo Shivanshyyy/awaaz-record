@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03T23:46:38.349Z",
+  "generatedAt": "2026-10-04T07:06:04.695Z",
   "generatedOn": "2026-10-04",
   "visitDate": "2026-10-04",
   "machine": {
@@ -1035,7 +1035,7 @@
         "transcript": "patient neuroplenty eight years, complaints of fever for three days, temperature 101, gave ferrocyte mild 500 mg three times a day for three days, review after three days.",
         "warnings": [],
         "audioSeconds": 11.428125,
-        "transcribeMs": 345.025667,
+        "transcribeMs": 337.8325,
         "wer": 0.18518518518518517,
         "wordErrors": 5,
         "refWords": 27
@@ -1139,7 +1139,7 @@
         "transcript": "The patient knew 38 years, complaints of fever for 3 days, temperature 101, gave pherosate mild 500mg 3 times a day for 3 days, review after 3 days.",
         "warnings": [],
         "audioSeconds": 11.428125,
-        "transcribeMs": 332.75804199999993,
+        "transcribeMs": 340.5814159999999,
         "wer": 0.18518518518518517,
         "wordErrors": 5,
         "refWords": 27
@@ -1261,7 +1261,7 @@
         "transcript": "Patient - drum -ish 52, sneezing and running nose for one week was in the mornings (B.P. 140 /90). Paul's 88, gives it a \"zine 10 mg once at night\" for five days. Follow up in one week.",
         "warnings": [],
         "audioSeconds": 12.932,
-        "transcribeMs": 390.4682499999999,
+        "transcribeMs": 399.23345800000016,
         "wer": 0.3333333333333333,
         "wordErrors": 12,
         "refWords": 36
@@ -1395,7 +1395,7 @@
         "transcript": "Station from age 52, seizing and running news for one week was in the morning, Bp140 over 90. False 88, gives the Tuesday and 10 milligrams once at night for five days. Follow up in one week.",
         "warnings": [],
         "audioSeconds": 12.932,
-        "transcribeMs": 363.14037499999995,
+        "transcribeMs": 356.14370800000006,
         "wer": 0.4166666666666667,
         "wordErrors": 15,
         "refWords": 36
@@ -1487,7 +1487,7 @@
         "transcript": "Fish and Sunita 26 /7 months pregnant, swelling of feet and headaches since yesterday, BP 160 /110, referred to the district hospital today, follow up after delivery.",
         "warnings": [],
         "audioSeconds": 11.9276875,
-        "transcribeMs": 293.8665420000002,
+        "transcribeMs": 309.55512499999986,
         "wer": 0.21428571428571427,
         "wordErrors": 6,
         "refWords": 28
@@ -1614,7 +1614,7 @@
         "transcript": "patient baby are of two years brought by mother, loose motions since two days, give ORS after every loose tool and in 20mg once daily for 14 days, advise mother to continue breastfeeding and give plenty of fluids. Review in five days.",
         "warnings": [],
         "audioSeconds": 14.65075,
-        "transcribeMs": 365.3532500000001,
+        "transcribeMs": 364.5007089999999,
         "wer": 0.14285714285714285,
         "wordErrors": 6,
         "refWords": 42
@@ -1761,7 +1761,7 @@
         "transcript": "Fish and Locks Me, 60 Years, Fain in both knees for two months, gave that clothing a 50 mg twice a day after food for five days, sorry make that abu -profend 400 mg twice a day after food for five days, review in two weeks.",
         "warnings": [],
         "audioSeconds": 14.6620625,
-        "transcribeMs": 400.2885419999998,
+        "transcribeMs": 392.3616670000001,
         "wer": 0.24390243902439024,
         "wordErrors": 10,
         "refWords": 41
@@ -1877,7 +1877,7 @@
         "transcript": "patient Kavita, 33. Running while passing urine for two days. Temperature 99.8. Gave Nitrofuranto in 100 mg twice a day for five days. Advice to drink plenty of water.",
         "warnings": [],
         "audioSeconds": 12.907875,
-        "transcribeMs": 333.41379199999983,
+        "transcribeMs": 334.49400000000014,
         "wer": 0.14285714285714285,
         "wordErrors": 4,
         "refWords": 28
@@ -2023,7 +2023,7 @@
           "repeated"
         ],
         "audioSeconds": 12.907875,
-        "transcribeMs": 2193.152375,
+        "transcribeMs": 2178.3619170000006,
         "wer": 0.9642857142857143,
         "wordErrors": 27,
         "refWords": 28
@@ -2145,7 +2145,7 @@
         "transcript": "patient Mohan's 70, came for a blood pressure check (Bp -150 over 95, with 62 kilos, continue a mooda -pine 5 mg one -staley) review in one month.",
         "warnings": [],
         "audioSeconds": 11.5774375,
-        "transcribeMs": 336.0055419999999,
+        "transcribeMs": 331.91520800000035,
         "wer": 0.3333333333333333,
         "wordErrors": 9,
         "refWords": 27
@@ -2285,7 +2285,7 @@
         "transcript": "Ok so, patient him ran 29, he was saying it is very hot these days, anyway headache and body aches in this morning. Temperature normal, gave Ferris 8 mile 651 tablet 3 times a day for 2 days, if not better come back.",
         "warnings": [],
         "audioSeconds": 14.186375,
-        "transcribeMs": 387.36933300000055,
+        "transcribeMs": 391.9329580000003,
         "wer": 0.24390243902439024,
         "wordErrors": 10,
         "refWords": 41
@@ -2378,7 +2378,7 @@
         "transcript": "Patient guitar, 41, blood vision fold distance slowly over six months, no pain, referred to the i -hospital in the district for a check -up, follow up on Monday.",
         "warnings": [],
         "audioSeconds": 10.0899375,
-        "transcribeMs": 303.21308299999964,
+        "transcribeMs": 302.7334170000004,
         "wer": 0.13793103448275862,
         "wordErrors": 4,
         "refWords": 29
@@ -2509,7 +2509,7 @@
         "transcript": "Patient Raju 8 years brought by father, Air Pain for 2 days. Temperature 38.2, gave him oxisol in 250 mg 3 times a day for 5 days, and Farasetamal syrup when needed for pain. Review after 5 days.",
         "warnings": [],
         "audioSeconds": 14.49625,
-        "transcribeMs": 390.65799999999945,
+        "transcribeMs": 393.0575829999998,
         "wer": 0.1388888888888889,
         "wordErrors": 5,
         "refWords": 36
@@ -2529,8 +2529,8 @@
       "wer": 0.27699530516431925,
       "meanClipWer": 0.28327801687768045,
       "audioSeconds": 166.12650000000002,
-      "transcribeSeconds": 6.434712792999999,
-      "realTimeFactor": 0.038733813046082345
+      "transcribeSeconds": 6.432703666000001,
+      "realTimeFactor": 0.03872171908756279
     }
   },
   "recordings": {

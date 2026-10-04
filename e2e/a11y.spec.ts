@@ -70,6 +70,15 @@ test('the consent step with the Hindi text shown, and the manual form, have no v
   await scan(page, 'Manual form');
 });
 
+test('the About screen has no violations and shows the generated results', async ({ page }) => {
+  await page.goto('/awaaz-record/');
+  await page.getByTestId('about-link').click();
+  await expect(page.getByTestId('about-results')).toContainText('128 of 128');
+  await expect(page.getByTestId('about-results')).toContainText('pending recordings');
+  await expect(page.getByText('never diagnoses')).toBeVisible();
+  await scan(page, 'About, evidence and limits');
+});
+
 test('canary: the scanner really does catch low contrast and an unlabelled button', async ({ page }) => {
   await page.goto('/awaaz-record/');
   await page.evaluate(() => {

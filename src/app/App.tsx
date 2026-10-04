@@ -7,6 +7,7 @@ import { NewVisitScreen } from './screens/NewVisitScreen';
 import { RecordsScreen } from './screens/RecordsScreen';
 import { TasksScreen } from './screens/TasksScreen';
 import { PrepareScreen } from './screens/PrepareScreen';
+import { AboutScreen } from './screens/AboutScreen';
 import { RecordScreen } from './screens/RecordScreen';
 import { VaultProvider } from './vault';
 import { OfflineBadge } from './OfflineBadge';
@@ -27,6 +28,8 @@ function Screen() {
       return <TasksScreen />;
     case 'prepare':
       return <PrepareScreen />;
+    case 'about':
+      return <AboutScreen />;
     case 'record':
       return <RecordScreen id={route.id} />;
   }

@@ -1,0 +1,34 @@
+{
+  "generatedOn": "2026-10-04",
+  "cpu": "Apple M5 Pro",
+  "reference": {
+    "label": "reference",
+    "clips": 10,
+    "fieldChecksPassed": 128,
+    "fieldChecksTotal": 128,
+    "fieldAccuracy": 1,
+    "wrongValues": 0,
+    "silentWrongValues": 0,
+    "expectedFlagsRaised": 6,
+    "expectedFlagsTotal": 6,
+    "extraFlags": 0
+  },
+  "tts": {
+    "label": "TTS-synthetic speech (operating-system voice), pipeline check only",
+    "clips": 13,
+    "fieldChecksPassed": 105,
+    "fieldChecksTotal": 148,
+    "fieldAccuracy": 0.7094594594594594,
+    "wrongValues": 43,
+    "silentWrongValues": 19,
+    "expectedFlagsRaised": 6,
+    "expectedFlagsTotal": 7,
+    "extraFlags": 26,
+    "wer": 0.27699530516431925,
+    "meanClipWer": 0.28327801687768045,
+    "audioSeconds": 166.12650000000002,
+    "transcribeSeconds": 6.432703666000001,
+    "realTimeFactor": 0.03872171908756279
+  },
+  "recordings": null
+}

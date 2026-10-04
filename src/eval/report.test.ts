@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { renderEvaluation, type EvalResults } from './report';
+import { renderEvaluation, withReadmeSummary, type EvalResults } from './report';
 
 const has = existsSync('eval/results/latest.json') && existsSync('docs/EVALUATION.md');
 const scripts = JSON.parse(readFileSync('eval/scripts.json', 'utf8')).scripts as { id: string; text: string }[];
@@ -64,5 +64,25 @@ describe('renderEvaluation', () => {
     const doc = renderEvaluation(results({ label: 'mine', rows: [{ ...row, id: 'S01' }], summary }), { S01: 'x' });
     expect(doc).not.toContain('**My own voice: pending recordings.**');
     expect(doc).toContain('## My own voice');
+  });
+});
+
+describe.skipIf(!(existsSync('eval/results/latest.json') && existsSync('README.md')))('README.md results block', () => {
+  it('is exactly what the results produce, so the README cannot drift from the evaluation', () => {
+    const results = JSON.parse(readFileSync('eval/results/latest.json', 'utf8')) as EvalResults;
+    const readme = readFileSync('README.md', 'utf8');
+    expect(readme).toContain('<!-- eval:start -->');
+    expect(withReadmeSummary(readme, results)).toBe(readme);
+  });
+});
+
+describe.skipIf(!existsSync('eval/results/latest.json'))('src/eval/summary.generated.json', () => {
+  it('is the summary of the latest results, so the About screen shows the same numbers as the evaluation', () => {
+    const results = JSON.parse(readFileSync('eval/results/latest.json', 'utf8')) as EvalResults;
+    const summary = JSON.parse(readFileSync('src/eval/summary.generated.json', 'utf8'));
+    expect(summary.reference).toEqual(results.reference.summary);
+    expect(summary.tts).toEqual(results.tts?.summary ?? null);
+    expect(summary.recordings).toEqual(results.recordings?.summary ?? null);
+    expect(summary.cpu).toBe(results.machine.cpu);
   });
 });
