@@ -1,4 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
+import { readFileSync } from 'node:fs';
 import type { Page } from '@playwright/test';
 import { expect, test } from './test';
 import { CLEAN_NOTE, confirmAndSave, nav, setPin, startFromText } from './helpers';
@@ -75,6 +76,9 @@ test('the About screen has no violations and shows the generated results', async
   await page.getByTestId('about-link').click();
   await expect(page.getByTestId('about-results')).toContainText('128 of 128');
   await expect(page.getByTestId('about-results')).toContainText('pending recordings');
+  const generated = JSON.parse(readFileSync('src/eval/summary.generated.json', 'utf8'));
+  if (generated.primock57) await expect(page.getByTestId('about-primock')).toContainText(`${generated.primock57.wordErrors} of ${generated.primock57.words} words were wrong`);
+  else await expect(page.getByTestId('about-primock')).toHaveCount(0);
   await expect(page.getByText('never diagnoses')).toBeVisible();
   await scan(page, 'About, evidence and limits');
 });
@@ -88,4 +92,20 @@ test('canary: the scanner really does catch low contrast and an unlabelled butto
   const ids = results.violations.map((v) => v.id);
   expect(ids).toContain('color-contrast');
   expect(ids).toContain('button-name');
+});
+
+test('"Check this phone" lists what the phone can do in plain words, without violations', async ({ page }) => {
+  await page.goto('/awaaz-record/');
+  await page.getByTestId('offline-badge').click();
+  await page.getByTestId('phone-check').click();
+  const results = page.getByTestId('phone-check-results');
+  await expect(results).toContainText('Microphone and recording: OK');
+  await expect(results).toContainText('Running the speech model: OK');
+  await expect(results).toContainText('Working with no internet: OK');
+  await expect(results).toContainText('Locked storage for records: OK');
+  await expect(results).toContainText('Free space');
+  // the test browser has no Hindi voice (the speech engine is silent), so the check says so as a warning, not a failure
+  await expect(results.locator('li[data-status="warn"]').filter({ hasText: 'Hindi voice' })).toHaveCount(1);
+  await expect(results.locator('li[data-status="fail"]')).toHaveCount(0);
+  await scan(page, 'Offline mode with the phone check');
 });

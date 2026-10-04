@@ -1,11 +1,11 @@
-import type { EvalSummary } from '../../eval/report';
+import type { EvalSummary, PrimockSummary } from '../../eval/report';
 import generated from '../../eval/summary.generated.json';
 import { hindiReviewed } from '../../patient/clips';
 import { useRouter } from '../router';
 import { Button } from '../../ui/Button';
 
 // The JSON has `null` for rows with no clips yet; say so in the type so the page handles both cases.
-const summary = generated as unknown as { generatedOn: string; cpu: string; reference: EvalSummary; tts: EvalSummary | null; recordings: EvalSummary | null };
+const summary = generated as unknown as { generatedOn: string; cpu: string; reference: EvalSummary; tts: EvalSummary | null; recordings: EvalSummary | null; primock57: PrimockSummary | null };
 
 const pct = (x: number) => `${(x * 100).toFixed(1)}%`;
 
@@ -30,6 +30,7 @@ export function AboutScreen() {
   const { back } = useRouter();
   const ref = summary.reference;
   const tts = summary.tts;
+  const primock = summary.primock57;
   return (
     <article aria-labelledby="about-title" className="space-y-5">
       <Button variant="secondary" onClick={back}>
@@ -65,8 +66,13 @@ export function AboutScreen() {
               <strong>Computer-voice audio</strong> (a pipeline check, not real speech): {tts.fieldChecksPassed} of {tts.fieldChecksTotal} fields right ({pct(tts.fieldAccuracy)}). {tts.wrongValues} values were wrong and {tts.silentWrongValues} of those looked fine. Word error rate {pct(tts.wer ?? 0)}.
             </p>
           )}
+          {primock && (
+            <p data-testid="about-primock">
+              <strong>Real clinicians, outside data</strong> (UK English mock consultations, speech recognition only): {primock.wordErrors} of {primock.words} words were wrong ({pct(primock.wer)}) in {primock.utterances} utterances. That is why a person checks every record.
+            </p>
+          )}
           <p>
-            <strong>Real voices:</strong> {summary.recordings ? `${summary.recordings.fieldChecksPassed} of ${summary.recordings.fieldChecksTotal} fields right` : 'pending recordings. Nobody has tested this with a real voice yet.'}
+            <strong>Real voices in our setting:</strong> {summary.recordings ? `${summary.recordings.fieldChecksPassed} of ${summary.recordings.fieldChecksTotal} fields right` : 'pending recordings. Nobody has tested this app with a health worker’s voice yet.'}
           </p>
           <p className="text-sm text-ink-soft">Measured on {summary.cpu} on {summary.generatedOn}. Details are in docs/EVALUATION.md.</p>
         </div>
@@ -74,13 +80,19 @@ export function AboutScreen() {
 
       <Section title="What the data does not cover">
         <ul className="list-disc space-y-1 pl-6">
-          <li>No real patients and no real clinic audio. All tests use made-up notes.</li>
+          <li>No real patients and no real clinic audio. The notes are made up, and the consultations in the outside test are acted.</li>
           <li>English speech only. No Hindi or Hinglish dictation.</li>
           <li>One synthetic Indian-English voice; no children, elderly or noisy-room speech.</li>
           <li>A word list of 90 generic medicines and 57 complaints. Others are shown as heard, with a question.</li>
           <li>Tested on a laptop, not yet on a low-end phone.</li>
           <li>{hindiReviewed ? 'The Hindi lines have been checked by a Hindi speaker.' : 'The Hindi lines have not yet been checked by a Hindi speaker.'}</li>
         </ul>
+      </Section>
+
+      <Section title="Bias and fairness">
+        <p>
+          Speech recognition can be less accurate for some accents, genders, ages and names. We have only tested one computer voice, so we cannot yet say how large any gap is. That is why a person checks every record, names and ages have a one-tap <em>Hear it</em>, and nothing is used to rank or decide anything about a patient.
+        </p>
       </Section>
 
       <Section title="Why it matters (sources I opened)">

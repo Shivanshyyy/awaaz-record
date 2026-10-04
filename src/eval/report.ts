@@ -1,5 +1,6 @@
 // Builds docs/EVALUATION.md from eval/results/latest.json. Every number in the document is computed here from the
 // results; nothing is typed by hand, and a test fails if the committed document differs from this output.
+import type { SelectionRule } from './primock';
 
 export interface EvalCheck {
   area: string;
@@ -53,6 +54,44 @@ export interface EvalSource {
   summary: EvalSummary | null;
 }
 
+export interface PrimockRow {
+  id: string;
+  consultation: string;
+  start: number;
+  end: number;
+  reference: string;
+  heard: string;
+  audioSeconds: number;
+  transcribeMs: number;
+  wordErrors: number;
+  refWords: number;
+  wer: number;
+}
+
+export interface PrimockSummary {
+  utterances: number;
+  words: number;
+  wordErrors: number;
+  wer: number;
+  meanUtteranceWer: number;
+  audioSeconds: number;
+  transcribeSeconds: number;
+  realTimeFactor: number;
+}
+
+export interface PrimockResult {
+  dataset: string;
+  source: string;
+  commit: string;
+  licence: string;
+  citation: string;
+  note: string;
+  consultations: number;
+  rule: SelectionRule;
+  rows: PrimockRow[];
+  summary: PrimockSummary;
+}
+
 export interface EvalResults {
   generatedAt: string;
   /** the local date the run happened, YYYY-MM-DD */
@@ -65,6 +104,8 @@ export interface EvalResults {
   reference: EvalSource;
   tts: EvalSource | null;
   recordings: EvalSource | null;
+  /** outside benchmark, speech recognition only; absent or null when the dataset was not fetched */
+  primock57?: PrimockResult | null;
 }
 
 const OS_NAMES: Record<string, string> = { darwin: 'macOS', win32: 'Windows', linux: 'Linux' };
@@ -96,6 +137,8 @@ function glance(r: EvalResults): string {
   line('Reference text: the script itself, so only the extractor is tested', r.reference.summary, 'pending');
   line('TTS-synthetic speech (operating-system voice): a pipeline check only', r.tts?.summary ?? null, 'none');
   line("My own voice (`recordings/`)", r.recordings?.summary ?? null, '**pending recordings**');
+  const p = r.primock57?.summary;
+  if (p) lines.push(`| Outside data: real clinicians in mock consultations (PriMock57, UK English), speech recognition only | ${p.utterances} utterances | n/a | n/a | n/a | n/a | n/a | ${pct(p.wer)} | ${p.realTimeFactor.toFixed(2)} |`);
   return lines.join('\n');
 }
 
@@ -160,6 +203,45 @@ function transcripts(source: EvalSource, scripts: Map<string, string>): string {
     .join('\n\n');
 }
 
+function primockSection(p: PrimockResult): string[] {
+  const s = p.summary;
+  const lines = [
+    '| Utterance | Audio | Word errors / words | Word error rate |',
+    '|---|---|---|---|',
+    ...p.rows.map((row) => `| ${row.id} | ${secs(row.audioSeconds)} | ${row.wordErrors}/${row.refWords} | ${pct(row.wer)} |`),
+  ];
+  const heard = p.rows.map((row) => [`**${row.id}** (word error rate ${pct(row.wer)})`, `- Said: ${cell(row.reference)}`, `- Heard: ${cell(row.heard)}`].join('\n'));
+  return [
+    '',
+    '## Outside data: real clinicians (PriMock57)',
+    '',
+    `${s.utterances} utterances of real clinicians speaking in mock primary-care consultations, ${s.words} words and ${secs(s.audioSeconds)} of audio, transcribed in ${secs(s.transcribeSeconds)} by the same speech model. **${s.wordErrors} of ${s.words} words were wrong: a word error rate of ${pct(s.wer)}** (mean per utterance ${pct(s.meanUtteranceWer)}). This measures **speech recognition only**. The extractor is not run on these, because they are conversations, not notes in our format.`,
+    '',
+    lines.join('\n'),
+    '',
+    '### What this does and does not show',
+    '',
+    `- **It is real human speech, which the other audio is not.** The model made about ${Math.round(s.wer * 100)} word errors for every 100 words spoken. That is the strongest reason the worker must check every value: the model will mishear some words, and a name or a dose is one word.`,
+    '- **It is not our setting.** The speakers are UK clinicians, the patients are employees acting a case, and the talk is a two-way conversation, not an Indian health worker dictating a note. The result says nothing about Indian English, a noisy clinic or a phone microphone.',
+    `- **${s.utterances} utterances is a small sample.** The figure is a sanity check with wide uncertainty, not a benchmark score.`,
+    '- **The reference is the transcriber\'s verbatim text,** including repeated words ("let let let") that the model tends to leave out. Each of those counts as an error, so the figure is stricter than a comparison with a tidied transcript. Fillers ("um", "uh", "er", "mm", "hmm", "ah", "eh") are dropped from both sides. No spelling conversion is applied: a British spelling in the reference counts as an error if the model writes the American form, and the other way round.',
+    `- **The utterances were chosen by a fixed rule before any model output was seen:** in each of the first ${p.consultations} consultations, the earliest utterances (at most ${p.rule.perConsultation} per consultation, at most ${p.rule.total} in all) that last ${p.rule.minSeconds} to ${p.rule.maxSeconds} seconds and carry no transcriber tag (\`<UNSURE>\`, \`<UNIN/>\`, \`<INAUDIBLE_SPEECH/>\`). Where fewer qualify, fewer are used. They are cut exactly at the annotated times, with no padding. Because they are the earliest ones, they lean towards the opening questions of each consultation.`,
+    '',
+    '### What the speech model heard',
+    '',
+    'Quoted from the dataset to show the recognition errors. These are the dataset\'s clinicians speaking, not statements by this app.',
+    '',
+    heard.join('\n\n'),
+    '',
+    '### Data and licence',
+    '',
+    `- **${p.dataset}:** ${p.citation} ${p.source}, commit \`${p.commit.slice(0, 8)}\`.`,
+    `- **Licence:** ${p.licence}. Credit: Babylon Health and the authors above. Licence text: https://creativecommons.org/licenses/by/4.0/.`,
+    `- **What we changed:** we used the clinician channel of the first ${p.consultations} consultations, cut utterances at the annotated times, and normalised the text for scoring with the rules in the Method section. The audio is not in this repository: \`npm run fetch-primock\` downloads it from the pinned commit and checks every file against its checksum.`,
+    `- ${p.note}`,
+  ];
+}
+
 export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, string>): string {
   const scripts = new Map(Object.entries(scriptTexts));
   const tts = r.tts && r.tts.rows.length ? r.tts : null;
@@ -206,6 +288,8 @@ export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, str
     out.push('', `## ${title}`, '', source.summary ? `${source.summary.clips} clips, ${secs(source.summary.audioSeconds ?? 0)} of audio, transcribed in ${secs(source.summary.transcribeSeconds ?? 0)}. Pooled word error rate ${pct(source.summary.wer ?? 0)} (mean per clip ${pct(source.summary.meanClipWer ?? 0)}).` : '', '', perClip(source), '', '### Where speech recognition breaks extraction', '', breaks(source), '', '### Expected flags', '', flagTable(source), '', '### Questions the app raised beyond the expected ones', '', questions(source));
   }
 
+  if (r.primock57) out.push(...primockSection(r.primock57));
+
   const heard = [tts, mine].filter((s): s is EvalSource => s !== null);
   if (heard.length) {
     out.push('', '## What the speech model heard', '');
@@ -223,6 +307,7 @@ export function renderEvaluation(r: EvalResults, scriptTexts: Record<string, str
     '- **A field check** is one comparison with the script: name, age, each listed vital, each listed property of each medicine, advice tags, referral, follow-up, complaint words and duration. A medicine the script does not list counts as a wrong value. Names match within two letters (Levenshtein), as the scripts specify.',
     '- **Expected flags** are the questions each script is built to provoke (a missing follow-up, a dose with no unit, a spoken correction). Other questions are counted and listed, not penalised.',
     '- **Real-time factor** = time to transcribe / length of audio; below 1 is faster than real time. The first clip of a run is preceded by an untimed warm-up.',
+    ...(r.primock57 ? ['- **Outside data (PriMock57):** the same model and settings, the same word-error rule, fillers dropped from both sides, utterances chosen by the rule written in that section. Speech recognition only.'] : []),
     '',
     '## Limitations',
     '',
@@ -264,9 +349,12 @@ export function renderReadmeSummary(r: EvalResults): string {
       ? `| My own voice | ${mine.clips} | ${mine.fieldChecksPassed}/${mine.fieldChecksTotal} = ${pct(mine.fieldAccuracy)} | ${mine.wrongValues} (${mine.silentWrongValues}) | ${mine.expectedFlagsRaised}/${mine.expectedFlagsTotal} | ${pct(mine.wer ?? 0)} |`
       : '| My own voice | **pending recordings** | | | | |',
   );
+  const p = r.primock57?.summary;
+  if (p) lines.push(`| Outside data: real clinicians, UK English (PriMock57; speech recognition only) | ${p.utterances} utterances | n/a | n/a | n/a | ${pct(p.wer)} |`);
   if (tts?.realTimeFactor !== undefined) {
     lines.push('', `Speech took ${tts.realTimeFactor.toFixed(2)} times the length of the audio on ${r.machine.cpu} (Node, a laptop, not a phone). Generated by \`npm run eval\` on ${r.generatedOn ?? r.generatedAt.slice(0, 10)}; the full tables, method and limits are in [docs/EVALUATION.md](docs/EVALUATION.md).`);
   }
+  if (p) lines.push('', `${mine ? 'The last row is real speech from outside our setting' : 'The last row is the only real human speech tested so far'}: ${p.utterances} utterances from UK clinicians in acted consultations, ${p.wordErrors} word errors in ${p.words} words. It tests speech recognition only, and says nothing about Indian English, a noisy clinic or a phone microphone.`);
   lines.push('', README_END);
   return lines.join('\n');
 }

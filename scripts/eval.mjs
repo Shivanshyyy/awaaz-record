@@ -3,6 +3,7 @@
 //   reference  the script text itself, so only the extractor is tested
 //   tts        eval/tts/*.wav, operating-system voice: a pipeline check only (TTS-synthetic)
 //   recordings recordings/*  the builder's own voice, when present
+//   primock57  eval/primock57/*  real clinicians in mock consultations (CC BY 4.0), speech recognition only, when fetched
 // Every number printed here is computed from this run and written to eval/results/latest.json.
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -36,6 +37,7 @@ const { textToTranscript } = await load('/src/extract/transcript-from-text.ts');
 const { buildTranscript } = await load('/src/asr/transcript.ts');
 const { scoreScript, accuracy } = await load('/src/extract/score.ts');
 const { wer, wordErrors, normalizeForWer } = await load('/src/extract/wer.ts');
+const { parseTextGrid, selectUtterances, dropFillers, SELECTION } = await load('/src/eval/primock.ts');
 const { renderEvaluation, withReadmeSummary } = await load('/src/eval/report.ts');
 
 function summarize(label, rows) {
@@ -150,6 +152,69 @@ for (const source of sources) {
   audioResults[source.key] = { label: source.label, rows, summary: rows.length ? summarize(source.label, rows) : null };
 }
 
+// ---- 3. outside benchmark: PriMock57 (speech recognition only) -----------------------------------------------
+// Real clinicians, mock consultations, UK English. Utterances are picked by a fixed rule (src/eval/primock.ts)
+// before any model output is seen, and fillers ("um") are dropped from both sides before counting errors.
+async function primock57() {
+  const dir = path.join(ROOT, 'eval', 'primock57');
+  const manifestFile = path.join(dir, 'manifest.json');
+  if (skipAudio || only.length > 0 || !existsSync(manifestFile)) return null;
+  const manifest = JSON.parse(readFileSync(manifestFile, 'utf8'));
+  const grids = manifest.files.map((f) => ({ consultation: f.id, intervals: parseTextGrid(readFileSync(path.join(dir, `${f.id}_doctor.TextGrid`), 'utf8')) }));
+  const picked = selectUtterances(grids);
+  const rows = [];
+  let decoded = { id: '', samples: new Float32Array(0) };
+  for (const u of picked) {
+    if (decoded.id !== u.consultation) decoded = { id: u.consultation, samples: decode(path.join(dir, `${u.consultation}_doctor.wav`)) };
+    const samples = decoded.samples.slice(Math.round(u.start * 16000), Math.round(u.end * 16000));
+    const audioSeconds = samples.length / 16000;
+    const { out, ms } = await transcribe(samples);
+    const heard = buildTranscript(out.chunks ?? [], audioSeconds).text;
+    const reference = dropFillers(normalizeForWer(u.text));
+    const errors = wordErrors(reference, dropFillers(normalizeForWer(heard)));
+    rows.push({
+      id: `${u.consultation.replace('day1_', '')} at ${u.start.toFixed(1)} s`,
+      consultation: u.consultation,
+      start: u.start,
+      end: u.end,
+      reference: u.text,
+      heard,
+      audioSeconds,
+      transcribeMs: ms,
+      wordErrors: errors.errors,
+      refWords: errors.words,
+      wer: errors.words ? errors.errors / errors.words : 0,
+    });
+    process.stdout.write(`  primock57 ${rows.at(-1).id.padEnd(28)} WER ${(rows.at(-1).wer * 100).toFixed(0).padStart(3)}%  ${audioSeconds.toFixed(1)} s in ${(ms / 1000).toFixed(2)} s\n`);
+  }
+  const words = rows.reduce((n, r) => n + r.refWords, 0);
+  const wrong = rows.reduce((n, r) => n + r.wordErrors, 0);
+  const seconds = rows.reduce((n, r) => n + r.audioSeconds, 0);
+  const ms = rows.reduce((n, r) => n + r.transcribeMs, 0);
+  return {
+    dataset: manifest.dataset,
+    source: manifest.source,
+    commit: manifest.commit,
+    licence: manifest.licence,
+    citation: manifest.citation,
+    note: manifest.note,
+    consultations: manifest.files.length,
+    rule: SELECTION,
+    rows,
+    summary: {
+      utterances: rows.length,
+      words,
+      wordErrors: wrong,
+      wer: words ? wrong / words : 0,
+      meanUtteranceWer: rows.length ? rows.reduce((s, r) => s + r.wer, 0) / rows.length : 0,
+      audioSeconds: seconds,
+      transcribeSeconds: ms / 1000,
+      realTimeFactor: seconds ? ms / 1000 / seconds : 0,
+    },
+  };
+}
+const primockResult = await primock57();
+
 function modelManifest() {
   const file = path.join(ROOT, 'public', 'models', 'manifest.json');
   return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {};
@@ -167,12 +232,13 @@ const results = {
   reference: { label: 'Reference text (the script itself): tests the extractor only', rows: referenceRows, summary: summarize('reference', referenceRows) },
   tts: audioResults.tts,
   recordings: audioResults.recordings,
+  primock57: primockResult,
 };
 mkdirSync(path.join(ROOT, 'eval', 'results'), { recursive: true });
 writeFileSync(path.join(ROOT, 'eval', 'results', 'latest.json'), `${JSON.stringify(results, null, 2)}\n`);
 writeFileSync(
   path.join(ROOT, 'src', 'eval', 'summary.generated.json'),
-  `${JSON.stringify({ generatedOn: results.generatedOn, cpu: results.machine.cpu, reference: results.reference.summary, tts: results.tts?.summary ?? null, recordings: results.recordings?.summary ?? null }, null, 2)}\n`,
+  `${JSON.stringify({ generatedOn: results.generatedOn, cpu: results.machine.cpu, reference: results.reference.summary, tts: results.tts?.summary ?? null, recordings: results.recordings?.summary ?? null, primock57: results.primock57?.summary ?? null }, null, 2)}\n`,
 );
 const scriptTexts = Object.fromEntries(scriptsFile.scripts.map((sc) => [sc.id, sc.text]));
 if (only.length === 0 && !skipAudio) {
@@ -199,6 +265,12 @@ for (const key of ['reference', 'tts', 'recordings']) {
   console.log(
     `${key.padEnd(10)} ${String(s.clips).padStart(2)} clips  fields ${s.fieldChecksPassed}/${s.fieldChecksTotal} = ${pct(s.fieldAccuracy)}  flags raised ${s.expectedFlagsRaised}/${s.expectedFlagsTotal}  extra flags ${s.extraFlags}  wrong ${s.wrongValues} (${s.silentWrongValues} not flagged)${speech}`,
   );
+}
+if (results.primock57) {
+  const p = results.primock57.summary;
+  console.log(`primock57  ${String(p.utterances).padStart(2)} utterances  ${p.words} words  WER ${pct(p.wer)} (mean per utterance ${pct(p.meanUtteranceWer)})  RTF ${p.realTimeFactor.toFixed(2)}`);
+} else {
+  console.log('primock57  not run (npm run fetch-primock to add it)');
 }
 for (const key of ['reference', 'tts', 'recordings']) {
   for (const row of results[key]?.rows ?? []) {

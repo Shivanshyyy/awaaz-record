@@ -27,8 +27,18 @@
     "wer": 0.27699530516431925,
     "meanClipWer": 0.28327801687768045,
     "audioSeconds": 166.12650000000002,
-    "transcribeSeconds": 6.432703666000001,
-    "realTimeFactor": 0.03872171908756279
+    "transcribeSeconds": 6.517712791000001,
+    "realTimeFactor": 0.039233432300084574
   },
-  "recordings": null
+  "recordings": null,
+  "primock57": {
+    "utterances": 9,
+    "words": 327,
+    "wordErrors": 92,
+    "wer": 0.28134556574923547,
+    "meanUtteranceWer": 0.26311908191381206,
+    "audioSeconds": 97.3605,
+    "transcribeSeconds": 2.9760766669999983,
+    "realTimeFactor": 0.03056759843057501
+  }
 }

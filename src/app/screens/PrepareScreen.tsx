@@ -1,9 +1,45 @@
 import { useEffect, useState } from 'react';
 import { storageUsage } from '../../asr/offline';
+import { evaluateDevice, readDeviceEnv, type DeviceCheck } from '../device';
 import { Button } from '../../ui/Button';
 import { formatMB } from '../../ui/format';
 import { Icon } from '../../ui/Icon';
 import { startPrepare, useOffline } from '../offline-store';
+
+function PhoneCheck({ neededBytes }: { neededBytes: number }) {
+  const [rows, setRows] = useState<DeviceCheck[] | null>(null);
+  const [busy, setBusy] = useState(false);
+  return (
+    <section aria-label="Check this phone" className="space-y-2 rounded-xl border border-line p-3">
+      <h3 className="text-lg font-bold">Will this phone work?</h3>
+      <Button
+        variant="secondary"
+        disabled={busy}
+        data-testid="phone-check"
+        onClick={async () => {
+          setBusy(true);
+          setRows(evaluateDevice(await readDeviceEnv(), neededBytes));
+          setBusy(false);
+        }}
+      >
+        Check this phone
+      </Button>
+      {rows && (
+        <ul data-testid="phone-check-results" className="space-y-2">
+          {rows.map((r) => (
+            <li key={r.id} data-status={r.status} className="rounded-lg border border-line p-2">
+              <p className={`flex items-center gap-1 font-bold ${r.status === 'ok' ? 'text-ok' : r.status === 'warn' ? 'text-check' : 'text-missing'}`}>
+                <Icon name={r.status === 'ok' ? 'check' : r.status === 'warn' ? 'alert' : 'x'} size={18} />
+                {r.label}: {r.status === 'ok' ? 'OK' : r.status === 'warn' ? 'Check' : 'Will not work'}
+              </p>
+              <p className="text-base text-ink-soft">{r.detail}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
 
 export function PrepareScreen() {
   const { status, prepare } = useOffline();
@@ -85,6 +121,7 @@ export function PrepareScreen() {
           )}
         </>
       )}
+      <PhoneCheck neededBytes={totalBytes || 66.1e6} />
     </section>
   );
 }

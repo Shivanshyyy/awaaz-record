@@ -27,7 +27,7 @@ Built solo for the Hack-Nation × World Bank *Small AI for Development* hackatho
 
 > Because of this tool, a primary health centre worker in India will finish a checked, structured record of the visit and give the patient a slip with medicine times and a return date, plus a Hindi voice message, before the patient leaves the room, work she would otherwise write up by hand afterwards, in a hurry, or skip; we know the problem is real because consultations in India are very short, the health ministry itself calls for cutting the burden of work on health functionaries, and patients forget much of what they are told ([sources](#sources-i-opened)).
 
-What the evidence shows is the *problem*. It does not show that this tool fixes it: **nobody has timed a real worker using it yet**, and the accuracy of speech recognition on real clinic voices is still untested (see [Evaluation](#evaluation)).
+What the evidence shows is the *problem*. It does not show that this tool fixes it: **nobody has timed a real worker using it yet**, and speech recognition has not been tested on voices from our own setting. The only real human speech measured so far is a small outside set of UK clinicians (see [Evaluation](#evaluation)).
 
 ## Where it sits in the worker's day
 
@@ -102,22 +102,33 @@ ps.pdf (p.8) asks for every dataset, its source, licence and size, and says that
 | 10 scripted visit notes with gold answers (`eval/scripts.json`) | Written for this hackathon, **synthetic**, no real patients | ours | 10 KB | Testing the extractor and speech |
 | TTS-synthetic audio (13 clips, git-ignored) | The Indian-English voice "Tara" on macOS, plus synthetic noise at 10 dB signal-to-noise | not distributed | 5.3 MB | A pipeline check only |
 | My own voice recordings | The builder's voice, from `docs/RECORDINGS.md` | not yet recorded | n/a | **pending recordings** |
+| PriMock57: the clinician channel of 5 of its 57 mock primary-care consultations (9 utterances scored) | Babylon Health; Papadopoulos Korfiatis et al., ACL 2022; https://github.com/babylonhealth/primock57 at commit `cd2ac707` | CC BY 4.0 (credit above; we cut utterances and normalised text for scoring) | 88.1 MB downloaded by `npm run fetch-primock` (git-ignored, not in the app) | An outside check of speech recognition on real clinicians, UK English; the extractor is not run on it |
 | 23 patient lines in Hindi (`docs/HINDI_CLIPS.md`) | Written before this build, **not yet checked by a Hindi speaker** (the app says so on screen) | ours | text only; audio files not yet made | Consent message, slip lines, instructions |
 
 ps.pdf lists common speech datasets (Common Voice, FLEURS, IndicVoices and others); we **did not use them**: Whisper tiny.en is English only, and we did not fine-tune.
 
 ### What our data does not cover
 
-- **No real patient, no real clinic, no real field audio.** Every transcript in the tests was typed by the builder or made by a computer voice reading a script.
+- **No real patient, no real clinic, no real field audio.** Every transcript in the extraction tests was typed by the builder or made by a computer voice reading a script. The one outside test (PriMock57) is real clinicians speaking, but in acted consultations in UK English, and it checks speech recognition only.
 - **One speaker's scripts.** Ten notes by one author, in one style. Real notes are messier, longer and less ordered.
 - **English only on the speech side.** No Hindi or Hinglish dictation, no other Indian language, and nothing for a worker who is more comfortable in another language.
-- **Accents, ages and voices.** Whisper's own card warns of *"disparate performance on different accents and dialects"*. We tested one synthetic Indian-English voice. No children's or elderly voices, no whispered or rushed speech, no phone-call quality.
+- **Accents, ages and voices.** Whisper's own card warns of *"disparate performance on different accents and dialects"*. We tested one synthetic Indian-English voice, and nine utterances of UK clinicians. No Indian-accented human speech, no children's or elderly voices, no whispered or rushed speech, no phone-call quality.
 - **Noise.** Only synthetic noise added to three clips. No fans, crying babies, generators or a waiting room.
 - **A phone.** Timings and tests are from a laptop (Apple M5 Pro). The app has not yet been run on a real low-end Android phone.
 - **Medicines.** 90 generic names and a handful of brand names (such as Dolo, Crocin, Calpol). Combination tablets, injections, local brand names, traditional medicine and spelling variants outside the list will not be recognised; the app then asks "which medicine was it?".
 - **Complaints.** 57 entries. Anything else is shown exactly as heard with a question, never mapped to a code.
 - **India only.** Facility types, Hindi and the follow-up wording are for an Indian primary health centre.
 - **The Hindi.** Unchecked by a Hindi speaker, and with no audio files yet; the app falls back to the phone's own Hindi voice, then to the Hindi text.
+
+## Bias and fairness
+
+ps.pdf (p.13) warns of *"biases encoded in algorithms"* and of models that underperform on the populations they are deployed to. Where this could bite here, and what we did and did not do:
+
+- **Speech recognition is the main risk.** Whisper's own card says it can show *"higher word error rate across speakers of different genders, races, ages, or other demographic criteria"*. A health worker with a strong regional accent, a woman with a soft voice, or a patient's relative speaking over the worker could be understood less well than a clear standard voice. We have **not measured this**: our only audio is one synthetic voice, so we cannot report error rates by accent, gender or age. This is the first thing a real-voice test must do.
+- **Names.** Names from some communities may be heard worse than others; the transcript showed names turned into unrelated words. The app does not judge whether a name "looks right" (that would encode its own bias); it shows the name with a one-tap *Hear it* and lets the worker correct it.
+- **The word lists** were written by one person from common usage. Medicines and complaints outside them, including local and traditional ones, are not recognised and are shown as heard, with a question. They are not dropped or replaced.
+- **Who is left out.** A worker who dictates in another language, a patient who is deaf or does not use the language of the Hindi lines, and anyone without a recent smartphone. The slip carries icons and words, and the app works without hearing, but nothing here replaces a worker's own judgement about the patient in front of her.
+- **What reduces harm:** a person confirms every record; wrong or missing values are shown as questions where the app can tell; nothing is used to rank, score or decide anything about a patient.
 
 ## Privacy: where data sits, who can read it, a lost or shared phone
 
@@ -147,8 +158,11 @@ Full tables, the method and the limits are in **[docs/EVALUATION.md](docs/EVALUA
 | Reference text (extractor alone) | 10 | 128/128 = 100.0% | 0 (0) | 6/6 | n/a |
 | TTS-synthetic speech (a pipeline check) | 13 | 105/148 = 70.9% | 43 (19) | 6/7 | 27.7% |
 | My own voice | **pending recordings** | | | | |
+| Outside data: real clinicians, UK English (PriMock57; speech recognition only) | 9 utterances | n/a | n/a | n/a | 28.1% |
 
 Speech took 0.04 times the length of the audio on Apple M5 Pro (Node, a laptop, not a phone). Generated by `npm run eval` on 2026-10-04; the full tables, method and limits are in [docs/EVALUATION.md](docs/EVALUATION.md).
+
+The last row is the only real human speech tested so far: 9 utterances from UK clinicians in acted consultations, 92 word errors in 327 words. It tests speech recognition only, and says nothing about Indian English, a noisy clinic or a phone microphone.
 
 <!-- eval:end -->
 

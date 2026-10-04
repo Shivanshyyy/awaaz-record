@@ -11,3 +11,4 @@ playwright-report/
 .tmp-scaffold/
 ps.pdf
 *.log
+eval/primock57/

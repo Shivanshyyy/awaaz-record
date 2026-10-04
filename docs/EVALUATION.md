@@ -18,6 +18,7 @@ The app has two parts that can be wrong: **speech recognition** (the audio becom
 | Reference text: the script itself, so only the extractor is tested | 10 | 128/128 = 100.0% | 0 | 0 | 6/6 | 0 | n/a (no audio) | n/a |
 | TTS-synthetic speech (operating-system voice): a pipeline check only | 13 | 105/148 = 70.9% | 43 | 19 | 6/7 | 26 | 27.7% | 0.04 |
 | My own voice (`recordings/`) | **pending recordings** | | | | | | | |
+| Outside data: real clinicians in mock consultations (PriMock57, UK English), speech recognition only | 9 utterances | n/a | n/a | n/a | n/a | n/a | 28.1% | 0.03 |
 
 > **Read this carefully.** The only audio so far is **TTS-synthetic**: a computer voice reading the scripts (voice "Tara" on macOS; the `_noisy` clips add synthetic noise at 10 dB signal-to-noise). It is good for checking that the pipeline works. It says little about how real clinic speech will do: a real voice, a real room and a real accent will differ, in either direction. No accuracy claim about real speech is made until the "my own voice" row is filled.
 
@@ -42,7 +43,7 @@ Every field and every expected flag was right on all 10 scripts, with no extra q
 
 ## TTS-synthetic audio
 
-13 clips, 166.1 s of audio, transcribed in 6.4 s. Pooled word error rate 27.7% (mean per clip 28.3%).
+13 clips, 166.1 s of audio, transcribed in 6.5 s. Pooled word error rate 27.7% (mean per clip 28.3%).
 
 | Clip | Word error rate | Field checks right | Wrong | Not flagged | Expected flags raised | Other questions | Audio | Transcribing |
 |---|---|---|---|---|---|---|---|---|
@@ -94,6 +95,77 @@ Every field and every expected flag was right on all 10 scripts, with no extra q
 | NAME_SNAPPED | 7 |
 | UNCLEAR | 6 |
 | MISSING_DETAIL | 2 |
+
+## Outside data: real clinicians (PriMock57)
+
+9 utterances of real clinicians speaking in mock primary-care consultations, 327 words and 97.4 s of audio, transcribed in 3.0 s by the same speech model. **92 of 327 words were wrong: a word error rate of 28.1%** (mean per utterance 26.3%). This measures **speech recognition only**. The extractor is not run on these, because they are conversations, not notes in our format.
+
+| Utterance | Audio | Word errors / words | Word error rate |
+|---|---|---|---|
+| consultation01 at 154.2 s | 10.1 s | 5/27 | 18.5% |
+| consultation02 at 218.0 s | 10.1 s | 7/36 | 19.4% |
+| consultation02 at 295.0 s | 9.2 s | 3/34 | 8.8% |
+| consultation03 at 44.2 s | 8.2 s | 16/38 | 42.1% |
+| consultation03 at 237.3 s | 11.3 s | 20/41 | 48.8% |
+| consultation04 at 212.0 s | 9.2 s | 2/22 | 9.1% |
+| consultation04 at 238.4 s | 11.3 s | 9/37 | 24.3% |
+| consultation05 at 265.9 s | 14.7 s | 13/48 | 27.1% |
+| consultation05 at 449.8 s | 13.4 s | 17/44 | 38.6% |
+
+### What this does and does not show
+
+- **It is real human speech, which the other audio is not.** The model made about 28 word errors for every 100 words spoken. That is the strongest reason the worker must check every value: the model will mishear some words, and a name or a dose is one word.
+- **It is not our setting.** The speakers are UK clinicians, the patients are employees acting a case, and the talk is a two-way conversation, not an Indian health worker dictating a note. The result says nothing about Indian English, a noisy clinic or a phone microphone.
+- **9 utterances is a small sample.** The figure is a sanity check with wide uncertainty, not a benchmark score.
+- **The reference is the transcriber's verbatim text,** including repeated words ("let let let") that the model tends to leave out. Each of those counts as an error, so the figure is stricter than a comparison with a tidied transcript. Fillers ("um", "uh", "er", "mm", "hmm", "ah", "eh") are dropped from both sides. No spelling conversion is applied: a British spelling in the reference counts as an error if the model writes the American form, and the other way round.
+- **The utterances were chosen by a fixed rule before any model output was seen:** in each of the first 5 consultations, the earliest utterances (at most 2 per consultation, at most 10 in all) that last 8 to 25 seconds and carry no transcriber tag (`<UNSURE>`, `<UNIN/>`, `<INAUDIBLE_SPEECH/>`). Where fewer qualify, fewer are used. They are cut exactly at the annotated times, with no padding. Because they are the earliest ones, they lean towards the opening questions of each consultation.
+
+### What the speech model heard
+
+Quoted from the dataset to show the recognition errors. These are the dataset's clinicians speaking, not statements by this app.
+
+**consultation01 at 154.2 s** (word error rate 18.5%)
+- Said: No, okay. Um, and um, any any other symptoms at all? So you mentioned tummy pain, you mentioned diarrhea, you mentioned your vomiting, uh, anything else that comes to mind?
+- Heard: Right, okay. And any other symptoms at all, to mention the tummy pain, you mentioned diarrhea, you mentioned your vomiting, anything else that comes to mind?
+
+**consultation02 at 218.0 s** (word error rate 19.4%)
+- Said: Fine, so just to resummarize. For the last four days, you've had very itchy skin, very sore skin all over your body, mainly your chest. And did you also mention your arms and legs as well?
+- Heard: So just to re -summerise, for the last four days you've had very icky skin, very sore skin, all over your body, mainly your chest, and did your tension in your arms and legs as well.
+
+**consultation02 at 295.0 s** (word error rate 8.8%)
+- Said: To see the rash itself, to see exactly what type of rash it is. But from what you've told me, you mentioned it's, you've got some dry skin and some, uh cracked skin as well.
+- Heard: to see the rash itself, it's exactly what type of rash it is. But for what you've told me, you mentioned it's, you've got some dry skin and some cracked skin as well.
+
+**consultation03 at 44.2 s** (word error rate 42.1%)
+- Said: Well, let's try our best. Let's try and get you, let's try and get you well, soon. Um you mentioned it's on your left hand side. Is that right? And it started at mid-day, a few hours ago.
+- Heard: Well, let's try best. Let's try and get you well soon. You mentioned some of your left -hand sizes, aren't you? It started midday a few hours ago.
+
+**consultation03 at 237.3 s** (word error rate 48.8%)
+- Said: Um but you know let let let, as I said let's take it step by step, um to see exactly what the cause of these headaches are first. Um, I'm just going to ask you some, um very uh yes no questions if that's OK, ma'am. Um
+- Heard: But let's take a step by step and see what the causes can occur first. I'm just going to ask you some very yes, no question. That's okay.
+
+**consultation04 at 212.0 s** (word error rate 9.1%)
+- Said: That's very sensible. Um very good. Um in terms of your chest otherwise, have you any difficulty breathing, or any pain in your chest?
+- Heard: very sensible, very good. In terms of your chest otherwise, have any difficulty breathing or any pain in your chest?
+
+**consultation04 at 238.4 s** (word error rate 24.3%)
+- Said: When you say winded, do you feel, uh do you feel more short of breath would you say, on exertion? Is that when you, OK. Um and and that's mainly on exercise. But when you're resting, there's no problem.
+- Heard: Can you say windage, do you feel more short of breath, would you say, on exerts, is that what you think? And that's mainly on exercise, but when you're resting, there's no problem.
+
+**consultation05 at 265.9 s** (word error rate 27.1%)
+- Said: OK. And, and so, just to summarize so far, if you don't mind, it's really for the last couple of days, it's tummy pain that's really affected you, mainly lower down towards your belly button. It's quite burning, you said. It's getting worse. Um, you noticed some pink urine.
+- Heard: Okay, and so just to summarize, so you fire me, don't mind, it's really for the last couple of days, it's a tummy pain, that's really effective to do, many lower down towards your belly button, it's quite burning, you said, it's getting worse, you know, it's the pink urine,
+
+**consultation05 at 449.8 s** (word error rate 38.6%)
+- Said: Could just be a, you know, could just be a urine infection, for example. Could just be something related to your gut. Um, could just be something related to your, you know, a pregnancy-related cause. Um, and so it's probably worth doing some tests initially.
+- Heard: Could just be a year infection, for example, could just be some of the latest you got. Could this be something related to your pregnancy related cause? And so it's probably worth doing some tests initially.
+
+### Data and licence
+
+- **PriMock57:** Papadopoulos Korfiatis A, Moramarco F, Sarac R, Savkov A. PriMock57: A Dataset Of Primary Care Mock Consultations. ACL 2022 (arXiv:2204.00333). https://github.com/babylonhealth/primock57, commit `cd2ac707`.
+- **Licence:** CC BY 4.0 (LICENSE.md in the repository). Credit: Babylon Health and the authors above. Licence text: https://creativecommons.org/licenses/by/4.0/.
+- **What we changed:** we used the clinician channel of the first 5 consultations, cut utterances at the annotated times, and normalised the text for scoring with the rules in the Method section. The audio is not in this repository: `npm run fetch-primock` downloads it from the pinned commit and checks every file against its checksum.
+- Clinician channel only. 57 mock primary-care consultations, 7 Babylon clinicians and 57 employees acting as patients, UK English. Audio 16-bit 16 kHz.
 
 ## What the speech model heard
 
@@ -161,6 +233,7 @@ Every field and every expected flag was right on all 10 scripts, with no extra q
 - **A field check** is one comparison with the script: name, age, each listed vital, each listed property of each medicine, advice tags, referral, follow-up, complaint words and duration. A medicine the script does not list counts as a wrong value. Names match within two letters (Levenshtein), as the scripts specify.
 - **Expected flags** are the questions each script is built to provoke (a missing follow-up, a dose with no unit, a spoken correction). Other questions are counted and listed, not penalised.
 - **Real-time factor** = time to transcribe / length of audio; below 1 is faster than real time. The first clip of a run is preceded by an untimed warm-up.
+- **Outside data (PriMock57):** the same model and settings, the same word-error rule, fillers dropped from both sides, utterances chosen by the rule written in that section. Speech recognition only.
 
 ## Limitations
 

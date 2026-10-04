@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T07:06:04.695Z",
+  "generatedAt": "2026-10-04T07:19:30.765Z",
   "generatedOn": "2026-10-04",
   "visitDate": "2026-10-04",
   "machine": {
@@ -1035,7 +1035,7 @@
         "transcript": "patient neuroplenty eight years, complaints of fever for three days, temperature 101, gave ferrocyte mild 500 mg three times a day for three days, review after three days.",
         "warnings": [],
         "audioSeconds": 11.428125,
-        "transcribeMs": 337.8325,
+        "transcribeMs": 345.796792,
         "wer": 0.18518518518518517,
         "wordErrors": 5,
         "refWords": 27
@@ -1139,7 +1139,7 @@
         "transcript": "The patient knew 38 years, complaints of fever for 3 days, temperature 101, gave pherosate mild 500mg 3 times a day for 3 days, review after 3 days.",
         "warnings": [],
         "audioSeconds": 11.428125,
-        "transcribeMs": 340.5814159999999,
+        "transcribeMs": 339.83416599999987,
         "wer": 0.18518518518518517,
         "wordErrors": 5,
         "refWords": 27
@@ -1261,7 +1261,7 @@
         "transcript": "Patient - drum -ish 52, sneezing and running nose for one week was in the mornings (B.P. 140 /90). Paul's 88, gives it a \"zine 10 mg once at night\" for five days. Follow up in one week.",
         "warnings": [],
         "audioSeconds": 12.932,
-        "transcribeMs": 399.23345800000016,
+        "transcribeMs": 399.22966700000006,
         "wer": 0.3333333333333333,
         "wordErrors": 12,
         "refWords": 36
@@ -1395,7 +1395,7 @@
         "transcript": "Station from age 52, seizing and running news for one week was in the morning, Bp140 over 90. False 88, gives the Tuesday and 10 milligrams once at night for five days. Follow up in one week.",
         "warnings": [],
         "audioSeconds": 12.932,
-        "transcribeMs": 356.14370800000006,
+        "transcribeMs": 357.7494999999999,
         "wer": 0.4166666666666667,
         "wordErrors": 15,
         "refWords": 36
@@ -1487,7 +1487,7 @@
         "transcript": "Fish and Sunita 26 /7 months pregnant, swelling of feet and headaches since yesterday, BP 160 /110, referred to the district hospital today, follow up after delivery.",
         "warnings": [],
         "audioSeconds": 11.9276875,
-        "transcribeMs": 309.55512499999986,
+        "transcribeMs": 295.8258340000002,
         "wer": 0.21428571428571427,
         "wordErrors": 6,
         "refWords": 28
@@ -1614,7 +1614,7 @@
         "transcript": "patient baby are of two years brought by mother, loose motions since two days, give ORS after every loose tool and in 20mg once daily for 14 days, advise mother to continue breastfeeding and give plenty of fluids. Review in five days.",
         "warnings": [],
         "audioSeconds": 14.65075,
-        "transcribeMs": 364.5007089999999,
+        "transcribeMs": 360.88520800000015,
         "wer": 0.14285714285714285,
         "wordErrors": 6,
         "refWords": 42
@@ -1761,7 +1761,7 @@
         "transcript": "Fish and Locks Me, 60 Years, Fain in both knees for two months, gave that clothing a 50 mg twice a day after food for five days, sorry make that abu -profend 400 mg twice a day after food for five days, review in two weeks.",
         "warnings": [],
         "audioSeconds": 14.6620625,
-        "transcribeMs": 392.3616670000001,
+        "transcribeMs": 388.96050000000014,
         "wer": 0.24390243902439024,
         "wordErrors": 10,
         "refWords": 41
@@ -1877,7 +1877,7 @@
         "transcript": "patient Kavita, 33. Running while passing urine for two days. Temperature 99.8. Gave Nitrofuranto in 100 mg twice a day for five days. Advice to drink plenty of water.",
         "warnings": [],
         "audioSeconds": 12.907875,
-        "transcribeMs": 334.49400000000014,
+        "transcribeMs": 342.20291700000007,
         "wer": 0.14285714285714285,
         "wordErrors": 4,
         "refWords": 28
@@ -2023,7 +2023,7 @@
           "repeated"
         ],
         "audioSeconds": 12.907875,
-        "transcribeMs": 2178.3619170000006,
+        "transcribeMs": 2234.6083750000003,
         "wer": 0.9642857142857143,
         "wordErrors": 27,
         "refWords": 28
@@ -2145,7 +2145,7 @@
         "transcript": "patient Mohan's 70, came for a blood pressure check (Bp -150 over 95, with 62 kilos, continue a mooda -pine 5 mg one -staley) review in one month.",
         "warnings": [],
         "audioSeconds": 11.5774375,
-        "transcribeMs": 331.91520800000035,
+        "transcribeMs": 349.86833300000035,
         "wer": 0.3333333333333333,
         "wordErrors": 9,
         "refWords": 27
@@ -2285,7 +2285,7 @@
         "transcript": "Ok so, patient him ran 29, he was saying it is very hot these days, anyway headache and body aches in this morning. Temperature normal, gave Ferris 8 mile 651 tablet 3 times a day for 2 days, if not better come back.",
         "warnings": [],
         "audioSeconds": 14.186375,
-        "transcribeMs": 391.9329580000003,
+        "transcribeMs": 399.37733300000036,
         "wer": 0.24390243902439024,
         "wordErrors": 10,
         "refWords": 41
@@ -2378,7 +2378,7 @@
         "transcript": "Patient guitar, 41, blood vision fold distance slowly over six months, no pain, referred to the i -hospital in the district for a check -up, follow up on Monday.",
         "warnings": [],
         "audioSeconds": 10.0899375,
-        "transcribeMs": 302.7334170000004,
+        "transcribeMs": 311.9228329999996,
         "wer": 0.13793103448275862,
         "wordErrors": 4,
         "refWords": 29
@@ -2509,7 +2509,7 @@
         "transcript": "Patient Raju 8 years brought by father, Air Pain for 2 days. Temperature 38.2, gave him oxisol in 250 mg 3 times a day for 5 days, and Farasetamal syrup when needed for pain. Review after 5 days.",
         "warnings": [],
         "audioSeconds": 14.49625,
-        "transcribeMs": 393.0575829999998,
+        "transcribeMs": 391.451333,
         "wer": 0.1388888888888889,
         "wordErrors": 5,
         "refWords": 36
@@ -2529,13 +2529,157 @@
       "wer": 0.27699530516431925,
       "meanClipWer": 0.28327801687768045,
       "audioSeconds": 166.12650000000002,
-      "transcribeSeconds": 6.432703666000001,
-      "realTimeFactor": 0.03872171908756279
+      "transcribeSeconds": 6.517712791000001,
+      "realTimeFactor": 0.039233432300084574
     }
   },
   "recordings": {
     "label": "The builder's own voice",
     "rows": [],
     "summary": null
+  },
+  "primock57": {
+    "dataset": "PriMock57",
+    "source": "https://github.com/babylonhealth/primock57",
+    "commit": "cd2ac707ad03cb4d2531f4ec6b90c659bf4357c5",
+    "licence": "CC BY 4.0 (LICENSE.md in the repository)",
+    "citation": "Papadopoulos Korfiatis A, Moramarco F, Sarac R, Savkov A. PriMock57: A Dataset Of Primary Care Mock Consultations. ACL 2022 (arXiv:2204.00333).",
+    "note": "Clinician channel only. 57 mock primary-care consultations, 7 Babylon clinicians and 57 employees acting as patients, UK English. Audio 16-bit 16 kHz.",
+    "consultations": 5,
+    "rule": {
+      "perConsultation": 2,
+      "minSeconds": 8,
+      "maxSeconds": 25,
+      "total": 10
+    },
+    "rows": [
+      {
+        "id": "consultation01 at 154.2 s",
+        "consultation": "day1_consultation01",
+        "start": 154.22489987639068,
+        "end": 164.32857354758966,
+        "reference": "No, okay. Um, and um, any any other symptoms at all? So you mentioned tummy pain, you mentioned diarrhea, you mentioned your vomiting, uh, anything else that comes to mind?",
+        "heard": "Right, okay. And any other symptoms at all, to mention the tummy pain, you mentioned diarrhea, you mentioned your vomiting, anything else that comes to mind?",
+        "audioSeconds": 10.1036875,
+        "transcribeMs": 289.7299589999993,
+        "wordErrors": 5,
+        "refWords": 27,
+        "wer": 0.18518518518518517
+      },
+      {
+        "id": "consultation02 at 218.0 s",
+        "consultation": "day1_consultation02",
+        "start": 218.044920824897,
+        "end": 228.111743683605,
+        "reference": "Fine, so just to resummarize. For the last four days, you've had very itchy skin, very sore skin all over your body, mainly your chest. And did you also mention your arms and legs as well?",
+        "heard": "So just to re -summerise, for the last four days you've had very icky skin, very sore skin, all over your body, mainly your chest, and did your tension in your arms and legs as well.",
+        "audioSeconds": 10.0668125,
+        "transcribeMs": 341.94325000000026,
+        "wordErrors": 7,
+        "refWords": 36,
+        "wer": 0.19444444444444445
+      },
+      {
+        "id": "consultation02 at 295.0 s",
+        "consultation": "day1_consultation02",
+        "start": 294.965300602985,
+        "end": 304.168561897973,
+        "reference": "To see the rash itself, to see exactly what type of rash it is. But from what you've told me, you mentioned it's, you've got some dry skin and some, uh cracked skin as well.",
+        "heard": "to see the rash itself, it's exactly what type of rash it is. But for what you've told me, you mentioned it's, you've got some dry skin and some cracked skin as well.",
+        "audioSeconds": 9.20325,
+        "transcribeMs": 330.5175419999996,
+        "wordErrors": 3,
+        "refWords": 34,
+        "wer": 0.08823529411764706
+      },
+      {
+        "id": "consultation03 at 44.2 s",
+        "consultation": "day1_consultation03",
+        "start": 44.1717754277187,
+        "end": 52.3563267458328,
+        "reference": "Well, let's try our best. Let's try and get you, let's try and get you well, soon. Um you mentioned it's on your left hand side. Is that right? And it started at mid-day, a few hours ago.",
+        "heard": "Well, let's try best. Let's try and get you well soon. You mentioned some of your left -hand sizes, aren't you? It started midday a few hours ago.",
+        "audioSeconds": 8.1845625,
+        "transcribeMs": 303.3830419999995,
+        "wordErrors": 16,
+        "refWords": 38,
+        "wer": 0.42105263157894735
+      },
+      {
+        "id": "consultation03 at 237.3 s",
+        "consultation": "day1_consultation03",
+        "start": 237.306009,
+        "end": 248.619773148073,
+        "reference": "Um but you know let let let, as I said let's take it step by step, um to see exactly what the cause of these headaches are first. Um, I'm just going to ask you some, um very uh yes no questions if that's OK, ma'am. Um",
+        "heard": "But let's take a step by step and see what the causes can occur first. I'm just going to ask you some very yes, no question. That's okay.",
+        "audioSeconds": 11.31375,
+        "transcribeMs": 303.88674999999967,
+        "wordErrors": 20,
+        "refWords": 41,
+        "wer": 0.4878048780487805
+      },
+      {
+        "id": "consultation04 at 212.0 s",
+        "consultation": "day1_consultation04",
+        "start": 212.007200154383,
+        "end": 221.172597427428,
+        "reference": "That's very sensible. Um very good. Um in terms of your chest otherwise, have you any difficulty breathing, or any pain in your chest?",
+        "heard": "very sensible, very good. In terms of your chest otherwise, have any difficulty breathing or any pain in your chest?",
+        "audioSeconds": 9.1654375,
+        "transcribeMs": 243.58854200000133,
+        "wordErrors": 2,
+        "refWords": 22,
+        "wer": 0.09090909090909091
+      },
+      {
+        "id": "consultation04 at 238.4 s",
+        "consultation": "day1_consultation04",
+        "start": 238.375572679187,
+        "end": 249.653747699677,
+        "reference": "When you say winded, do you feel, uh do you feel more short of breath would you say, on exertion? Is that when you, OK. Um and and that's mainly on exercise. But when you're resting, there's no problem.",
+        "heard": "Can you say windage, do you feel more short of breath, would you say, on exerts, is that what you think? And that's mainly on exercise, but when you're resting, there's no problem.",
+        "audioSeconds": 11.2781875,
+        "transcribeMs": 348.089915999999,
+        "wordErrors": 9,
+        "refWords": 37,
+        "wer": 0.24324324324324326
+      },
+      {
+        "id": "consultation05 at 265.9 s",
+        "consultation": "day1_consultation05",
+        "start": 265.887882719933,
+        "end": 280.539870113307,
+        "reference": "OK. And, and so, just to summarize so far, if you don't mind, it's really for the last couple of days, it's tummy pain that's really affected you, mainly lower down towards your belly button. It's quite burning, you said. It's getting worse. Um, you noticed some pink urine.",
+        "heard": "Okay, and so just to summarize, so you fire me, don't mind, it's really for the last couple of days, it's a tummy pain, that's really effective to do, many lower down towards your belly button, it's quite burning, you said, it's getting worse, you know, it's the pink urine,",
+        "audioSeconds": 14.652,
+        "transcribeMs": 477.4647079999995,
+        "wordErrors": 13,
+        "refWords": 48,
+        "wer": 0.2708333333333333
+      },
+      {
+        "id": "consultation05 at 449.8 s",
+        "consultation": "day1_consultation05",
+        "start": 449.784848819678,
+        "end": 463.1776787094,
+        "reference": "Could just be a, you know, could just be a urine infection, for example. Could just be something related to your gut. Um, could just be something related to your, you know, a pregnancy-related cause. Um, and so it's probably worth doing some tests initially.",
+        "heard": "Could just be a year infection, for example, could just be some of the latest you got. Could this be something related to your pregnancy related cause? And so it's probably worth doing some tests initially.",
+        "audioSeconds": 13.3928125,
+        "transcribeMs": 337.4729580000003,
+        "wordErrors": 17,
+        "refWords": 44,
+        "wer": 0.38636363636363635
+      }
+    ],
+    "summary": {
+      "utterances": 9,
+      "words": 327,
+      "wordErrors": 92,
+      "wer": 0.28134556574923547,
+      "meanUtteranceWer": 0.26311908191381206,
+      "audioSeconds": 97.3605,
+      "transcribeSeconds": 2.9760766669999983,
+      "realTimeFactor": 0.03056759843057501
+    }
   }
 }
